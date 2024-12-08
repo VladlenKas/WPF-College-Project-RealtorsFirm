@@ -1,6 +1,8 @@
-﻿using RealtorsFirm_3cursEO.ModelsDB;
+﻿using Microsoft.EntityFrameworkCore;
+using RealtorsFirm_3cursEO.Model;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,22 +15,61 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace RealtorsFirm_3cursEO
+namespace RealtorsFirm_3cursEO.Edits
 {
     /// <summary>
-    /// Логика взаимодействия для AddClient.xaml
+    /// Логика взаимодействия для EditEmployee.xaml
     /// </summary>
-    public partial class AddClient : Window
+    public partial class EditEmployee : Window
     {
         private RealtorsFirmContext dbContext;
-        public AddClient()
+        private Employee _employee;
+        private Employee _user;
+
+        public EditEmployee(Employee employee, Employee user)
         {
             InitializeComponent();
+
+            this._employee = employee;
+            this._user = user;
             dbContext = new RealtorsFirmContext();
+
+            LoadInfo();
         }
 
-        private void AddButton_Click(object sender, RoutedEventArgs e)
+        public void LoadInfo()
         {
+            DataContext = _employee;
+            PassTextBoxHid.Password = _employee.Password;
+
+            if (_user.IdEmployee == _employee.IdEmployee)
+            {
+                EmailTextBox.IsEnabled = false;
+                EmailTextBox.Foreground = (Brush)new BrushConverter().ConvertFrom("#80000000");
+            }
+        }
+
+        private void ViewPasswordCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewPasswordCheckBox.IsChecked == true)
+            {
+                // Показываем пароль в TextBox и скрываем PasswordBox
+                PassTextBoxView.Text = PassTextBoxHid.Password;
+                PassTextBoxView.Visibility = Visibility.Visible;
+                PassTextBoxHid.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                // Скрываем TextBox и показываем PasswordBox
+                PassTextBoxHid.Password = PassTextBoxView.Text; // Сохраняем введенный текст в PasswordBox
+                PassTextBoxView.Visibility = Visibility.Hidden;
+                PassTextBoxHid.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            string password = (bool)ViewPasswordCheckBox.IsChecked ? PassTextBoxView.Text : PassTextBoxHid.Password;
             bool confirmation = true;
             string[] formats = { "d/M/yyyy", "dd/MM/yyyy", "dd/M/yyyy", "d/MM/yyyy" };
             bool date = DateTime.TryParseExact(BirthdayTextBox.Text, formats, null,
@@ -40,6 +81,7 @@ namespace RealtorsFirm_3cursEO
             if (NameTextBox.Text == string.Empty ||
                 FirstnameTextBox.Text == string.Empty ||
                 EmailTextBox.Text == string.Empty ||
+                password == string.Empty ||
                 BirthdayTextBox.Text == string.Empty ||
                 NumberTextBox.Text == string.Empty ||
                 PassportTextBox.Text == string.Empty)
@@ -51,24 +93,27 @@ namespace RealtorsFirm_3cursEO
             else
             {
                 // Проверка на логин
-                if (App.context.Employees.Any(r => r.Email == EmailTextBox.Text)
+                if ((App.context.Employees.Any(r => r.Email == EmailTextBox.Text)
                     || App.context.Clients.Any(r => r.Email == EmailTextBox.Text))
+                    && EmailTextBox.Text != _employee.Email)
                 {
                     confirmation = false;
                     MessageBox.Show("Пользователь с таким логином уже существует", "Ошибка",
                         MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 // Проверка на паспорт
-                else if (App.context.Employees.Any(r => r.Passport == PassportTextBox.Text)
+                else if ((App.context.Employees.Any(r => r.Passport == PassportTextBox.Text)
                     || App.context.Clients.Any(r => r.Passport == PassportTextBox.Text))
+                    && PassportTextBox.Text != _employee.Passport)
                 {
                     confirmation = false;
                     MessageBox.Show("Пользователь с таким паспортом уже существует", "Ошибка",
                         MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 // Проверка на номер телефона
-                else if (App.context.Employees.Any(r => r.Phone == NumberTextBox.Text)
+                else if ((App.context.Employees.Any(r => r.Phone == NumberTextBox.Text)
                     || App.context.Clients.Any(r => r.Phone == NumberTextBox.Text))
+                    && NumberTextBox.Text != _employee.Phone)
                 {
                     confirmation = false;
                     MessageBox.Show("Пользователь с таким номером телефона уже существует", "Ошибка",
@@ -137,21 +182,20 @@ namespace RealtorsFirm_3cursEO
 
             if (confirmation)
             {
-                Client client = new Client
-                {
-                    Email = EmailTextBox.Text,
-                    Name = NameTextBox.Text,
-                    Firstname = FirstnameTextBox.Text,
-                    Patronymic = PatronymicTextBox?.Text,
-                    Birthday = DateOnly.FromDateTime(result),
-                    Passport = PassportTextBox.Text,
-                    Phone = phone,
-                };
+                // Находим нужного пользователя для изменений его данных и сверки параметров
+                var employee = dbContext.Employees.Find(_employee.IdEmployee);
 
-                dbContext.Add(client);
+                employee.Password = password;
+                employee.Name = NameTextBox.Text;
+                employee.Firstname = FirstnameTextBox.Text;
+                employee.Patronymic = PatronymicTextBox?.Text;
+                employee.Birthday = DateOnly.FromDateTime(result);
+                employee.Passport = PassportTextBox.Text;
+                employee.Phone = phone;
+
                 dbContext.SaveChanges();
 
-                MessageBox.Show($"Новый пользователь {client.Name} успешно добавлен", "Успешно",
+                MessageBox.Show($"Инофрмация о пользователе {employee.Name} успешно изменена", "Успешно",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
             }
@@ -161,6 +205,7 @@ namespace RealtorsFirm_3cursEO
         {
             this.Close();
         }
+
         private void NumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (NumberTextBox.Text != string.Empty)
@@ -279,9 +324,9 @@ namespace RealtorsFirm_3cursEO
 
         private void ValidateInput(TextBox textBox)
         {
-            // Проверяем, все ли символы в строке являются кириллическими
             foreach (char c in textBox.Text)
             {
+                // Проверяем, все ли символы в строке являются кириллическими
                 if (!CyrillicLetters.Contains(c) && !char.IsWhiteSpace(c))
                 {
                     textBox.Text = textBox.Text.Substring(0, textBox.Text.Length - 1);

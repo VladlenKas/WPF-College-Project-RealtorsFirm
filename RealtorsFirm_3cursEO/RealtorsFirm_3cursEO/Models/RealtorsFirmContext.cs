@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
-namespace RealtorsFirm_3cursEO.ModelsDB;
+namespace RealtorsFirm_3cursEO.Model;
 
 public partial class RealtorsFirmContext : DbContext
 {
@@ -50,10 +50,16 @@ public partial class RealtorsFirmContext : DbContext
 
             entity.Property(e => e.IdClient).HasColumnName("id_client");
             entity.Property(e => e.Birthday).HasColumnName("birthday");
-            entity.Property(e => e.Email).HasMaxLength(45);
+            entity.Property(e => e.Email)
+                .HasMaxLength(45)
+                .HasColumnName("email");
             entity.Property(e => e.Firstname)
                 .HasMaxLength(45)
                 .HasColumnName("firstname");
+            entity.Property(e => e.IsDelected)
+                .HasDefaultValueSql("b'0'")
+                .HasColumnType("bit(1)")
+                .HasColumnName("is_delected");
             entity.Property(e => e.Name)
                 .HasMaxLength(45)
                 .HasColumnName("name");
@@ -85,6 +91,10 @@ public partial class RealtorsFirmContext : DbContext
                 .HasMaxLength(45)
                 .HasColumnName("firstname");
             entity.Property(e => e.IdRole).HasColumnName("id_role");
+            entity.Property(e => e.IsDelected)
+                .HasDefaultValueSql("b'0'")
+                .HasColumnType("bit(1)")
+                .HasColumnName("is_delected");
             entity.Property(e => e.Name)
                 .HasMaxLength(45)
                 .HasColumnName("name");
@@ -119,16 +129,20 @@ public partial class RealtorsFirmContext : DbContext
 
             entity.Property(e => e.IdEstate).HasColumnName("id_estate");
             entity.Property(e => e.Address)
-                .HasMaxLength(45)
+                .HasMaxLength(120)
                 .HasColumnName("address");
             entity.Property(e => e.Area).HasColumnName("area");
-            entity.Property(e => e.Cost).HasColumnName("cost");
+            entity.Property(e => e.Cost)
+                .HasMaxLength(12)
+                .HasColumnName("cost");
             entity.Property(e => e.IdClient).HasColumnName("id_client");
             entity.Property(e => e.IdType).HasColumnName("id_type");
+            entity.Property(e => e.IsDelected)
+                .HasDefaultValueSql("b'0'")
+                .HasColumnType("bit(1)")
+                .HasColumnName("is_delected");
             entity.Property(e => e.NumberRooms).HasColumnName("number_rooms");
-            entity.Property(e => e.Photo)
-                .HasColumnType("blob")
-                .HasColumnName("photo");
+            entity.Property(e => e.Photo).HasColumnName("photo");
 
             entity.HasOne(d => d.IdClientNavigation).WithMany(p => p.Estates)
                 .HasForeignKey(d => d.IdClient)

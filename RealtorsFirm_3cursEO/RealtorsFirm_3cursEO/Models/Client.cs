@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RealtorsFirm_3cursEO.ModelsDB;
+namespace RealtorsFirm_3cursEO.Model;
 
 public partial class Client
 {
@@ -22,6 +22,8 @@ public partial class Client
     public string Phone { get; set; } = null!;
 
     public string? Email { get; set; }
+
+    public ulong? IsDelected { get; set; }
 
     public virtual ICollection<Estate> Estates { get; set; } = new List<Estate>();
 

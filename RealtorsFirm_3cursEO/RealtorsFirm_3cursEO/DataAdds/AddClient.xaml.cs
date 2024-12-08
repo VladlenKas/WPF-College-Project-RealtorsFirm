@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RealtorsFirm_3cursEO.ModelsDB;
+﻿using RealtorsFirm_3cursEO.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,44 +12,23 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Xml.Linq;
 
 namespace RealtorsFirm_3cursEO
 {
     /// <summary>
-    /// Логика взаимодействия для AddEmployee.xaml
+    /// Логика взаимодействия для AddClient.xaml
     /// </summary>
-    public partial class AddEmployee : Window
+    public partial class AddClient : Window
     {
         private RealtorsFirmContext dbContext;
-
-        public AddEmployee()
+        public AddClient()
         {
             InitializeComponent();
             dbContext = new RealtorsFirmContext();
         }
 
-        private void ViewPasswordCheckBox_Click(object sender, RoutedEventArgs e)
-        {
-            if (ViewPasswordCheckBox.IsChecked == true)
-            {
-                // Показываем пароль в TextBox и скрываем PasswordBox
-                PassTextBoxView.Text = PassTextBoxHid.Password;
-                PassTextBoxView.Visibility = Visibility.Visible;
-                PassTextBoxHid.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                // Скрываем TextBox и показываем PasswordBox
-                PassTextBoxHid.Password = PassTextBoxView.Text; // Сохраняем введенный текст в PasswordBox
-                PassTextBoxView.Visibility = Visibility.Hidden;
-                PassTextBoxHid.Visibility = Visibility.Visible;
-            }
-        }
-
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            string password = (bool)ViewPasswordCheckBox.IsChecked ? PassTextBoxView.Text : PassTextBoxHid.Password;
             bool confirmation = true;
             string[] formats = { "d/M/yyyy", "dd/MM/yyyy", "dd/M/yyyy", "d/MM/yyyy" };
             bool date = DateTime.TryParseExact(BirthdayTextBox.Text, formats, null,
@@ -62,7 +40,6 @@ namespace RealtorsFirm_3cursEO
             if (NameTextBox.Text == string.Empty ||
                 FirstnameTextBox.Text == string.Empty ||
                 EmailTextBox.Text == string.Empty ||
-                password == string.Empty ||
                 BirthdayTextBox.Text == string.Empty ||
                 NumberTextBox.Text == string.Empty ||
                 PassportTextBox.Text == string.Empty)
@@ -153,30 +130,28 @@ namespace RealtorsFirm_3cursEO
                 }
                 else if (PassportTextBox.Text.Length != 10)
                 {
-                    MessageBox.Show("Паспорт не может содержать меньше 10 цифр", "Ошибка", 
+                    MessageBox.Show("Паспорт не может содержать меньше 10 цифр", "Ошибка",
                         MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
 
             if (confirmation)
             {
-                Employee employee = new Employee
+                Client client = new Client
                 {
                     Email = EmailTextBox.Text,
-                    Password = password,
                     Name = NameTextBox.Text,
-                    Firstname = FirstnameTextBox.Text.ToLower(),
-                    Patronymic = PatronymicTextBox?.Text.ToLower(),
+                    Firstname = FirstnameTextBox.Text,
+                    Patronymic = PatronymicTextBox?.Text,
                     Birthday = DateOnly.FromDateTime(result),
                     Passport = PassportTextBox.Text,
                     Phone = phone,
-                    IdRole = 1
                 };
 
-                dbContext.Add(employee);
+                dbContext.Add(client);
                 dbContext.SaveChanges();
 
-                MessageBox.Show($"Новый пользователь {employee.Name} успешно добавлен", "Успешно",
+                MessageBox.Show($"Новый пользователь {client.Name} успешно добавлен", "Успешно",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
             }
@@ -186,7 +161,6 @@ namespace RealtorsFirm_3cursEO
         {
             this.Close();
         }
-
         private void NumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (NumberTextBox.Text != string.Empty)

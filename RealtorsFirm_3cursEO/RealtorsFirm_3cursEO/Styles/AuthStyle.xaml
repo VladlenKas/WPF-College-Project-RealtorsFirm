@@ -1,16 +1,18 @@
 ﻿    <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <!--#region TextBlocks -->
     <!-- Cтиль для текста -->
     <Style TargetType="{x:Type TextBlock}" x:Key="TextBlock" >
         <Setter Property="Height" Value="25"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="FontWeight" Value="Thin"/>
-        <Setter Property="Foreground" Value="DarkSlateGray"/>
+        <Setter Property="Foreground" Value="#000000"/>
         <Setter Property="Margin" Value="0 30 0 0"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
     </Style>
+    <!--#endregion-->
 
     <!--#region Buttons -->
     <!-- Button base -->
@@ -99,12 +101,12 @@
     </Style>
     <!--#endregion-->
 
+    <!--#region CheckBoxes -->
     <!-- ChechBox -->
     <Style TargetType="{x:Type CheckBox}" x:Key="CBBase">
         <Setter Property="BorderBrush" Value="{StaticResource LGBase}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Effect" Value="{StaticResource dropShadow}"/>
-        <Setter Property="Foreground" Value="#80000000"/>
+        <Setter Property="Foreground" Value="#90000000"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
@@ -146,7 +148,7 @@
                         <TextBlock Margin="5 0 0 0"
                                    Text="{TemplateBinding Content}"
                                    FontSize="15"
-                                   Foreground="#90000000"
+                                   Foreground="#000000"
                                    FontWeight="Thin"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
@@ -170,7 +172,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+    <!--#endregion-->
+
     <!--#region TextBox -->
     <!-- Базовое текстовое поле градиентное -->
     <Style TargetType="{x:Type TextBox}" x:Key="TBBase">

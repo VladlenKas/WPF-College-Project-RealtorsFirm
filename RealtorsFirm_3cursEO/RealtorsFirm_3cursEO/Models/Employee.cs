@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RealtorsFirm_3cursEO.ModelsDB;
+namespace RealtorsFirm_3cursEO.Model;
 
 public partial class Employee
 {
@@ -26,6 +26,8 @@ public partial class Employee
     public string Email { get; set; } = null!;
 
     public string Password { get; set; } = null!;
+
+    public ulong? IsDelected { get; set; }
 
     public virtual RoleEmployee IdRoleNavigation { get; set; } = null!;
 

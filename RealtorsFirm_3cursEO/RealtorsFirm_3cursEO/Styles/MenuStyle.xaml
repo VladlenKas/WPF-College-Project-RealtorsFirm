@@ -2,14 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
-    <!-- Shadow -->
-    <DropShadowEffect x:Key="dropShadow" 
-                      ShadowDepth="2" 
-                      BlurRadius="4" 
-                      Color="#000000" 
-                      Opacity="0.2"/>
-    
-    <!-- TextBlock -->
+    <!--#region TextBlock -->
+    <!-- Стиль для обычного текста -->
     <Style TargetType="{x:Type TextBlock}" x:Key="MenuTextBlock" >
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="FontFamily" Value="Arial Rounded MT Bold"/>
@@ -18,34 +12,63 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
     
-    <!-- ChecBox -->
-    <Style TargetType="{x:Type CheckBox}" x:Key="CheckBoxSortButton">
+    <!-- Стиль для заголовков -->
+    <Style TargetType="{x:Type TextBlock}" x:Key="MenuTextBlockHeader" >
+        <Setter Property="FontSize" Value="36"/>
+        <Setter Property="FontFamily" Value="Segoe UI Variable Display Semibold"/>
+    </Style>
+    <!--#endregion-->
+
+    <!--#region CheckBoxes -->
+    <!--#region ChechBox -->
+    <Style TargetType="{x:Type CheckBox}" x:Key="CheckBoxSortMenu">
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Foreground" Value="#000000"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CheckBox}">
-                    <Button Style="{StaticResource Navigation}"/>
-
+                    <Grid>
+                        <ContentPresenter HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"/>
+                        <TextBlock
+                            Effect="{x:Null}"
+                            x:Name="SortText" 
+                            Style="{StaticResource MenuTextBlock}"
+                            Foreground="#000000"
+                            Margin="190 0 40 0"/>
+                    </Grid>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Text" TargetName="SortText" Value="По убыванию"/>
+                        </Trigger>
+
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter Property="Text" TargetName="SortText" Value="По возрастанию"/>
+                        </Trigger>
+
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="BorderBrush" Value="{StaticResource LGPressed}"/>
+                            <Setter Property="Foreground" TargetName="SortText" Value="#90000000"/>
                         </Trigger>
 
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="BorderBrush" Value="#000000"/>
+                            <Setter Property="Foreground" TargetName="SortText" Value="#70000000"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    <!--#endregion-->
+
+    <!--#endregion-->
 
     <!--#region Icons -->
     <Style TargetType="materialDesign:PackIcon" x:Key="IconButton">
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="Height" Value="19"/>
         <Setter Property="Width" Value="19"/>
-        <Setter Property="Margin" Value="0 7 7 7"/>
+        <Setter Property="Margin" Value="15 0 5 0"/>
     </Style>
 
     <Style TargetType="materialDesign:PackIcon"
@@ -60,7 +83,6 @@
         <Setter Property="Height" Value="40"/>
         <Setter Property="Padding" Value="5 0 15 0"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Effect" Value="{StaticResource dropShadow}"/>
         <Setter Property="BorderBrush" Value="{StaticResource LGBase}"/>
         <Setter Property="BorderThickness" Value="1.5"/>
         <Setter Property="Background">
@@ -134,7 +156,8 @@
                                     <ScrollViewer Margin="4 6" 
                                                   SnapsToDevicePixels="True" 
                                                   HorizontalAlignment="Center">
-                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" 
+                                        <StackPanel IsItemsHost="True" 
+                                                    KeyboardNavigation.DirectionalNavigation="Contained" 
                                                     TextBlock.FontFamily="Arial Rounded MT Bold"
                                                     TextBlock.FontSize="14"/>
 
@@ -156,7 +179,6 @@
         <Setter Property="Padding" Value="5 0 15 0"/>
         <Setter Property="Margin" Value="20 0"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Effect" Value="{StaticResource dropShadow}"/>
         <Setter Property="BorderBrush" Value="{StaticResource LGBase}"/>
         <Setter Property="BorderThickness" Value="1.5"/>
         <Setter Property="Background">
@@ -215,7 +237,6 @@
     <Style TargetType="{x:Type Button}" x:Key="DeleteDG">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="Effect" Value="{StaticResource dropShadow}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -247,7 +268,6 @@
     <Style TargetType="{x:Type Button}" x:Key="EditDG">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="Effect" Value="{StaticResource dropShadow}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -432,5 +452,6 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <!--#endregion-->
     <!--#endregion-->
 </ResourceDictionary>

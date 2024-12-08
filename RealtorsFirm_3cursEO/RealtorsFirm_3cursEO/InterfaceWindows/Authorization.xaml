@@ -149,8 +149,12 @@
                 <TextBox x:Name="TextBoxEmail"/>
                 <TextBlock Text="Пароль" Style="{StaticResource TextBlock}"/>
                 <Grid>
-                    <TextBox x:Name="TextBoxPassVisibility"/>
-                    <PasswordBox x:Name="TextBoxPassHidden"/>
+                    <TextBox 
+                        x:Name="TextBoxPassVisibility"
+                        Visibility="Hidden"/>
+                    <PasswordBox 
+                        x:Name="TextBoxPassHidden"
+                        Visibility="Visible"/>
                 </Grid>
 
                 <CheckBox x:Name="CheckBoxPasswordView"

@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RealtorsFirm_3cursEO.Classes;
+using RealtorsFirm_3cursEO.Model;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,36 +19,33 @@ namespace RealtorsFirm_3cursEO
     /// </summary>
     public partial class Authorization : Window
     {
+        RealtorsFirmContext dbContext;
+
+        private string Email => TextBoxEmail.Text;
+        private string Password => TextBoxPassVisibility.Visibility is Visibility.Visible ?  TextBoxPassVisibility.Text : TextBoxPassHidden.Password;
+
         public Authorization()
         {
             InitializeComponent();
+            dbContext = new();
         }
 
         private void CheckBoxPasswordView_Click(object sender, RoutedEventArgs e)
         {
-            if (CheckBoxPasswordView.IsChecked == true)
-            {
-                // Vissible pass
-                TextBoxPassVisibility.Text = TextBoxPassHidden.Password;
-                TextBoxPassVisibility.Visibility = Visibility.Visible;
-                TextBoxPassHidden.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                // Hidden pass
-                TextBoxPassHidden.Password = TextBoxPassVisibility.Text;
-                TextBoxPassVisibility.Visibility = Visibility.Hidden;
-                TextBoxPassHidden.Visibility = Visibility.Visible;
-            }
+            TextBoxPatterns.HiddenPassword(sender, TextBoxPassHidden, TextBoxPassVisibility);
         }
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
-            // Find user
-            var employee = App.context.Employees.Include(e => e.IdRoleNavigation).ToList().Find(r => r.Email == TextBoxEmail.Text &&
-                (r.Password == TextBoxPassVisibility.Text || r.Password == TextBoxPassHidden.Password));
+            dbContext = new();
 
-            // Check role or null
+            // Находим пользователя
+            var employee = dbContext.Employees
+                .Include(e => e.IdRoleNavigation)
+                .ToList()
+                .SingleOrDefault(r => r.Email == Email && r.Password == Password);
+
+            // Проверка на найденного пользователя
             if (employee != null)
             {
                 MessageBox.Show($"Добро пожаловать в систему, {employee.Name} {employee.Firstname}!" +
@@ -68,8 +67,8 @@ namespace RealtorsFirm_3cursEO
             }
             else
             {
-                MessageBox.Show("Данного пользователя не существует. Проверьте правильность набора символов", "Ошибка авторизации",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Данного пользователя не существует. Проверьте правильность набора логина или пароля и повторите попытку", 
+                    "Ошибка авторизации", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

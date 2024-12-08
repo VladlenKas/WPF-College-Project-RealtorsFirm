@@ -1,4 +1,4 @@
-﻿using RealtorsFirm_3cursEO.ModelsDB;
+﻿using RealtorsFirm_3cursEO.Model;
 using System.Configuration;
 using System.Data;
 using System.Windows;
@@ -12,5 +12,4 @@ namespace RealtorsFirm_3cursEO
     {
         public static RealtorsFirmContext context { get; } = new RealtorsFirmContext();
     }
-
 }

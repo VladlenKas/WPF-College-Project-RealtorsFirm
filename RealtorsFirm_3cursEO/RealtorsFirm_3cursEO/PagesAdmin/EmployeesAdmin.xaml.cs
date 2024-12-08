@@ -1,7 +1,6 @@
-﻿using MaterialDesignColors;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RealtorsFirm_3cursEO.Edits;
-using RealtorsFirm_3cursEO.ModelsDB;
+using RealtorsFirm_3cursEO.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,20 +12,19 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RealtorsFirm_3cursEO
+namespace RealtorsFirm_3cursEO.PagesAdmin
 {
     /// <summary>
-    /// Логика взаимодействия для MenuForAdmin.xaml
+    /// Логика взаимодействия для EmployeesAdmin.xaml
     /// </summary>
-    public partial class MenuForAdmin : Window
+    public partial class EmployeesAdmin : Page
     {
-        private RealtorsFirmContext dbContext;  
+        private RealtorsFirmContext dbContext;
         private Employee _employee;
-        private Client _client;
         // лист с ролями
         private List<object> filterList = new List<object>();
         // лист с полями для пользователя
@@ -43,9 +41,10 @@ namespace RealtorsFirm_3cursEO
             "Email"
         };
         // выбранный пользователь
-        private object selectUser;
 
-        public MenuForAdmin(Employee employee)
+        private object selectedEmployee;
+
+        public EmployeesAdmin(Employee employee)
         {
             this._employee = employee;
             InitializeComponent();
@@ -55,19 +54,16 @@ namespace RealtorsFirm_3cursEO
         {
             Authorization page = new Authorization();
             page.Show();
-            this.Close();
         }
         private void Update()
         {
             dbContext = new RealtorsFirmContext();
 
             EmployeesDataGrid.ItemsSource = null;
-            ClientsDataGrid.ItemsSource = null;
             ComboBoxFilter.ItemsSource = null;
 
             // загрузка таблиц 
             dbContext.Employees.Include(e => e.IdRoleNavigation).Load();
-            dbContext.Clients.Load();
 
             // заугрзка фильтра 
             filterList.Add("Нет фильтров");
@@ -86,60 +82,22 @@ namespace RealtorsFirm_3cursEO
             // сотрудники 
             EmployeesDataGrid.ItemsSource = dbContext.Employees.Local.ToBindingList();
             EmployeesDataGrid.Items.Refresh();
-            // клиенты
-            ClientsDataGrid.ItemsSource = dbContext.Clients.Local.ToBindingList();
-            ClientsDataGrid.Items.Refresh();
-        }
-        private void LoadInfo()
-        {
-            this.Title = $"Меню администратора. Вы вошли как: {_employee.FullName}";
-
-            //// Image load
-            //if (_employee.IdRole == 1)
-            //{
-            //    UserIcon.ImageSource = new BitmapImage(new Uri("MenuManager.png", UriKind.Relative));
-            //}
-            //else if (_employee.IdRole == 2)
-            //{
-            //    UserIcon.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Images/MenuPhotograph.png"));
-            //}
-
-            // user's fio and role load
-            UserFio.Text = $"{_employee.Firstname} {_employee.Name} {_employee.Patronymic}";
-            UserRole.Text = _employee.IdRoleNavigation.Name;
-        }
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            Update();
-            LoadInfo();
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            dbContext.Dispose();
         }
 
         private void EmployeesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (EmployeesDataGrid.SelectedItem != null)
             {
-                selectUser = (Employee)EmployeesDataGrid.SelectedItem;
-            }
-        }
-        private void ClientsDataGridDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ClientsDataGrid.SelectedItem != null)
-            {
-                selectUser = (Client)ClientsDataGrid.SelectedItem;
+                selectedEmployee = (Employee)EmployeesDataGrid.SelectedItem;
             }
         }
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (selectUser is Employee employee && employee.IdEmployee == _employee.IdEmployee)
+            if (selectedEmployee is Employee employee && employee.IdEmployee == _employee.IdEmployee)
             {
-                    MessageBox.Show("Администратор не может удалять сам себя", "Ошибка",
-                            MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Администратор не может удалять сам себя", "Ошибка",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -148,32 +106,24 @@ namespace RealtorsFirm_3cursEO
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    dbContext.Remove(selectUser);
+                    dbContext.Remove(selectedEmployee);
                     dbContext.SaveChanges();
 
                     Update();
-                    selectUser = null;
+                    selectedEmployee = null;
                 }
             }
         }
 
         private void ButtonEdit_Click(object sender, RoutedEventArgs e)
         {
-            if (selectUser is Employee)
+            if (selectedEmployee is Employee)
             {
-                EditEmployee page = new EditEmployee(selectUser as Employee, _employee);
+                EditEmployee page = new EditEmployee(selectedEmployee as Employee, _employee);
                 page.ShowDialog();
 
                 Update();
-                selectUser = null;
-            }
-            else if (selectUser is Client)
-            {
-                EditClient page = new EditClient(selectUser as Client);
-                page.ShowDialog();
-
-                Update();
-                selectUser = null;
+                selectedEmployee = null;
             }
         }
 
@@ -190,40 +140,9 @@ namespace RealtorsFirm_3cursEO
 
             string searchBox = SearchTextBox.Text.ToLower();
 
-            if (EmployeesDataGrid.Visibility == Visibility.Visible)
-            {
-                var employees = dbContext.Employees.Where(r => r.Firstname.ToLower().StartsWith(searchBox)
-                    || r.Name.ToLower().StartsWith(searchBox) || r.Patronymic.ToLower().StartsWith(searchBox)).ToList();
-                EmployeesDataGrid.ItemsSource = employees;
-            }
-            else if (ClientsDataGrid.Visibility == Visibility.Visible)
-            {
-                var clients = dbContext.Clients.Where(r => r.Firstname.ToLower().StartsWith(searchBox)
-                    || r.Name.ToLower().StartsWith(searchBox) || r.Patronymic.ToLower().StartsWith(searchBox)).ToList();
-                ClientsDataGrid.ItemsSource = clients;
-            }
-        }
-
-        private void ButtonsClients_Click(object sender, RoutedEventArgs e)
-        {
-            EmployeesDataGrid.Visibility = Visibility.Hidden;
-            ClientsDataGrid.Visibility = Visibility.Visible;
-
-            AddButtonEmployee.Visibility = Visibility.Hidden;
-            AddButtonClient.Visibility = Visibility.Visible;
-
-            NameDataGrid.Text = "Клиенты";
-        }
-
-        private void ButtonEmployees_Click(object sender, RoutedEventArgs e)
-        {
-            EmployeesDataGrid.Visibility = Visibility.Visible;
-            ClientsDataGrid.Visibility = Visibility.Hidden;
-
-            AddButtonEmployee.Visibility = Visibility.Visible;
-            AddButtonClient.Visibility = Visibility.Hidden;    
-
-            NameDataGrid.Text = "Сотрудники";
+            var employees = dbContext.Employees.Where(r => r.Firstname.ToLower().StartsWith(searchBox)
+                || r.Name.ToLower().StartsWith(searchBox) || r.Patronymic.ToLower().StartsWith(searchBox)).ToList();
+            EmployeesDataGrid.ItemsSource = employees;
         }
 
         private void AddButtonEmployee_Click(object sender, RoutedEventArgs e)
@@ -234,20 +153,12 @@ namespace RealtorsFirm_3cursEO
             Update();
         }
 
-        private void AddButtonClient_Click(object sender, RoutedEventArgs e)
-        {
-            AddClient page = new AddClient();
-            page.ShowDialog();
-
-            Update();
-        }
-
         private void ComboBoxFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ComboBoxFilter.SelectedItem != null)
             {
                 string selectedText = ComboBoxFilter.SelectedItem.ToString();
-                
+
                 foreach (var nameRole in filterList)
                 {
                     if (selectedText == "Нет фильтров")
@@ -295,6 +206,12 @@ namespace RealtorsFirm_3cursEO
                 default:
                     return dbContext.Employees.Local.ToList();
             }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            UserFio.Text = _employee.FullName;
+            Update();
         }
     }
 }

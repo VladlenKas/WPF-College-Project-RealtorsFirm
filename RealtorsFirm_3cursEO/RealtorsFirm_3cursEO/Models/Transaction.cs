@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RealtorsFirm_3cursEO.ModelsDB;
+namespace RealtorsFirm_3cursEO.Model;
 
 public partial class Transaction
 {
