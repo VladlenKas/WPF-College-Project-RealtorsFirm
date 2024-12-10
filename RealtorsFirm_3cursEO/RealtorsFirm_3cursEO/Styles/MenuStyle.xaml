@@ -23,19 +23,20 @@
     <!--#region ChechBox -->
     <Style TargetType="{x:Type CheckBox}" x:Key="CheckBoxSortMenu">
         <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Margin" Value="0 0 40 0"/>
         <Setter Property="Foreground" Value="#000000"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CheckBox}">
                     <Grid>
-                        <ContentPresenter HorizontalAlignment="Center" 
-                                      VerticalAlignment="Center"/>
+                        <ContentPresenter 
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Center"/>
                         <TextBlock
                             Effect="{x:Null}"
                             x:Name="SortText" 
                             Style="{StaticResource MenuTextBlock}"
-                            Foreground="#000000"
-                            Margin="190 0 40 0"/>
+                            Foreground="#000000"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
@@ -63,6 +64,7 @@
     <!--#endregion-->
 
     <!--#region Icons -->
+    <!-- Общий стиль для иконок -->
     <Style TargetType="materialDesign:PackIcon" x:Key="IconButton">
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -71,6 +73,7 @@
         <Setter Property="Margin" Value="15 0 5 0"/>
     </Style>
 
+    <!-- Иконки для датагрид -->
     <Style TargetType="materialDesign:PackIcon"
            BasedOn="{StaticResource IconButton}"
            x:Key="IconButtonDG">
@@ -98,6 +101,7 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="20">
                         <Grid>
+                            <!-- Кнопочка стрелочки -->
                             <ToggleButton Focusable="False"
                                           IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                           ClickMode="Press">
@@ -124,7 +128,7 @@
                                               ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Left"
-                                              Margin="35 0 0 0">
+                                              Margin="40 0">
                                 <ContentPresenter.ContentTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding}" 
@@ -134,12 +138,14 @@
                                 </ContentPresenter.ContentTemplate> 
                             </ContentPresenter>
 
+                            <!-- Контейнер с элементами -->
                             <Popup Name="Popup"
                                    Placement="Bottom"
                                    IsOpen="{TemplateBinding IsDropDownOpen}"
                                    AllowsTransparency="True" 
                                    Focusable="False"
-                                   PopupAnimation="Slide">
+                                   PopupAnimation="Slide"
+                                   Margin="10 0">
 
                                 <Grid SnapsToDevicePixels="True"                
                                       MinWidth="{TemplateBinding ActualWidth}"
@@ -169,6 +175,15 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    <!--#endregion-->
+
+    <!--#region TextBoxes -->
+    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TBBase}" x:Key="SearchTextBox">
+        <Setter Property="Width" Value="550"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="36 0 0 0"/>
     </Style>
     <!--#endregion-->
 
@@ -233,15 +248,16 @@
         </Setter>
     </Style>
 
-    <!-- Button delete for datagrid -->
+    <!-- Удаление для датагрид -->
     <Style TargetType="{x:Type Button}" x:Key="DeleteDG">
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="{StaticResource RedNone}"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border Name="border"
-                            Background="{StaticResource RedNone}"
+                            Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}" 
                             BorderThickness="{TemplateBinding BorderThickness}" 
                             SnapsToDevicePixels="True"
@@ -264,29 +280,59 @@
         </Setter>
     </Style>
 
-    <!-- Button edit for datagrid -->
-    <Style TargetType="{x:Type Button}" x:Key="EditDG">
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
+    <!-- Редактирование для датагрид -->
+    <Style TargetType="{x:Type Button}" x:Key="EditDG" BasedOn="{StaticResource DeleteDG}">
+        <Setter Property="Background" Value="{StaticResource GreenNone}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Name="border"
-                            Background="{StaticResource BlueNone}"
-                            BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="{TemplateBinding BorderThickness}" 
-                            SnapsToDevicePixels="True"
-                            CornerRadius="7">
+                    <Border 
+                        Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        SnapsToDevicePixels="True"
+                        CornerRadius="7">
                         <materialDesign:PackIcon Kind="Edit" Style="{StaticResource IconButtonDG}"/>
                     </Border>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource BlueFocus}"/>
+                            <Setter Property="Background" Value="{StaticResource GreenFocus}"/>
                         </Trigger>
 
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource BluePressed}"/>
+                            <Setter Property="Background" Value="{StaticResource GreenPressed}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Архивирование для датагрид -->
+    <Style TargetType="{x:Type Button}" x:Key="ArchiveDG" BasedOn="{StaticResource DeleteDG}">
+        <Setter Property="Background" Value="{StaticResource BlueNone}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border 
+                        Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        SnapsToDevicePixels="True"
+                        CornerRadius="7">
+                        <materialDesign:PackIcon Kind="ArchiveAdd" Style="{StaticResource IconButtonDG}"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource BlueFocus}"/>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource BluePressed}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

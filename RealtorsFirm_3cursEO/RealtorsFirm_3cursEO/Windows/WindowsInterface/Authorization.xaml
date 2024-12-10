@@ -145,9 +145,9 @@
 
                 <TextBlock Text="Электронная почта" 
                            Width="Auto"
-                           Style="{StaticResource TextBlock}"/>
+                           Style="{StaticResource TextBlockBase}"/>
                 <TextBox x:Name="TextBoxEmail"/>
-                <TextBlock Text="Пароль" Style="{StaticResource TextBlock}"/>
+                <TextBlock Text="Пароль" Style="{StaticResource TextBlockBase}"/>
                 <Grid>
                     <TextBox 
                         x:Name="TextBoxPassVisibility"

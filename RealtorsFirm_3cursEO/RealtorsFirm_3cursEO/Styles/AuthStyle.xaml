@@ -3,7 +3,7 @@
 
     <!--#region TextBlocks -->
     <!-- Cтиль для текста -->
-    <Style TargetType="{x:Type TextBlock}" x:Key="TextBlock" >
+    <Style TargetType="{x:Type TextBlock}" x:Key="TextBlockBase" >
         <Setter Property="Height" Value="25"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="FontWeight" Value="Thin"/>
@@ -177,7 +177,6 @@
     <!--#region TextBox -->
     <!-- Базовое текстовое поле градиентное -->
     <Style TargetType="{x:Type TextBox}" x:Key="TBBase">
-        <Setter Property="Text" Value=""/>
         <Setter Property="Cursor" Value="IBeam"/>
         <Setter Property="Padding" Value="10 0"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -196,13 +195,32 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             CornerRadius="15">
 
-                        <ScrollViewer x:Name="PART_ContentHost"
-                                      Focusable="False"
-                                      HorizontalScrollBarVisibility="Hidden"
-                                      VerticalScrollBarVisibility="Hidden"/>
+                        <Grid IsHitTestVisible="False"
+                              Cursor="{TemplateBinding Cursor}">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                          Focusable="False"/>
+                            <TextBlock 
+                                Margin="36 0 0 0"
+                                x:Name="textBlock"
+                                IsHitTestVisible="False"
+                                Text="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
+                                Visibility="Collapsed"
+                                FontSize="15"
+                                Foreground="#000000"
+                                FontWeight="Thin"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"/>
+                        </Grid>
                     </Border>
 
                     <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter TargetName="textBlock" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="BorderBrush" Value="#000000"/>
+                        </Trigger>
+                        
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="BorderBrush" Value="{StaticResource LGPressed}"/>
                         </Trigger>

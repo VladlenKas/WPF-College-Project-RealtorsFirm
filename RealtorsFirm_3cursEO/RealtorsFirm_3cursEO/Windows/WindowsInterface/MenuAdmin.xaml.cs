@@ -23,11 +23,11 @@ namespace RealtorsFirm_3cursEO
     /// <summary>
     /// Логика взаимодействия для MenuForAdmin.xaml
     /// </summary>
-    public partial class MenuForAdmin : Window
+    public partial class MenuAdmin : Window
     {
         private Employee _employee;
 
-        public MenuForAdmin(Employee employee)
+        public MenuAdmin(Employee employee)
         {
             InitializeComponent();
             _employee = employee;
@@ -75,6 +75,7 @@ namespace RealtorsFirm_3cursEO
             Authorization auth = new Authorization();
             auth.Show();
         }
+
         private void Exit_Click(object sender, RoutedEventArgs e) => this.Close();
     }
 }

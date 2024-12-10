@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RealtorsFirm_3cursEO.Model;
+﻿using RealtorsFirm_3cursEO.Model;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,58 +16,27 @@ using System.Windows.Shapes;
 namespace RealtorsFirm_3cursEO.Edits
 {
     /// <summary>
-    /// Логика взаимодействия для EditEmployee.xaml
+    /// Логика взаимодействия для EditClient.xaml
     /// </summary>
-    public partial class EditEmployee : Window
+    public partial class EditClient : Window
     {
         private RealtorsFirmContext dbContext;
-        private Employee _employee;
-        private Employee _user;
-
-        public EditEmployee(Employee employee, Employee user)
+        private Client _client;
+        public EditClient(Client client)
         {
             InitializeComponent();
 
-            this._employee = employee;
-            this._user = user;
+            _client = client;
             dbContext = new RealtorsFirmContext();
 
             LoadInfo();
         }
-
         public void LoadInfo()
         {
-            DataContext = _employee;
-            PassTextBoxHid.Password = _employee.Password;
-
-            if (_user.IdEmployee == _employee.IdEmployee)
-            {
-                EmailTextBox.IsEnabled = false;
-                EmailTextBox.Foreground = (Brush)new BrushConverter().ConvertFrom("#80000000");
-            }
+            DataContext = _client;
         }
-
-        private void ViewPasswordCheckBox_Click(object sender, RoutedEventArgs e)
-        {
-            if (ViewPasswordCheckBox.IsChecked == true)
-            {
-                // Показываем пароль в TextBox и скрываем PasswordBox
-                PassTextBoxView.Text = PassTextBoxHid.Password;
-                PassTextBoxView.Visibility = Visibility.Visible;
-                PassTextBoxHid.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                // Скрываем TextBox и показываем PasswordBox
-                PassTextBoxHid.Password = PassTextBoxView.Text; // Сохраняем введенный текст в PasswordBox
-                PassTextBoxView.Visibility = Visibility.Hidden;
-                PassTextBoxHid.Visibility = Visibility.Visible;
-            }
-        }
-
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            string password = (bool)ViewPasswordCheckBox.IsChecked ? PassTextBoxView.Text : PassTextBoxHid.Password;
             bool confirmation = true;
             string[] formats = { "d/M/yyyy", "dd/MM/yyyy", "dd/M/yyyy", "d/MM/yyyy" };
             bool date = DateTime.TryParseExact(BirthdayTextBox.Text, formats, null,
@@ -81,7 +48,6 @@ namespace RealtorsFirm_3cursEO.Edits
             if (NameTextBox.Text == string.Empty ||
                 FirstnameTextBox.Text == string.Empty ||
                 EmailTextBox.Text == string.Empty ||
-                password == string.Empty ||
                 BirthdayTextBox.Text == string.Empty ||
                 NumberTextBox.Text == string.Empty ||
                 PassportTextBox.Text == string.Empty)
@@ -95,7 +61,7 @@ namespace RealtorsFirm_3cursEO.Edits
                 // Проверка на логин
                 if ((App.context.Employees.Any(r => r.Email == EmailTextBox.Text)
                     || App.context.Clients.Any(r => r.Email == EmailTextBox.Text))
-                    && EmailTextBox.Text != _employee.Email)
+                    && EmailTextBox.Text != _client.Email)
                 {
                     confirmation = false;
                     MessageBox.Show("Пользователь с таким логином уже существует", "Ошибка",
@@ -104,7 +70,7 @@ namespace RealtorsFirm_3cursEO.Edits
                 // Проверка на паспорт
                 else if ((App.context.Employees.Any(r => r.Passport == PassportTextBox.Text)
                     || App.context.Clients.Any(r => r.Passport == PassportTextBox.Text))
-                    && PassportTextBox.Text != _employee.Passport)
+                    && PassportTextBox.Text != _client.Passport)
                 {
                     confirmation = false;
                     MessageBox.Show("Пользователь с таким паспортом уже существует", "Ошибка",
@@ -113,7 +79,7 @@ namespace RealtorsFirm_3cursEO.Edits
                 // Проверка на номер телефона
                 else if ((App.context.Employees.Any(r => r.Phone == NumberTextBox.Text)
                     || App.context.Clients.Any(r => r.Phone == NumberTextBox.Text))
-                    && NumberTextBox.Text != _employee.Phone)
+                    && NumberTextBox.Text != _client.Phone)
                 {
                     confirmation = false;
                     MessageBox.Show("Пользователь с таким номером телефона уже существует", "Ошибка",
@@ -183,19 +149,18 @@ namespace RealtorsFirm_3cursEO.Edits
             if (confirmation)
             {
                 // Находим нужного пользователя для изменений его данных и сверки параметров
-                var employee = dbContext.Employees.Find(_employee.IdEmployee);
+                var client = dbContext.Clients.Single(r => r.IdClient == _client.IdClient);
 
-                employee.Password = password;
-                employee.Name = NameTextBox.Text;
-                employee.Firstname = FirstnameTextBox.Text;
-                employee.Patronymic = PatronymicTextBox?.Text;
-                employee.Birthday = DateOnly.FromDateTime(result);
-                employee.Passport = PassportTextBox.Text;
-                employee.Phone = phone;
+                client.Name = NameTextBox.Text;
+                client.Firstname = FirstnameTextBox.Text;
+                client.Patronymic = PatronymicTextBox?.Text;
+                client.Birthday = DateOnly.FromDateTime(result);
+                client.Passport = PassportTextBox.Text;
+                client.Phone = phone;
 
                 dbContext.SaveChanges();
 
-                MessageBox.Show($"Инофрмация о пользователе {employee.Name} успешно изменена", "Успешно",
+                MessageBox.Show($"Инофрмация о пользователе {client.Name} успешно изменена", "Успешно",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
             }

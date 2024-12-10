@@ -28,7 +28,7 @@
         <GradientStop Color="#FF8B0000"/>
         <GradientStop Color="#FF660000" Offset="1.0"/>
     </LinearGradientBrush>
-
+ 
     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" x:Key="RedPressed">
         <GradientStop Color="#FF660000"/>
         <GradientStop Color="#FF440000" Offset="1.0"/>

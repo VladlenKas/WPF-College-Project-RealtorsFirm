@@ -54,7 +54,7 @@ namespace RealtorsFirm_3cursEO
 
                 if (employee.IdRole == 1)
                 {
-                    MenuForAdmin page = new MenuForAdmin(employee);
+                    MenuAdmin page = new MenuAdmin(employee);
                     page.Show();
                     this.Close();
                 }

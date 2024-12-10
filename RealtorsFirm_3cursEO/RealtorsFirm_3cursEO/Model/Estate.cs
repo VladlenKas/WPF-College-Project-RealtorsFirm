@@ -7,7 +7,7 @@ public partial class Estate
 {
     public int IdEstate { get; set; }
 
-    public int? IdClient { get; set; }
+    public int IdClient { get; set; }
 
     public int IdType { get; set; }
 
@@ -21,9 +21,11 @@ public partial class Estate
 
     public byte[]? Photo { get; set; }
 
-    public ulong? IsDelected { get; set; }
+    public sbyte? IsDeleted { get; set; }
 
-    public virtual Client? IdClientNavigation { get; set; }
+    public sbyte? IsArchive { get; set; }
+
+    public virtual Client IdClientNavigation { get; set; } = null!;
 
     public virtual TypeEstate IdTypeNavigation { get; set; } = null!;
 

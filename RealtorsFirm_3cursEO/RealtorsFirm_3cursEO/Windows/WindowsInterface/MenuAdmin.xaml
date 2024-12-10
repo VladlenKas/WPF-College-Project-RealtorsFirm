@@ -1,4 +1,4 @@
-﻿<Window x:Class="RealtorsFirm_3cursEO.MenuForAdmin"
+﻿<Window x:Class="RealtorsFirm_3cursEO.MenuAdmin"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -20,27 +20,8 @@
         </Style>
 
         <!-- Cтиль для текста -->
-        <Style TargetType="{x:Type TextBlock}" x:Key="TextBlock">
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-        </Style>
-
-        <!-- Переопределенный стиль для кнопки -->
-        <Style TargetType="{x:Type Button}"
-               BasedOn="{StaticResource MenuButton}">
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="Width" Value="Auto"/>
-            <Setter Property="FontSize" Value="16"/>
-        </Style>
-
-        <!-- Переопределенный стиль для текстовых полей -->
-        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TBBase}">
-            <Setter Property="Width" Value="550"/>
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="36 0 0 0"/>
+        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MenuTextBlock}" x:Key="TextBlock">
+           
         </Style>
     </Window.Resources>
 
