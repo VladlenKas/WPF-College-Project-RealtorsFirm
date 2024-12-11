@@ -64,7 +64,7 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
         private void UpdateDataEmployees()
         {
             dbContext = new RealtorsFirmContext();
-            
+
             // Инициализация класса для фильтрации данных
             DataFilterEmployees = new DataFilterEmployees(SearchTextBox, ComboBoxFilter, ComboBoxSort, SortCheckBox);
             var employeesList = dbContext.Employees.Include(e => e.IdRoleNavigation).ToList();
@@ -102,7 +102,7 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
             }
             else
             {
-                MessageBoxResult result = MessageBox.Show("Вы точно хотите удалить данного пользователя?", "Подтверждение",
+                MessageBoxResult result = MessageBox.Show("Вы точно хотите удалить данного сотрудника?", "Подтверждение",
                         MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
                 if (result == MessageBoxResult.Yes)
@@ -128,6 +128,26 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
             window.ShowDialog();
 
             UpdateDataEmployees();
+        }
+
+        private void ButtonArchive_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedEmployee.IdEmployee == _employeeAuth.IdEmployee)
+            {
+                MessageBox.Show("Администратор не может архивировать сам себя", "Ошибка",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                MessageBoxResult result = MessageBox.Show("Вы точно хотите архивировать данного сотрудника?", "Подтверждение",
+                        MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    ModelActions.ArchiveEmployee(_selectedEmployee);
+                    _selectedEmployee = null;
+                }
+            }
         }
 
         private void EmployeesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -170,10 +190,5 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
             }
         }
         #endregion
-
-        private void ButtonArcive_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

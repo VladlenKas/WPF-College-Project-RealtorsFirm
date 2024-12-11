@@ -5,12 +5,15 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:RealtorsFirm_3cursEO.PagesAdmin"
 
+      xmlns:ArchiveConverter="clr-namespace:RealtorsFirm_3cursEO.Classes"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       
       Title="EmployeesAdmin"
       Loaded="Page_Loaded">
 
     <Page.Resources>
+        <!-- Конвертер для обозначения архивированных записей -->
+        <ArchiveConverter:ArchiveStatusConverter x:Key="ArchiveStatusConverter"/>
 
         <Style TargetType="materialDesign:PackIcon" 
        BasedOn="{StaticResource IconButton}">
@@ -26,7 +29,7 @@
 
         <!-- Переопределенный стиль для кнопки -->
         <Style TargetType="{x:Type Button}"
-       BasedOn="{StaticResource MenuButton}">
+                BasedOn="{StaticResource BGradient}">
             <Setter Property="Height" Value="45"/>
             <Setter Property="Width" Value="Auto"/>
             <Setter Property="FontSize" Value="16"/>
@@ -76,11 +79,15 @@
                     <!-- User's name and role-->
                     <Grid DockPanel.Dock="Right">
                         <DockPanel LastChildFill="False">
-                            <Border Width="50" Height="50" 
-                            DockPanel.Dock="Left" Margin="10 0">
+                            <Border 
+                                Width="50" 
+                                Height="50" 
+                                DockPanel.Dock="Left" 
+                                Margin="10 0">
                                 <Border.Background>
-                                    <ImageBrush Stretch="UniformToFill"
-                                        x:Name="UserIcon"/>
+                                    <ImageBrush 
+                                        Stretch="UniformToFill"
+                                        ImageSource="/Images/AdminIconImage.png/"/>
                                 </Border.Background>
                             </Border>
 
@@ -158,6 +165,7 @@
                         <DataGridTextColumn Header="Паспорт" Binding="{Binding Passport}"/>
                         <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"/>
                         <DataGridTextColumn Header="Эл. почта" Binding="{Binding Email}"/>
+                        <DataGridTextColumn Header="Архивирован?" Binding="{Binding IsArchive, Converter={StaticResource ArchiveStatusConverter}}"/>
                     </DataGrid.Columns>
                 </DataGrid>
 

@@ -188,37 +188,6 @@
     <!--#endregion-->
 
     <!--#region Buttons -->
-    <!-- Button base -->
-    <Style TargetType="{x:Type Button}" x:Key="MenuButton">
-        <Setter Property="Height" Value="40"/>
-        <Setter Property="Padding" Value="5 0 15 0"/>
-        <Setter Property="Margin" Value="20 0"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LGBase}"/>
-        <Setter Property="BorderThickness" Value="1.5"/>
-        <Setter Property="Background">
-            <Setter.Value>
-                <SolidColorBrush Color="White" Opacity="0.9"/>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Padding="{TemplateBinding Padding}"
-                            SnapsToDevicePixels="True"
-                            CornerRadius="20">
-
-                        <ContentPresenter VerticalAlignment="Center"
-                                          HorizontalAlignment="Center"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <!-- Button transperent -->
     <Style TargetType="{x:Type Button}" x:Key="TransperentButton">
         <Setter Property="Background" Value="Transparent"/>
@@ -266,6 +235,10 @@
                     </Border>
 
                     <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsArchive}" Value="1">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                        
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Background" Value="{StaticResource RedFocus}"/>
                             <Setter TargetName="border" Property="Opacity" Value="0.9"/>
@@ -297,6 +270,10 @@
                     </Border>
 
                     <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsArchive}" Value="1">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                        
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="{StaticResource GreenFocus}"/>
                         </Trigger>
@@ -327,6 +304,10 @@
                     </Border>
 
                     <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsArchive}" Value="1">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                        
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="{StaticResource BlueFocus}"/>
                         </Trigger>
@@ -468,7 +449,13 @@
                         </Grid>
                     </Border>
 
+                    <!-- Триггер для архивированных записей -->
                     <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsArchive}" Value="1">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+
+                        <!-- Триггер для выбранной записи -->
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="#10000000"/>
                         </Trigger>
@@ -494,10 +481,15 @@
                             Margin="{TemplateBinding Margin}">
                         <ContentPresenter VerticalAlignment="Center"/>
                     </Border>
+
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsArchive}" Value="1">
+                            <Setter Property="Foreground" Value="#A9A9A9"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    <!--#endregion-->
     <!--#endregion-->
 </ResourceDictionary>

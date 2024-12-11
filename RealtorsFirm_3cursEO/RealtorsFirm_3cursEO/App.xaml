@@ -17,6 +17,9 @@
                 
                 <!-- Menu style -->
                 <ResourceDictionary Source="/Styles/MenuStyle.xaml"/>
+
+                <!-- Action style -->
+                <ResourceDictionary Source="/Styles/ActionStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

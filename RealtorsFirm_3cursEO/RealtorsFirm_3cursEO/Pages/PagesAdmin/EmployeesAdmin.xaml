@@ -5,13 +5,17 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:RealtorsFirm_3cursEO.PagesAdmin"
       
+      xmlns:ArchiveConverter="clr-namespace:RealtorsFirm_3cursEO.Classes"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       
       Title="EmployeesAdmin"
       Loaded="Page_Loaded">
 
     <Page.Resources>
-        <!-- Buttons for actions in datagrid -->
+        <!-- Конвертер для обозначения архивированных записей -->
+        <ArchiveConverter:ArchiveStatusConverter x:Key="ArchiveStatusConverter"/>
+        
+        <!-- Кнопки для дата грид -->
         <DataTemplate x:Key="ActionsTemplate">
             <StackPanel Orientation="Horizontal">
                 <Button 
@@ -24,7 +28,7 @@
                     Click="ButtonDelete_Click"/>
                 <Button 
                     Style="{StaticResource DeleteDG}"
-                    Click="ButtonArcive_Click"/>
+                    Click="ButtonArchive_Click"/>
             </StackPanel>
         </DataTemplate>
     </Page.Resources>
@@ -59,11 +63,15 @@
                     <!-- User's name and role-->
                     <Grid DockPanel.Dock="Right">
                         <DockPanel LastChildFill="False">
-                            <Border Width="50" Height="50" 
-                            DockPanel.Dock="Left" Margin="10 0">
+                            <Border 
+                                Width="50" 
+                                Height="50" 
+                                DockPanel.Dock="Left" 
+                                Margin="10 0">
                                 <Border.Background>
-                                    <ImageBrush Stretch="UniformToFill"
-                                        x:Name="UserIcon"/>
+                                    <ImageBrush 
+                                        Stretch="UniformToFill"
+                                        ImageSource="/Images/AdminIconImage.png"/>
                                 </Border.Background>
                             </Border>
 
@@ -156,12 +164,14 @@
 
             <!-- DataGrid -->
             <Grid>
-                <DataGrid Name="EmployeesDataGrid"
-                  SelectionChanged="EmployeesDataGrid_SelectionChanged"
-                  Style="{StaticResource MenuDataGrid}"
-                  ColumnHeaderStyle="{StaticResource MenuDataGridColumnHeader}"
-                  RowStyle="{StaticResource MenuDataGridRow}"
-                  CellStyle="{StaticResource MenuDataGridCell}">
+                <DataGrid 
+                    Name="EmployeesDataGrid"
+                    SelectionChanged="EmployeesDataGrid_SelectionChanged"
+                    Style="{StaticResource MenuDataGrid}"
+                    ColumnHeaderStyle="{StaticResource MenuDataGridColumnHeader}"
+                    RowStyle="{StaticResource MenuDataGridRow}"
+                    CellStyle="{StaticResource MenuDataGridCell}">
+
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
                         <DataGridTextColumn Header="Дата рождения" Binding="{Binding Birthday, StringFormat=dd.MM.yyyy}"/>
@@ -170,6 +180,7 @@
                         <DataGridTextColumn Header="Эл. почта" Binding="{Binding Email}"/>
                         <DataGridTextColumn Header="Пароль" Binding="{Binding Password}"/>
                         <DataGridTextColumn Header="Должность" Binding="{Binding IdRoleNavigation.Name}"/>
+                        <DataGridTextColumn Header="Архивирован?" Binding="{Binding IsArchive, Converter={StaticResource ArchiveStatusConverter}}"/>
                         <DataGridTemplateColumn Header="Действия" CellTemplate="{StaticResource ActionsTemplate}"/>
                     </DataGrid.Columns>
                 </DataGrid>

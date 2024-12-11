@@ -23,6 +23,17 @@ namespace RealtorsFirm_3cursEO.Model
             }
         }
 
+        // Архивирование
+        public static void ArchiveEmployee(Employee employee)
+        {
+            using (var dbContext = new RealtorsFirmContext())
+            {
+                var employeeEdit = dbContext.Employees.Single(r => r.IdEmployee == employee.IdEmployee);
+                employeeEdit.IsArchive = 1;
+                dbContext.SaveChanges();
+            }
+        }
+
         // Добавление
 
         // Редактирование

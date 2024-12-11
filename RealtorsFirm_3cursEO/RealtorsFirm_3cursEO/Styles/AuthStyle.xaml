@@ -200,7 +200,7 @@
                             <ScrollViewer x:Name="PART_ContentHost" 
                                           Focusable="False"/>
                             <TextBlock 
-                                Margin="36 0 0 0"
+                                Margin="37 0 0 0"
                                 x:Name="textBlock"
                                 IsHitTestVisible="False"
                                 Text="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
@@ -223,10 +223,6 @@
                         
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="BorderBrush" Value="{StaticResource LGPressed}"/>
-                        </Trigger>
-
-                        <Trigger Property="IsFocused" Value="True">
-                            <Setter Property="BorderBrush" Value="Black"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
