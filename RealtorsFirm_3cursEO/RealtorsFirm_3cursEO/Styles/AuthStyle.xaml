@@ -3,7 +3,7 @@
 
     <!--#region TextBlocks -->
     <!-- Cтиль для текста -->
-    <Style TargetType="{x:Type TextBlock}" x:Key="TextBlockBase" >
+    <Style TargetType="{x:Type TextBlock}" x:Key="TextBlockBase">
         <Setter Property="Height" Value="25"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="FontWeight" Value="Thin"/>

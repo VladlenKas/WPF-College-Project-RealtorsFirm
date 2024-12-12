@@ -24,7 +24,7 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
         bool _isUpdatingText = false;
         public string Text
         {
-            get { return passportTextBox.Text; }
+            get { return passportTextBox.Text.Replace(" ", ""); }
             set { passportTextBox.Text = value; }
         }
 

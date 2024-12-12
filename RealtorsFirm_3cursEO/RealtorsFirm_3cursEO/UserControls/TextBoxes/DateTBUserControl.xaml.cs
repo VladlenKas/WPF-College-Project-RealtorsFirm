@@ -25,10 +25,18 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
         /// Логика взаимодействия для DateTextBox.xaml
         /// </summary>
         private bool _isUpdatingText = false;
-        public string Text
+
+        private string _dateOnly;
+        public DateOnly Text
         {
-            get { return dateTextBox.Text; }
-            set { dateTextBox.Text = value; }
+            get
+            {
+                string birthday = dateTextBox.Text;
+
+                DateOnly.TryParseExact(birthday, "dd.MM.yyyy", out DateOnly date);
+                return date;
+            }
+            set { }
         }
 
         public DateTBUserControl()

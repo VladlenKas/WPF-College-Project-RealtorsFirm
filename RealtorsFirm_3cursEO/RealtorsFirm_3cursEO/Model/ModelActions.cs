@@ -35,6 +35,34 @@ namespace RealtorsFirm_3cursEO.Model
         }
 
         // Добавление
+        public static void AddEmployee(string Role, string Name, string Firstname,
+            DateOnly Birthday, string Phone, string Passport, string Email, string Password)
+        {
+            using (var dbContext = new RealtorsFirmContext())
+            {
+                // Находим айди роли по названию
+                int idRole = dbContext.RoleEmployees.Single(r => r.Name == Role).IdRole;
+
+                // Создаем новый объект Employee
+                var newEmployee = new Employee
+                {
+                    IdRole = idRole,
+                    Name = Name,
+                    Firstname = Firstname,
+                    Birthday = Birthday,
+                    Phone = Phone,
+                    Passport = Passport,
+                    Email = Email,
+                    Password = Password,
+                };
+
+                // Добавляем нового сотрудника в контекст
+                dbContext.AllEmployees.Add(newEmployee);
+
+                // Сохраняем изменения в базе данных
+                dbContext.SaveChanges();
+            }
+        }
 
         // Редактирование
 

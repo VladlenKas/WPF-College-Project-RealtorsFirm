@@ -22,9 +22,9 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
     public partial class PhoneTBUserControl : UserControl
     {
         bool _isUpdatingText = false;
-        public string GetText
+        public string Text
         {
-            get { return phoneTextBox.Text; }
+            get { return phoneTextBox.Text.Replace(" ", ""); }
             set { phoneTextBox.Text = value; }
         }
 

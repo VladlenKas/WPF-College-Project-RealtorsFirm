@@ -9,23 +9,26 @@
         xmlns:MyUserControl="clr-namespace:RealtorsFirm_3cursEO.UserControls.TextBoxes"
 
         Title="Добавление нового сотрудника" 
-        Height="950" Width="600" 
-        MinHeight="780" MinWidth="600" 
+        Height="1000" Width="600" 
+        MinHeight="780" MinWidth="600"
         Closed="Window_Closed"
         WindowStartupLocation="CenterScreen">
-    
+
     <Window.Resources>
         <Style TargetType="{x:Type TextBox}" 
-       BasedOn="{StaticResource ActionTextBox}"/>
+            BasedOn="{StaticResource ActionTextBox}"/>
 
         <Style TargetType="{x:Type PasswordBox}" 
-       BasedOn="{StaticResource ActionPasswordBox}"/>
-        
+            BasedOn="{StaticResource ActionPasswordBox}"/>
+
         <Style TargetType="{x:Type TextBlock}"
-       BasedOn="{StaticResource ActionTextBlock}"/>
+            BasedOn="{StaticResource ActionTextBlock}"/>
 
         <Style TargetType="materialDesign:PackIcon"
-       BasedOn="{StaticResource ActionIcon}"/>
+            BasedOn="{StaticResource ActionIcon}"/>
+
+        <Style TargetType="{x:Type ComboBox}"
+            BasedOn="{StaticResource ActionComboBox}"/>
     </Window.Resources>
 
     <Grid Background="#ffffff">
@@ -44,8 +47,10 @@
                 VerticalAlignment="Top">
                 <FlowDocument>
                     <Paragraph TextAlignment="Center">
-                        <Run Text="Добавление нового сотрудника" 
-                     FontFamily="Arial Rounded MT Bold"/>
+                        <Run 
+                            Text="Добавление нового сотрудника" 
+                            FontFamily="Arial Rounded MT Bold">
+                        </Run>
                     </Paragraph>
                 </FlowDocument>
             </RichTextBox>
@@ -54,10 +59,11 @@
                 <StackPanel>
                     <TextBlock Text="Имя *"/>
                     <Grid>
-                        <TextBox x:Name="NameTextBox"
-                             MaxLength="15"
-                             PreviewTextInput="TextBox_PreviewTextInput"
-                             DataObject.Pasting="TextBox_Pasting"/>
+                        <TextBox 
+                            x:Name="NameTextBox"
+                            MaxLength="15"
+                            PreviewTextInput="TextBox_PreviewTextInput"
+                            DataObject.Pasting="TextBox_Pasting"/>
                         <materialDesign:PackIcon Kind="User"/>
                     </Grid>
                 </StackPanel>
@@ -65,10 +71,11 @@
                 <StackPanel>
                     <TextBlock Text="Фамилия *"/>
                     <Grid>
-                        <TextBox x:Name="FirstnameTextBox"
-                             MaxLength="15"
-                             PreviewTextInput="TextBox_PreviewTextInput"
-                             DataObject.Pasting="TextBox_Pasting"/>
+                        <TextBox 
+                            x:Name="FirstnameTextBox"
+                            MaxLength="15"
+                            PreviewTextInput="TextBox_PreviewTextInput"
+                            DataObject.Pasting="TextBox_Pasting"/>
                         <materialDesign:PackIcon Kind="User"/>
                     </Grid>
                 </StackPanel>
@@ -76,50 +83,59 @@
                 <StackPanel>
                     <TextBlock Text="Отчество (при наличии)"/>
                     <Grid>
-                        <TextBox x:Name="PatronymicTextBox"
-                             PreviewTextInput="TextBox_PreviewTextInput"
-                             MaxLength="15"
-                             DataObject.Pasting="TextBox_Pasting"/>
+                        <TextBox 
+                            x:Name="PatronymicTextBox"
+                            PreviewTextInput="TextBox_PreviewTextInput"
+                            MaxLength="15"
+                            DataObject.Pasting="TextBox_Pasting"/>
                         <materialDesign:PackIcon Kind="User"/>
                     </Grid>
                 </StackPanel>
 
                 <StackPanel>
                     <TextBlock Text="Дата рождения *"/>
-                    <MyUserControl:DateTBUserControl/>
+                    <MyUserControl:DateTBUserControl x:Name="DateTextBox"/>
                 </StackPanel>
 
                 <StackPanel>
                     <TextBlock Text="Номер телефона *"/>
-                    <MyUserControl:PhoneTBUserControl/>
+                    <MyUserControl:PhoneTBUserControl x:Name="PhoneTextBox"/>
                 </StackPanel>
 
                 <StackPanel>
                     <TextBlock Text="Паспорт *"/>
-                    <MyUserControl:PassportTBUserControl/>
+                    <MyUserControl:PassportTBUserControl x:Name="PassportTextBox"/>
                 </StackPanel>
 
                 <StackPanel>
                     <TextBlock Text="Электронная почта *"/>
-                    <MyUserControl:EmailTBUserControl/>
+                    <MyUserControl:EmailTBUserControl x:Name="EmailTextBox"/>
                 </StackPanel>
 
                 <StackPanel>
-                    <TextBlock Text="Пароль"/>
+                    <TextBlock Text="Пароль *"/>
                     <Grid>
                         <PasswordBox
                             Visibility="Visible"
                             x:Name="PasswordTextBoxHid"
-                            PreviewTextInput="TextBox_PreviewTextInput"
+                            PreviewTextInput="PasswordTextBox_PreviewTextInput"
                             MaxLength="25"
-                            DataObject.Pasting="TextBox_Pasting"/>
+                            DataObject.Pasting="PasswordTextBox_Pasting"/>
                         <TextBox 
                             Visibility="Hidden"
                             x:Name="PasswordTextBoxVis"
-                            PreviewTextInput="TextBox_PreviewTextInput"
+                            PreviewTextInput="PasswordTextBox_PreviewTextInput"
                             MaxLength="25"
-                            DataObject.Pasting="TextBox_Pasting"/>
+                            DataObject.Pasting="PasswordTextBox_Pasting"/>
                         <materialDesign:PackIcon Kind="Password"/>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Text="Должность *"/>
+                    <Grid>
+                        <ComboBox Name="ComboBoxRole"/>
+                        <materialDesign:PackIcon Kind="work"/>
                     </Grid>
                 </StackPanel>
             </StackPanel>

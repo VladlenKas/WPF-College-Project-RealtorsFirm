@@ -22,7 +22,7 @@ namespace RealtorsFirm_3cursEO
         RealtorsFirmContext dbContext;
 
         private string Email => TextBoxEmail.Text;
-        private string Password => TextBoxPassVisibility.Visibility is Visibility.Visible ?  TextBoxPassVisibility.Text : TextBoxPassHidden.Password;
+        private string Password => TextBoxPatterns.GetPassword(TextBoxPassHidden, TextBoxPassVisibility);
 
         public Authorization()
         {

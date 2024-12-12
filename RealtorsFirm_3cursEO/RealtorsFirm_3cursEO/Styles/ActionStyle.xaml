@@ -43,18 +43,22 @@
 
     <Style TargetType="{x:Type Button}" x:Key="ActionButtonGradient" BasedOn="{StaticResource BGradient}">
         <Setter Property="Height" Value="35"/>
+        <Setter Property="TextBlock.FontWeight" Value="Bold"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Background="{TemplateBinding Background}"
-                         BorderBrush="{TemplateBinding BorderBrush}"
-                         BorderThickness="{TemplateBinding BorderThickness}"
-                         Padding="{TemplateBinding Padding}"
-                         SnapsToDevicePixels="True"
-                         CornerRadius="15">
+                    <Border 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}"
+                        SnapsToDevicePixels="True"
+                        CornerRadius="15">
 
-                        <ContentPresenter VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"/>
+                        <ContentPresenter
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center">
+                        </ContentPresenter>
                     </Border>
 
                     <ControlTemplate.Triggers>
@@ -95,16 +99,16 @@
                             <ScrollViewer x:Name="PART_ContentHost" 
                                       Focusable="False"/>
                             <TextBlock 
-                            Margin="37 0 0 0"
-                            x:Name="textBlock"
-                            IsHitTestVisible="False"
-                            Text="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
-                            Visibility="Collapsed"
-                            FontSize="15"
-                            Foreground="#000000"
-                            FontWeight="Thin"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"/>
+                                Margin="37 0 0 0"
+                                x:Name="textBlock"
+                                IsHitTestVisible="False"
+                                Text="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
+                                Visibility="Collapsed"
+                                FontSize="15"
+                                Foreground="#000000"
+                                FontWeight="Thin"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
 
@@ -129,6 +133,7 @@
         <Setter Property="Width" Value="Auto"/>
         <Setter Property="Height" Value="35"/>
         <Setter Property="Margin" Value="0 0 0 15"/>
+        <Setter Property="Padding" Value="37 0 0 0"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -177,5 +182,114 @@
            x:Key="ActionIcon">  
         <Setter Property="Margin" Value="15 10 5 0"/>
     </Style>
+    <!--#endregion-->
+    
+    <!--#region ComboBoxes-->
+    <!--#region Combobox -->
+    <Style TargetType="{x:Type ComboBox}" x:Key="ActionComboBox">
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Padding" Value="5 0 15 0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="BorderBrush" Value="{StaticResource LGBase}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="White" Opacity="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBox}">
+                    <Border 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="15">
+                        <Grid>
+                            <!-- Кнопочка стрелочки -->
+                            <ToggleButton 
+                                Focusable="False"
+                                    IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                    ClickMode="Press">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                        <Grid 
+                                            Background="Transparent"
+                                            Width="40"
+                                            HorizontalAlignment="Right"
+                                            Cursor="Hand">
+                                            <Path 
+                                                Data="M 0 0 L 10 10 L 20 0"
+                                                Fill="{StaticResource LGBase}"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                Margin="10 0">
+                                            </Path>
+                                        </Grid>
+
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+
+                            <ContentPresenter 
+                                Name="ContentSite"
+                                Content="{TemplateBinding SelectionBoxItem}"
+                                ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Margin="40 0">
+                                <ContentPresenter.ContentTemplate>
+                                    <DataTemplate>
+                                        <TextBlock 
+                                            Text="{Binding}" 
+                                            FontSize="16"
+                                            IsHitTestVisible="False">
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ContentPresenter.ContentTemplate>
+                            </ContentPresenter>
+
+                            <!-- Контейнер с элементами -->
+                            <Popup 
+                                Name="Popup"
+                                Placement="Bottom"
+                                IsOpen="{TemplateBinding IsDropDownOpen}"
+                                AllowsTransparency="True" 
+                                Focusable="False"
+                                PopupAnimation="Slide"
+                                Margin="10 0">
+
+                                <Grid 
+                                    SnapsToDevicePixels="True"                
+                                    MinWidth="{TemplateBinding ActualWidth}"
+                                    MaxHeight="{TemplateBinding MaxDropDownHeight}">
+
+                                    <Border BorderBrush="{StaticResource LGBase}"
+                                            BorderThickness="1.5"
+                                            CornerRadius="20">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="White" Opacity="0.9"/>
+                                        </Border.Background>
+                                    </Border>
+
+                                    <ScrollViewer 
+                                        Margin="4 6" 
+                                        SnapsToDevicePixels="True" 
+                                        HorizontalAlignment="Center">
+                                        <StackPanel 
+                                            IsItemsHost="True" 
+                                            KeyboardNavigation.DirectionalNavigation="Contained" 
+                                            TextBlock.FontSize="16">
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--#endregion-->
     <!--#endregion-->
 </ResourceDictionary>

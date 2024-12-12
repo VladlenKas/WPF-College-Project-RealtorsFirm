@@ -109,6 +109,8 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
                 {
                     ModelActions.DeleteEmployee(_selectedEmployee);
                     _selectedEmployee = null;
+                    
+                    UpdateDataEmployees();
                 }
             }
         }
@@ -118,8 +120,8 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
             EditEmployee window = new EditEmployee(_selectedEmployee, _employeeAuth);
             window.ShowDialog();
 
-            UpdateDataEmployees();
             _selectedEmployee = null;
+            UpdateDataEmployees();
         }
 
         private void AddButtonEmployee_Click(object sender, RoutedEventArgs e)
@@ -146,6 +148,8 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
                 {
                     ModelActions.ArchiveEmployee(_selectedEmployee);
                     _selectedEmployee = null;
+                    
+                    UpdateDataEmployees();
                 }
             }
         }

@@ -25,10 +25,10 @@
                 <Button 
                     Margin="0 0 12 0"
                     Style="{StaticResource ArchiveDG}"
-                    Click="ButtonDelete_Click"/>
+                    Click="ButtonArchive_Click"/>
                 <Button 
                     Style="{StaticResource DeleteDG}"
-                    Click="ButtonArchive_Click"/>
+                    Click="ButtonDelete_Click"/>
             </StackPanel>
         </DataTemplate>
     </Page.Resources>

@@ -28,5 +28,11 @@ namespace RealtorsFirm_3cursEO.Classes
                 passHid.Visibility = Visibility.Visible;
             }
         }
+
+        public static string GetPassword(PasswordBox passHid, TextBox passVis)
+        {
+            var pass = passVis.Visibility is Visibility.Visible ? passVis.Text : passHid.Password;
+            return pass;
+        }
     }
 }

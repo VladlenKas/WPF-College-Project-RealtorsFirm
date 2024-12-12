@@ -13,52 +13,56 @@ namespace RealtorsFirm_3cursEO.Classes
     {
         #region Валидация на написание текста
         // Ввод КИРРИЛИЦА
-        public static bool ValidateInputCyrillic(TextCompositionEventArgs e)
+        public static void ValidateInputCyrillic(TextCompositionEventArgs e)
         {
             var regex = new Regex(@"[а-яА-Я\s]");
             if (!regex.IsMatch(e.Text))
             {
                 e.Handled = true;
-                return false;
             }
-            return true;
         }
 
         // Ввод ЦИФРЫ
-        public static bool ValidateInputNumbers(TextCompositionEventArgs e)
+        public static void ValidateInputNumbers(TextCompositionEventArgs e)
         {
             var regex = new Regex(@"[0-9]");
             if (!regex.IsMatch(e.Text))
             {
                 e.Handled = true;
-                return false;
             }
-            return true;
         }
 
         // Ввод КИРРИЛИЦА + ЦИФРЫ + СИМВОЛЫ (для адреса)
-        public static bool ValidateInputDescriptionForAddress(TextCompositionEventArgs e)
+        public static void ValidateInputDescriptionForAddress(TextCompositionEventArgs e)
         {
+            // Ограничение на ввод описания (например, только буквы и пробелы)
             var regex = new Regex(@"[a-zA-Z\s-().,;""':]");
             if (!regex.IsMatch(e.Text))
             {
                 e.Handled = true;
-                return false;
             }
-            return true;
         }
 
         // Ввод ЭЛЕКТРОННАЯ ПОЧТА
-        public static bool ValidateInputEmail(TextCompositionEventArgs e)
+        public static void ValidateInputEmail(TextCompositionEventArgs e)
         {
-            // Ограничение на ввод описания (например, только буквы и пробелы)
-            var regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            // Ограничение на ввод эл. почты
+            var regex = new Regex(@"^[a-zA-Z0-9\@\.]+$");
             if (!regex.IsMatch(e.Text))
             {
                 e.Handled = true;
-                return false;
             }
-            return true;
+        }
+
+        // Ввод ЛАТИНИЦА
+        public static void ValidateInputPassword(TextCompositionEventArgs e)
+        {
+            // Ограничение на ввод пароля
+            var regex = new Regex(@"^[a-zA-Z!@#$&*0-9]+$");
+            if (!regex.IsMatch(e.Text))
+            {
+                e.Handled = true;
+            }
         }
         #endregion
 
@@ -105,7 +109,19 @@ namespace RealtorsFirm_3cursEO.Classes
             // Извлекаем текст из буфера обмена и конвертурием в текст
             string pastedText = e.DataObject.GetData(DataFormats.Text) as string;
 
-            if (!Regex.IsMatch(pastedText, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"))
+            if (!Regex.IsMatch(pastedText, @"^[a-zA-Z0-9\@\.]+$"))
+            {
+                e.CancelCommand(); // Блокируем ввод
+            }
+        }
+
+        // Вставка ЛАТИНИЦА
+        public static void ValidatePastePassword(DataObjectPastingEventArgs e)
+        {
+            // Извлекаем текст из буфера обмена и конвертурием в текст
+            string pastedText = e.DataObject.GetData(DataFormats.Text) as string;
+
+            if (!Regex.IsMatch(pastedText, @"^[a-zA-Z!@#$&*0-9]+$"))
             {
                 e.CancelCommand(); // Блокируем ввод
             }
