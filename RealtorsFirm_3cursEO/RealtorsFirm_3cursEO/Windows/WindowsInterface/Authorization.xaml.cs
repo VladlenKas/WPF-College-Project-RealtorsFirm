@@ -48,17 +48,25 @@ namespace RealtorsFirm_3cursEO
             // Проверка на найденного пользователя
             if (employee != null)
             {
+                if (employee.IsArchive == 1)
+                {
+                    MessageBox.Show($"Пользователь {employee.Name} {employee.Firstname} архивирован. " +
+                        $"Вы не можете продолжить авторизацию за этого сотрудника.", "Предупреждение.",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 MessageBox.Show($"Добро пожаловать в систему, {employee.Name} {employee.Firstname}!" +
-                    $"\nВы вошли как {employee.IdRoleNavigation.Name}", "Авторизация прошла успешно",
+                    $"\nВы вошли как {employee.IdRoleNavigation.Name}.", "Авторизация прошла успешно.",
                     MessageBoxButton.OK, MessageBoxImage.Information);
 
-                if (employee.IdRole == 1)
+                if (employee.IdRoleNavigation.Name == "Администратор")
                 {
                     MenuAdmin page = new MenuAdmin(employee);
                     page.Show();
                     this.Close();
                 }
-                else if (employee.IdRole == 2)
+                else if (employee.IdRoleNavigation.Name == "Риелтор")
                 {
                     /*MenuPhotograph menuPhotograph = new MenuPhotograph();
                     menuPhotograph.Show();*/
