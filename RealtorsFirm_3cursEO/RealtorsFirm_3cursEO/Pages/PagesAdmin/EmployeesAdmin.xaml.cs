@@ -201,6 +201,18 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
                 UpdateDataEmployees();
             }
         }
+
+        private void ClearDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender != null)
+            {
+                SortCheckBox.IsChecked = false;
+                ComboBoxFilter.SelectedIndex = 0;
+                ComboBoxSort.SelectedIndex = 0;
+                SearchTextBox.Text = "";
+                UpdateDataEmployees();
+            }
+        }
         #endregion
     }
 }

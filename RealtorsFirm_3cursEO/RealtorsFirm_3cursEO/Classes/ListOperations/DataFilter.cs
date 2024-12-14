@@ -137,18 +137,18 @@ public class DataFilterClients
     }
 
     // Поиск 
-    public List<Employee> ApplySearch(List<Employee> employees)
+    public List<Client> ApplySearch(List<Client> clients)
     {
         string search = _searchTextBox.Text.ToLower();
         if (!string.IsNullOrEmpty(search))
         {
-            employees = employees.Where(r => r.FullName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+            clients = clients.Where(r => r.FullName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
         }
-        return employees;
+        return clients;
     }
 
     // Сортировка
-    public List<Employee> ApplySorter(List<Employee> employees)
+    public List<Client> ApplySorter(List<Client> clients)
     {
         int sortIndex = _sorterComboBox.SelectedIndex;
 
@@ -157,23 +157,23 @@ public class DataFilterClients
             switch (sortIndex)
             {
                 case 2:
-                    return employees.OrderBy(e => e.Name).ToList();
+                    return clients.OrderBy(e => e.Name).ToList();
                 case 3:
-                    return employees.OrderBy(e => e.Firstname).ToList();
+                    return clients.OrderBy(e => e.Firstname).ToList();
                 case 4:
-                    return employees.OrderBy(e => e.Patronymic).ToList();
+                    return clients.OrderBy(e => e.Patronymic).ToList();
                 case 5:
-                    return employees.OrderBy(e => e.Birthday).ToList();
+                    return clients.OrderBy(e => e.Birthday).ToList();
                 case 6:
-                    return employees.OrderBy(e => e.Passport).ToList();
+                    return clients.OrderBy(e => e.Passport).ToList();
                 case 7:
-                    return employees.OrderBy(e => e.Phone).ToList();
+                    return clients.OrderBy(e => e.Phone).ToList();
                 case 8:
-                    return employees.OrderBy(e => e.Email).ToList();
+                    return clients.OrderBy(e => e.Email).ToList();
                 case 9:
-                    return employees.OrderBy(e => e.IsArchive).ToList();
+                    return clients.OrderBy(e => e.IsArchive).ToList();
                 default:
-                    return employees.OrderBy(e => e.IdEmployee).ToList();
+                    return clients.OrderBy(e => e.IdClient).ToList();
             }
         }
         else
@@ -181,23 +181,23 @@ public class DataFilterClients
             switch (sortIndex)
             {
                 case 2:
-                    return employees.OrderByDescending(e => e.Name).ToList();
+                    return clients.OrderByDescending(e => e.Name).ToList();
                 case 3:
-                    return employees.OrderByDescending(e => e.Firstname).ToList();
+                    return clients.OrderByDescending(e => e.Firstname).ToList();
                 case 4:
-                    return employees.OrderByDescending(e => e.Patronymic).ToList();
+                    return clients.OrderByDescending(e => e.Patronymic).ToList();
                 case 5:
-                    return employees.OrderByDescending(e => e.Birthday).ToList();
+                    return clients.OrderByDescending(e => e.Birthday).ToList();
                 case 6:
-                    return employees.OrderByDescending(e => e.Passport).ToList();
+                    return clients.OrderByDescending(e => e.Passport).ToList();
                 case 7:
-                    return employees.OrderByDescending(e => e.Phone).ToList();
+                    return clients.OrderByDescending(e => e.Phone).ToList();
                 case 8:
-                    return employees.OrderByDescending(e => e.Email).ToList();
+                    return clients.OrderByDescending(e => e.Email).ToList();
                 case 9:
-                    return employees.OrderByDescending(e => e.IsArchive).ToList();
+                    return clients.OrderByDescending(e => e.IsArchive).ToList();
                 default:
-                    return employees.OrderByDescending(e => e.IdEmployee).ToList();
+                    return clients.OrderByDescending(e => e.IdClient).ToList();
             }
         }
     }

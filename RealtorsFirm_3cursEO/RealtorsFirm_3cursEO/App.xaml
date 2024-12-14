@@ -20,6 +20,9 @@
 
                 <!-- Action style -->
                 <ResourceDictionary Source="/Styles/ActionStyle.xaml"/>
+
+                <!-- UC style -->
+                <ResourceDictionary Source="/Styles/UserControlStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

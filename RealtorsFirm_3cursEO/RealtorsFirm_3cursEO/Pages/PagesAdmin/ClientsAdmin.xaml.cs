@@ -31,9 +31,6 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
         // Работа с бд
         private RealtorsFirmContext dbContext;
         private Employee _employeeAuth;
-
-        // выбранный пользователь
-        private Client _selectedClient;
         #endregion
 
         public ClientsAdmin(Employee employee)
@@ -48,7 +45,7 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
 
             // Инициализация класса для фильтрации данных
             DataFilterClients = new DataFilterClients(SearchTextBox, ComboBoxSort, SortCheckBox);
-            var employeesList = dbContext.Employees.Include(e => e.IdRoleNavigation).ToList();
+            var employeesList = dbContext.Clients.ToList();
 
             employeesList = DataFilterClients.ApplySorter(employeesList);
             employeesList = DataFilterClients.ApplySearch(employeesList);
@@ -81,36 +78,6 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
             // Загрузка датагрид
             UpdateDataEmployees();
         }
-        /*
-        private void ButtonEdit_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ButtonDelete_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult result = MessageBox.Show("Вы точно хотите удалить данного пользователя?", "Подтверждение",
-                    MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                ModelActions.DeleteClient(_selectedClient);
-                _selectedClient = null;
-            }
-        }
-
-        private void AddButtonClient_Click(object sender, RoutedEventArgs e)
-        {
-
-        }*/
-
-        private void ClientsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ClientsDataGrid.SelectedItem != null)
-            {
-                _selectedClient = (Client)ClientsDataGrid.SelectedItem;
-            }
-        }
 
         private void ComboBoxSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -132,6 +99,17 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
         {
             if (sender != null)
             {
+                UpdateDataEmployees();
+            }
+        } 
+        
+        private void ClearDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender != null)
+            {
+                SortCheckBox.IsChecked = false;
+                ComboBoxSort.SelectedIndex = 0;
+                SearchTextBox.Text = "";
                 UpdateDataEmployees();
             }
         } 

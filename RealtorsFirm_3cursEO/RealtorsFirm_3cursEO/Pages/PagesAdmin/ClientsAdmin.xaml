@@ -59,23 +59,26 @@
                 <DockPanel LastChildFill="False">
                     <!-- TextBox search -->
                     <Grid DockPanel.Dock="Left">
-                        <TextBox x:Name="SearchTextBox"
-                            TextChanged="SearchTextBox_TextChanged"/>
+                        <TextBox 
+                            x:Name="SearchTextBox"
+                            TextChanged="SearchTextBox_TextChanged"
+                            Tag="Поиск по ФИО"/>
 
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Search" 
-                                Style="{StaticResource IconButton}"/>
-                            <TextBlock Text="Поиск по ФИО" 
-                                x:Name="SearchTextHint"
-                                FontSize="15"
-                                Foreground="#000000"
-                                FontWeight="Thin"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                IsHitTestVisible="False"/>
-                        </StackPanel>
-
+                        <materialDesign:PackIcon Kind="Search" 
+                            Style="{StaticResource IconButton}"/>
                     </Grid>
+
+                    <Grid 
+                        Margin="15 5 0 0"
+                        VerticalAlignment="Top"
+                        DockPanel.Dock="Left">
+                        <Button
+                            Style="{StaticResource DeleteButtonSmall}"
+                            Click="ClearDataButton_Click"/>
+                        <materialDesign:PackIcon 
+                            Kind="Loop" Style="{StaticResource UCIcon}"/>
+                    </Grid>
+
                     <!-- User's name and role-->
                     <Grid DockPanel.Dock="Right">
                         <DockPanel LastChildFill="False">
@@ -87,7 +90,7 @@
                                 <Border.Background>
                                     <ImageBrush 
                                         Stretch="UniformToFill"
-                                        ImageSource="/Images/AdminIconImage.png/"/>
+                                        ImageSource="/Images/AdminIconImage.png"/>
                                 </Border.Background>
                             </Border>
 
@@ -153,8 +156,8 @@
 
             <!-- DataGrid -->
             <Grid>
-                <DataGrid Name="ClientsDataGrid"
-                    SelectionChanged="ClientsDataGrid_SelectionChanged"
+                <DataGrid 
+                    Name="ClientsDataGrid"
                     Style="{StaticResource MenuDataGrid}"
                     ColumnHeaderStyle="{StaticResource MenuDataGridColumnHeader}"
                     RowStyle="{StaticResource MenuDataGridRow}"
