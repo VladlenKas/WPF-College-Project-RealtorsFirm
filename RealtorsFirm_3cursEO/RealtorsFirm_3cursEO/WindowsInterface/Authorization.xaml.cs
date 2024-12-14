@@ -22,7 +22,7 @@ namespace RealtorsFirm_3cursEO
         RealtorsFirmContext dbContext;
 
         private string Email => TextBoxEmail.Text;
-        private string Password => TextBoxPatterns.GetPassword(TextBoxPassHidden, TextBoxPassVisibility);
+        private string Password => WindowHelper.GetPassword(TextBoxPassHidden, TextBoxPassVisibility);
 
         public Authorization()
         {
@@ -32,7 +32,7 @@ namespace RealtorsFirm_3cursEO
 
         private void CheckBoxPasswordView_Click(object sender, RoutedEventArgs e)
         {
-            TextBoxPatterns.HiddenPassword(sender, TextBoxPassHidden, TextBoxPassVisibility);
+            WindowHelper.HiddenPassword(sender, TextBoxPassHidden, TextBoxPassVisibility);
         }
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)

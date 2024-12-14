@@ -97,13 +97,17 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
         {
             if (_selectedEmployee.IdEmployee == _employeeAuth.IdEmployee)
             {
-                MessageBox.Show("Администратор не может удалять сам себя", "Ошибка",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Администратор не может удалять сам себя", 
+                    "Ошибка",
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Error);
             }
             else
-            {
-                MessageBoxResult result = MessageBox.Show("Вы точно хотите удалить данного сотрудника?", "Подтверждение",
-                        MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            {   
+                MessageBoxResult result = MessageBox.Show("Вы точно хотите удалить данного сотрудника?", 
+                    "Подтверждение",
+                    MessageBoxButton.YesNo, 
+                    MessageBoxImage.Warning);
 
                 if (result == MessageBoxResult.Yes)
                 {
@@ -136,13 +140,17 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
         {
             if (_selectedEmployee.IdEmployee == _employeeAuth.IdEmployee)
             {
-                MessageBox.Show("Администратор не может архивировать сам себя", "Ошибка",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Администратор не может архивировать сам себя", 
+                    "Ошибка",
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Error);
             }
             else
             {
-                MessageBoxResult result = MessageBox.Show("Вы точно хотите архивировать данного сотрудника?", "Подтверждение",
-                        MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                MessageBoxResult result = MessageBox.Show("Вы точно хотите архивировать данного сотрудника?", 
+                    "Подтверждение",
+                    MessageBoxButton.YesNo, 
+                    MessageBoxImage.Warning);
 
                 if (result == MessageBoxResult.Yes)
                 {

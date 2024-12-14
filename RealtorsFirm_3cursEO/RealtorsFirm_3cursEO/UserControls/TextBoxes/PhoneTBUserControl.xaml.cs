@@ -91,6 +91,10 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
                 {
                     phoneTextBox.Text = $"{text.Substring(0, 1)} {text.Substring(1, 3)} {text.Substring(4, 3)} {text.Substring(7, 2)} {text.Substring(9)}";
                 }
+                else if (text.Length > 10)
+                {
+                    phoneTextBox.Text = $"{text.Substring(0, 1)} {text.Substring(1, 3)} {text.Substring(4, 3)} {text.Substring(7, 2)} {text.Substring(9)}";
+                }
                 phoneTextBox.SelectionStart = phoneTextBox.Text.Length;
             }
 

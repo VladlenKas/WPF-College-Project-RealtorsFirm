@@ -36,7 +36,7 @@ namespace RealtorsFirm_3cursEO.Model
 
         // Добавление
         public static void AddEmployee(string Role, string Name, string Firstname,
-            DateOnly Birthday, string Phone, string Passport, string Email, string Password)
+        DateOnly Birthday, string Phone, string Passport, string Email, string Password)
         {
             using (var dbContext = new RealtorsFirmContext())
             {
@@ -65,7 +65,30 @@ namespace RealtorsFirm_3cursEO.Model
         }
 
         // Редактирование
+        public static void EditEmployee(Employee employee, string Role, string Name, string Firstname,
+        DateOnly Birthday, string Phone, string Passport, string Email, string Password)
+        {
+            using (var dbContext = new RealtorsFirmContext())
+            {
+                // Находим айди роли по названию
+                int idRole = dbContext.RoleEmployees.Single(r => r.Name == Role).IdRole;
+                // Находим пользователя по айди
+                var newEmployee = dbContext.Employees.Single(r => r.IdEmployee == employee.IdEmployee);
 
+                // Обновляем данные
+                newEmployee.Name = Name;
+                newEmployee.Firstname = Firstname;
+                newEmployee.Birthday = Birthday;
+                newEmployee.Phone = Phone;
+                newEmployee.Passport = Passport;
+                newEmployee.Email = Email;
+                newEmployee.Password = Password; 
+                newEmployee.IdRole = idRole; 
+
+                // Сохраняем изменения в базе данных
+                dbContext.SaveChanges();
+            }
+        }
         #endregion
 
         #region Клиенты

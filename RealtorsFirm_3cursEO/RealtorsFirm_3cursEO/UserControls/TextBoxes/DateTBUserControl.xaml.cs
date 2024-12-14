@@ -26,7 +26,6 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
         /// </summary>
         private bool _isUpdatingText = false;
 
-        private string _dateOnly;
         public DateOnly Text
         {
             get
@@ -36,7 +35,10 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
                 DateOnly.TryParseExact(birthday, "dd.MM.yyyy", out DateOnly date);
                 return date;
             }
-            set { }
+            set
+            {
+                dateTextBox.Text = value.ToString();
+            }
         }
 
         public DateTBUserControl()

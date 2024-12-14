@@ -42,7 +42,7 @@ namespace RealtorsFirm_3cursEO
 
         private string Email => EmailTextBox.Text; // Не должен быть пустой + не должен повторяться + правильный формат
 
-        private string Password => TextBoxPatterns.GetPassword(PasswordTextBoxHid, PasswordTextBoxVis); // Не должен быть пустой
+        private string Password => WindowHelper.GetPassword(PasswordTextBoxHid, PasswordTextBoxVis); // Не должен быть пустой
         #endregion
 
         private RealtorsFirmContext dbContext;
@@ -74,11 +74,10 @@ namespace RealtorsFirm_3cursEO
         }
 
         #region Обработчики событий
-
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
             bool fieldsIsValid = DataLimitators.ValidationEmployee(null, Role, Name,
-               Firstname, Birthday, Phone, Passport, Email, Password);
+                Firstname, Birthday, Phone, Passport, Email, Password);
 
             if (fieldsIsValid)
             {
@@ -88,7 +87,11 @@ namespace RealtorsFirm_3cursEO
 
         private void ButtonExit_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            bool closing = WindowHelper.WindowClose();
+            if (closing)
+            {
+                this.Close();
+            }
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -98,7 +101,7 @@ namespace RealtorsFirm_3cursEO
 
         private void ViewPasswordCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            TextBoxPatterns.HiddenPassword(sender, PasswordTextBoxHid, PasswordTextBoxVis);
+            WindowHelper.HiddenPassword(sender, PasswordTextBoxHid, PasswordTextBoxVis);
         }
 
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)

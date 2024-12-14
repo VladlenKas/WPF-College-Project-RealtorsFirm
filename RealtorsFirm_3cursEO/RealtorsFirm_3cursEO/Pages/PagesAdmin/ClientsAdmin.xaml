@@ -7,7 +7,7 @@
 
       xmlns:ArchiveConverter="clr-namespace:RealtorsFirm_3cursEO.Classes"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      
+   
       Title="EmployeesAdmin"
       Loaded="Page_Loaded">
 
@@ -16,7 +16,7 @@
         <ArchiveConverter:ArchiveStatusConverter x:Key="ArchiveStatusConverter"/>
 
         <Style TargetType="materialDesign:PackIcon" 
-       BasedOn="{StaticResource IconButton}">
+            BasedOn="{StaticResource IconButton}">
         </Style>
 
         <!-- Cтиль для текста -->
@@ -60,19 +60,19 @@
                     <!-- TextBox search -->
                     <Grid DockPanel.Dock="Left">
                         <TextBox x:Name="SearchTextBox"
-                         TextChanged="SearchTextBox_TextChanged"/>
+                            TextChanged="SearchTextBox_TextChanged"/>
 
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Search" 
-                                             Style="{StaticResource IconButton}"/>
+                                Style="{StaticResource IconButton}"/>
                             <TextBlock Text="Поиск по ФИО" 
-                               x:Name="SearchTextHint"
-                               FontSize="15"
-                               Foreground="#000000"
-                               FontWeight="Thin"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               IsHitTestVisible="False"/>
+                                x:Name="SearchTextHint"
+                                FontSize="15"
+                                Foreground="#000000"
+                                FontWeight="Thin"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                IsHitTestVisible="False"/>
                         </StackPanel>
 
                     </Grid>
@@ -142,7 +142,7 @@
                             Style="{StaticResource ComboBoxSupportive}"
                             SelectionChanged="ComboBoxSort_SelectionChanged"/>
                         <materialDesign:PackIcon Kind="Sort"
-                                         Style="{StaticResource IconButton}"/>
+                            Style="{StaticResource IconButton}"/>
                         <CheckBox 
                             Style="{StaticResource CheckBoxSortMenu}"
                             Click="SortCheckBox_Click"
@@ -154,11 +154,11 @@
             <!-- DataGrid -->
             <Grid>
                 <DataGrid Name="ClientsDataGrid"
-                  SelectionChanged="ClientsDataGrid_SelectionChanged"
-                  Style="{StaticResource MenuDataGrid}"
-                  ColumnHeaderStyle="{StaticResource MenuDataGridColumnHeader}"
-                  RowStyle="{StaticResource MenuDataGridRow}"
-                  CellStyle="{StaticResource MenuDataGridCell}">
+                    SelectionChanged="ClientsDataGrid_SelectionChanged"
+                    Style="{StaticResource MenuDataGrid}"
+                    ColumnHeaderStyle="{StaticResource MenuDataGridColumnHeader}"
+                    RowStyle="{StaticResource MenuDataGridRow}"
+                    CellStyle="{StaticResource MenuDataGridCell}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
                         <DataGridTextColumn Header="Дата рождения" Binding="{Binding Birthday, StringFormat=dd/MM/yyyy}"/>
@@ -173,7 +173,7 @@
                     VerticalAlignment="Top"
                     HorizontalAlignment="Left"
                     Name="textFound"
-                    FontSize="26"
+                    FontSize="32"
                     Style="{StaticResource MenuTextBlockHeader}" 
                     Text="Ничего не найдено"
                     Margin="20 65"

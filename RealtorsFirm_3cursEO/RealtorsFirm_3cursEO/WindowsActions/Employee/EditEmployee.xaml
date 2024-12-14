@@ -1,16 +1,18 @@
-﻿<Window x:Class="RealtorsFirm_3cursEO.AddEmployee"
+﻿<Window x:Class="RealtorsFirm_3cursEO.Edits.EditEmployee"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RealtorsFirm_3cursEO"
-            
+        xmlns:local="clr-namespace:RealtorsFirm_3cursEO.Edits"
+        mc:Ignorable="d"
+        
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:MyUserControl="clr-namespace:RealtorsFirm_3cursEO.UserControls.TextBoxes"
 
-        Title="Добавление нового сотрудника" 
+        Title="Редактирование сотрудника" 
         Height="1000" Width="600" 
-        MinHeight="780" MinWidth="600"
+        MinHeight="950" MinWidth="600"
+        Loaded="Window_Loaded"
         Closed="Window_Closed"
         WindowStartupLocation="CenterScreen">
 
@@ -48,7 +50,7 @@
                 <FlowDocument>
                     <Paragraph TextAlignment="Center">
                         <Run 
-                            Text="Добавление нового сотрудника" 
+                            Text="Редактирование сотрудника" 
                             FontFamily="Arial Rounded MT Bold">
                         </Run>
                     </Paragraph>
@@ -94,7 +96,8 @@
 
                 <StackPanel>
                     <TextBlock Text="Дата рождения *"/>
-                    <MyUserControl:DateTBUserControl x:Name="DateTextBox"/>
+                    <MyUserControl:DateTBUserControl 
+                        x:Name="DateTextBox"/>
                 </StackPanel>
 
                 <StackPanel>
@@ -143,9 +146,9 @@
             <DockPanel
                 DockPanel.Dock="Bottom">
                 <Button 
-                    Content="Добавить"
+                    Content="Сохранить изменения"
                     x:Name="ButtonAdd"
-                    Click="ButtonAdd_Click"
+                    Click="ButtonEdit_Click"
                     DockPanel.Dock="Bottom"
                     Margin="40 20 40 0"
                     Style="{StaticResource ActionButtonGradient}"/>

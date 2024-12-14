@@ -130,18 +130,20 @@
                             </StackPanel>
                         </Button>
                     </Grid>
+                    
                     <!-- Button filter -->
                     <Grid 
                         DockPanel.Dock="Left"
                         Margin="50 0 0 0"
                         VerticalAlignment="Bottom">
                         <ComboBox Width="220"
-                          Name="ComboBoxFilter"
-                          Style="{StaticResource ComboBoxSupportive}"
-                          SelectionChanged="ComboBoxFilter_SelectionChanged"/>
+                            Name="ComboBoxFilter"
+                            Style="{StaticResource ComboBoxSupportive}"
+                            SelectionChanged="ComboBoxFilter_SelectionChanged"/>
                         <materialDesign:PackIcon Kind="Filter"  
-                                         Style="{StaticResource IconButton}"/>
+                            Style="{StaticResource IconButton}"/>
                     </Grid>
+                    
                     <!--Button sort -->
                     <Grid 
                         Margin="20 0 0 0"
@@ -157,7 +159,7 @@
                             x:Name="SortCheckBox"
                             Click="SortCheckBox_Click"/>
                         <materialDesign:PackIcon Kind="Sort"
-                                         Style="{StaticResource IconButton}"/>
+                            Style="{StaticResource IconButton}"/>
                     </Grid>
                 </DockPanel>
             </Grid>
@@ -189,7 +191,7 @@
                     VerticalAlignment="Top"
                     HorizontalAlignment="Left"
                     Name="textFound"
-                    FontSize="26"
+                    FontSize="32"
                     Style="{StaticResource MenuTextBlockHeader}" 
                     Text="Ничего не найдено"
                     Margin="20 65"

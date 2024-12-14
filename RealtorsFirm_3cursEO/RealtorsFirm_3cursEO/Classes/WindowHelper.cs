@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 namespace RealtorsFirm_3cursEO.Classes
 {
-    public static class TextBoxPatterns
+    public static class WindowHelper
     {
         public static void HiddenPassword(object sender, PasswordBox passHid, TextBox passVis)
         {
@@ -33,6 +33,21 @@ namespace RealtorsFirm_3cursEO.Classes
         {
             var pass = passVis.Visibility is Visibility.Visible ? passVis.Text : passHid.Password;
             return pass;
+        }
+
+        public static bool WindowClose()
+        {
+            var resultChanged = MessageBox.Show("Вы действительно хотите выйти?",
+                "Подтверждение",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (resultChanged == MessageBoxResult.Yes)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

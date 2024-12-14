@@ -9,7 +9,8 @@
         Title="Изменение Клиента" 
         Height="1000" Width="700"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        WindowStyle="None">
     
     <Window.Resources>
         <Style TargetType="{x:Type TextBox}"

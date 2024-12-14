@@ -48,7 +48,9 @@ namespace RealtorsFirm_3cursEO.Classes
                 "По паспорту",
                 "По номеру телефона",
                 "По электронной почте",
-                "По паролю"
+                "По паролю",
+                "По должности",
+                "По статусу удаления"
             };
             sorterList.AddRange(strings);
             return sorterList;
@@ -68,6 +70,8 @@ namespace RealtorsFirm_3cursEO.Classes
                 "По паспорту",
                 "По номеру телефона",
                 "По электронной почте",
+                "По должности",
+                "По статусу удаления"
             };
             sorterList.AddRange(strings);
             return sorterList;
