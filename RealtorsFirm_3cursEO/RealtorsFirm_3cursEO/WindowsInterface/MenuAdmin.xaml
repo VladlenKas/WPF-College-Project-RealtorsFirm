@@ -62,16 +62,21 @@
                                Style="{StaticResource TextBlock}"
                                Margin="0 30 0 10"
                                DockPanel.Dock="Top"/>
-                    
+
                     <Button Style="{StaticResource Navigation}"
                             Content="Оформить чек"
                             DockPanel.Dock="Top">
-                        
                     </Button>
                     
                     <Button Style="{StaticResource Navigation}"
                             Content="Недвижмости"
-                            DockPanel.Dock="Top"/>
+                            DockPanel.Dock="Top"
+                            Click="ButtonEstates_Click"/>
+
+                    <Button Style="{StaticResource Navigation}"
+                            Content="Услуги"
+                            DockPanel.Dock="Top"
+                            Click="ButtonPrices_Click"/>
 
                     <TextBlock Text="Пользователи"
                                Style="{StaticResource TextBlock}"

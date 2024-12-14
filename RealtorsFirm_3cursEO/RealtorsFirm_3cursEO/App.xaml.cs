@@ -10,6 +10,6 @@ namespace RealtorsFirm_3cursEO
     /// </summary>
     public partial class App : Application
     {
-        public static RealtorsFirmContext context { get; } = new RealtorsFirmContext();
+        public static RealtorsFirmContext Context { get; } = new RealtorsFirmContext();
     }
 }

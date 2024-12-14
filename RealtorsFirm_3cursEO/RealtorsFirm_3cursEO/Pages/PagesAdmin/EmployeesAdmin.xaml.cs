@@ -87,11 +87,6 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
         }
 
         #region Обработчики_событий
-        private void Exit_Click(object sender, RoutedEventArgs e)
-        {
-            Authorization window = new Authorization();
-            window.Show();
-        }
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {

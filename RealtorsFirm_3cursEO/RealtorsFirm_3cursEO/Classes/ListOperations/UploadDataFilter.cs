@@ -76,5 +76,35 @@ namespace RealtorsFirm_3cursEO.Classes
             return sorterList;
         }
         #endregion
+
+        #region Недвижимость
+
+        public static List<object> FilterEstates()
+        {
+            var filterList = new List<object>(_filterList);
+            foreach (var role in dbContext.TypeEstates)
+            {
+                filterList.Add(role.Name);
+            }
+            return filterList;
+        }
+
+        public static List<object> SorterEstates()
+        {
+            var sorterList = new List<object>(_sorterList);
+            var strings = new List<object>
+            {
+                "По ФИО клиента",
+                "По типу недвижмости",
+                "По адресу",
+                "По площади",
+                "По кол-ву комнат",
+                "По цене",
+                "По статусу удаления"
+            };
+            sorterList.AddRange(strings);
+            return sorterList;
+        }
+        #endregion
     }
 }

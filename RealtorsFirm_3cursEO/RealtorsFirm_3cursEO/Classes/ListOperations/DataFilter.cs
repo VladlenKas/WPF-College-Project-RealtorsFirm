@@ -202,3 +202,99 @@ public class DataFilterClients
         }
     }
 }
+
+/// <summary>
+/// Фильтрация данных для недвижимости
+/// </summary>
+public class DataFilterEstates
+{
+    private ComboBox _filterComboBox;
+    private TextBox _searchTextBox;
+    private ComboBox _sorterComboBox;
+    private bool _ascending;
+
+    public DataFilterEstates(TextBox searchTextBox, ComboBox sorterComboBox, CheckBox ascendingCheckBox, ComboBox filterComboBox)
+    {
+        _searchTextBox = searchTextBox;
+        _sorterComboBox = sorterComboBox;
+        _filterComboBox = filterComboBox;
+
+        if (ascendingCheckBox != null)
+            _ascending = (bool)ascendingCheckBox.IsChecked;
+        else
+            _ascending = false;
+    }
+
+    // Фильтрафия
+    public List<Estate> ApplyFilter(List<Estate> estates)
+    {
+        if (_filterComboBox.SelectedIndex != 0 && _filterComboBox.SelectedValue != null)
+        {
+            string type = _filterComboBox.SelectedValue.ToString();
+            estates = estates.Where(u => u.IdTypeNavigation.Name == type).ToList();
+        }
+        return estates;
+    }
+
+    // Поиск 
+    public List<Estate> ApplySearch(List<Estate> estates)
+    {
+        string search = _searchTextBox.Text.ToLower();
+        if (!string.IsNullOrEmpty(search))
+        {
+            estates = estates.Where(r => r.IdClientNavigation.FullName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        return estates;
+    }
+
+    // Сортировка
+    public List<Estate> ApplySorter(List<Estate> estates)
+    {
+        int sortIndex = _sorterComboBox.SelectedIndex;
+
+        if (!_ascending)
+        {
+            switch (sortIndex)
+            {
+                case 2:
+                    return estates.OrderBy(e => e.IdClientNavigation.FullName).ToList();
+                case 3:
+                    return estates.OrderBy(e => e.IdTypeNavigation.Name).ToList();
+                case 4:
+                    return estates.OrderBy(e => e.Address).ToList();
+                case 5:
+                    return estates.OrderBy(e => e.Area).ToList();
+                case 6:
+                    return estates.OrderBy(e => e.NumberRooms).ToList();
+                case 7:
+                    return estates.OrderBy(e => e.Cost).ToList();
+                case 8:
+                    return estates.OrderBy(e => e.IsArchive).ToList();
+                default:
+                    return estates.OrderBy(e => e.IdEstate).ToList();
+            }
+        }
+        else
+        {
+            switch (sortIndex)
+            {
+                case 2:
+                    return estates.OrderByDescending(e => e.IdClientNavigation.FullName).ToList();
+                case 3:
+                    return estates.OrderByDescending(e => e.IdTypeNavigation.Name).ToList();
+                case 4:
+                    return estates.OrderByDescending(e => e.Address).ToList();
+                case 5:
+                    return estates.OrderByDescending(e => e.Area).ToList();
+                case 6:
+                    return estates.OrderByDescending(e => e.NumberRooms).ToList();
+                case 7:
+                    return estates.OrderByDescending(e => e.Cost).ToList();
+                case 8:
+                    return estates.OrderByDescending(e => e.IsArchive).ToList();
+                default:
+                    return estates.OrderByDescending(e => e.IdEstate).ToList();
+            }
+        }
+    }
+}

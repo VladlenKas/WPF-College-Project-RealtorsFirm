@@ -1,7 +1,9 @@
 ﻿using MaterialDesignColors;
 using Microsoft.EntityFrameworkCore;
+using RealtorsFirm_3cursEO.Classes;
 using RealtorsFirm_3cursEO.Edits;
 using RealtorsFirm_3cursEO.Model;
+using RealtorsFirm_3cursEO.Pages.PagesAdmin;
 using RealtorsFirm_3cursEO.PagesAdmin;
 using System;
 using System.Collections.Generic;
@@ -48,7 +50,8 @@ namespace RealtorsFirm_3cursEO
                 case 2:
                     break;
                 case 3:
-                    break;
+                    ContentFrame.Navigate(new EstatesAdmin(_employee));
+                    break; 
                 case 4:
                     break;
                 case 5:
@@ -74,8 +77,26 @@ namespace RealtorsFirm_3cursEO
         {
             Authorization auth = new Authorization();
             auth.Show();
+            this.Close();
         }
 
-        private void Exit_Click(object sender, RoutedEventArgs e) => this.Close();
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            bool closing = WindowHelper.WindowClose();
+            if (closing)
+            {
+                this.Close();
+            }
+        }
+
+        private void ButtonPrices_Click(object sender, RoutedEventArgs e)
+        {
+            ChoosePage(2);
+        }
+
+        private void ButtonEstates_Click(object sender, RoutedEventArgs e)
+        {
+            ChoosePage(3);
+        }
     }
 }
