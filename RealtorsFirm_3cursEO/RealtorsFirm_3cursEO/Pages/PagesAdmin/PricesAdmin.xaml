@@ -1,47 +1,35 @@
-﻿<Page x:Class="RealtorsFirm_3cursEO.PagesAdmin.ClientsAdmin"
+﻿<Page x:Class="RealtorsFirm_3cursEO.Pages.PagesAdmin.PricesAdmin"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:RealtorsFirm_3cursEO.PagesAdmin"
-
+      xmlns:local="clr-namespace:RealtorsFirm_3cursEO.Pages.PagesAdmin"
+      
       xmlns:ArchiveConverter="clr-namespace:RealtorsFirm_3cursEO.Classes"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-   
-      Title="EmployeesAdmin"
+      
       Loaded="Page_Loaded">
 
     <Page.Resources>
         <!-- Конвертер для обозначения архивированных записей -->
         <ArchiveConverter:ArchiveStatusConverter x:Key="ArchiveStatusConverter"/>
 
-        <Style TargetType="materialDesign:PackIcon" 
-            BasedOn="{StaticResource IconButton}">
-        </Style>
-
-        <!-- Cтиль для текста -->
-        <Style TargetType="{x:Type TextBlock}" x:Key="TextBlock">
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-        </Style>
-
-        <!-- Переопределенный стиль для кнопки -->
-        <Style TargetType="{x:Type Button}"
-                BasedOn="{StaticResource BGradient}">
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="Width" Value="Auto"/>
-            <Setter Property="FontSize" Value="16"/>
-        </Style>
-
-        <!-- Переопределенный стиль для текстовых полей -->
-        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TBBase}">
-            <Setter Property="Width" Value="550"/>
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="36 0 0 0"/>
-        </Style>
+        <!-- Кнопки для дата грид -->
+        <DataTemplate x:Key="ActionsTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Button 
+                    Margin="0 0 12 0"
+                    Style="{StaticResource EditDG}"
+                    Click="ButtonEdit_Click"/>
+                <Button 
+                    Margin="0 0 12 0"
+                    Style="{StaticResource ArchiveDG}"
+                    Click="ButtonArchive_Click"/>
+                <Button 
+                    Style="{StaticResource DeleteDG}"
+                    Click="ButtonDelete_Click"/>
+            </StackPanel>
+        </DataTemplate>
     </Page.Resources>
 
     <Grid>
@@ -57,13 +45,13 @@
             <!-- Search -->
             <Grid Grid.Row="0" DockPanel.Dock="Top">
                 <DockPanel LastChildFill="False">
-                    <!-- TextBox search -->
+
                     <Grid DockPanel.Dock="Left">
                         <TextBox 
+                            Style="{StaticResource SearchTextBox}"
                             x:Name="SearchTextBox"
                             TextChanged="SearchTextBox_TextChanged"
-                            Tag="Поиск по ФИО"/>
-
+                            Tag="Поиск по наименвоанию услуги"/>
                         <materialDesign:PackIcon Kind="Search" 
                             Style="{StaticResource IconButton}"/>
                     </Grid>
@@ -79,7 +67,6 @@
                             Kind="Loop" Style="{StaticResource UCIcon}"/>
                     </Grid>
 
-                    <!-- User's name and role-->
                     <Grid DockPanel.Dock="Right">
                         <DockPanel LastChildFill="False">
                             <Border 
@@ -129,27 +116,42 @@
                 <DockPanel Grid.Column="1" LastChildFill="False">
 
                     <!-- Name page -->
-                    <TextBlock 
-                        Style="{StaticResource MenuTextBlockHeader}"
-                        Text="Клиенты" 
-                        DockPanel.Dock="Left" />
+                    <TextBlock Text="Услуги" 
+                       x:Name="NameDataGrid"
+                       FontSize="36"
+                       DockPanel.Dock="Left" 
+                       FontFamily="Segoe UI Variable Display Semibold"/>
 
+                    <!-- Button add -->
+                    <Grid DockPanel.Dock="Right">
+                        <Button Width="250"
+                        Style="{StaticResource BGradient}"
+                        Click="AddButtonPrice_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Margin="0 0 5 0"
+                                    Kind="Add"/>
+                                <TextBlock Text="Добавить услугу" Style="{StaticResource MenuTextBlock}"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                    
                     <!--Button sort -->
                     <Grid 
-                        Width="400"
                         Margin="50 0 0 0"
-                        VerticalAlignment="Bottom">
+                        VerticalAlignment="Bottom"
+                        Width="400">
                         <ComboBox 
                             DockPanel.Dock="Left" 
                             Name="ComboBoxSort"
                             Style="{StaticResource ComboBoxSupportive}"
                             SelectionChanged="ComboBoxSort_SelectionChanged"/>
-                        <materialDesign:PackIcon Kind="Sort"
-                            Style="{StaticResource IconButton}"/>
                         <CheckBox 
                             Style="{StaticResource CheckBoxSortMenu}"
-                            Click="SortCheckBox_Click"
-                            x:Name="SortCheckBox"/>
+                            x:Name="SortCheckBox"
+                            Click="SortCheckBox_Click"/>
+                        <materialDesign:PackIcon Kind="Sort"
+                            Style="{StaticResource IconButton}"/>
                     </Grid>
                 </DockPanel>
             </Grid>
@@ -157,18 +159,18 @@
             <!-- DataGrid -->
             <Grid>
                 <DataGrid 
-                    Name="ClientsDataGrid"
+                    Name="PricesDataGrid"
+                    SelectionChanged="EmployeesDataGrid_SelectionChanged"
                     Style="{StaticResource MenuDataGrid}"
                     ColumnHeaderStyle="{StaticResource MenuDataGridColumnHeader}"
                     RowStyle="{StaticResource MenuDataGridRow}"
                     CellStyle="{StaticResource MenuDataGridCell}">
+
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
-                        <DataGridTextColumn Header="Дата рождения" Binding="{Binding Birthday, StringFormat=dd.MM.yyyy}"/>
-                        <DataGridTextColumn Header="Паспорт" Binding="{Binding Passport}"/>
-                        <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"/>
-                        <DataGridTextColumn Header="Эл. почта" Binding="{Binding Email}"/>
+                        <DataGridTextColumn Header="Наименование" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Цена" Binding="{Binding Cost, StringFormat={}{0} руб.}"/>
                         <DataGridTextColumn Header="Архивирован?" Binding="{Binding IsArchive, Converter={StaticResource ArchiveStatusConverter}}"/>
+                        <DataGridTemplateColumn Header="Действия" CellTemplate="{StaticResource ActionsTemplate}"/>
                     </DataGrid.Columns>
                 </DataGrid>
 

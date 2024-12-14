@@ -116,7 +116,7 @@
                                 FontSize="16"
                                 Foreground="Gray"/>
                             <Run 
-                                Text="{Binding Area}" 
+                                Text="{Binding Area, StringFormat={}{0} кв. м.}" 
                                 FontWeight="Bold"
                                 FontSize="18"/>
                         </TextBlock>

@@ -298,3 +298,71 @@ public class DataFilterEstates
         }
     }
 }
+
+/// <summary>
+/// Фильтрация данных для клиента
+/// </summary>
+public class DataFilterPrices
+{
+    private TextBox _searchTextBox;
+    private ComboBox _sorterComboBox;
+    private bool _ascending;
+
+    public DataFilterPrices(TextBox searchTextBox, ComboBox sorterComboBox, CheckBox ascendingCheckBox)
+    {
+        _searchTextBox = searchTextBox;
+        _sorterComboBox = sorterComboBox;
+
+        if (ascendingCheckBox != null)
+            _ascending = (bool)ascendingCheckBox.IsChecked;
+        else
+            _ascending = false;
+    }
+
+    // Поиск 
+    public List<Price> ApplySearch(List<Price> prices)
+    {
+        string search = _searchTextBox.Text.ToLower();
+        if (!string.IsNullOrEmpty(search))
+        {
+            prices = prices.Where(r => r.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        return prices;
+    }
+
+    // Сортировка
+    public List<Price> ApplySorter(List<Price> prices)
+    {
+        int sortIndex = _sorterComboBox.SelectedIndex;
+
+        if (!_ascending)
+        {
+            switch (sortIndex)
+            {
+                case 2:
+                    return prices.OrderBy(e => e.Name).ToList();
+                case 3:
+                    return prices.OrderBy(e => e.Cost).ToList();
+                case 4:
+                    return prices.OrderBy(e => e.IsArchive).ToList();
+                default:
+                    return prices.OrderBy(e => e.IdPrice).ToList();
+            }
+        }
+        else
+        {
+            switch (sortIndex)
+            {
+                case 2:
+                    return prices.OrderByDescending(e => e.Name).ToList();
+                case 3:
+                    return prices.OrderByDescending(e => e.Cost).ToList();
+                case 4:
+                    return prices.OrderByDescending(e => e.IsArchive).ToList();
+                default:
+                    return prices.OrderByDescending(e => e.IdPrice).ToList();
+            }
+        }
+    }
+}
+

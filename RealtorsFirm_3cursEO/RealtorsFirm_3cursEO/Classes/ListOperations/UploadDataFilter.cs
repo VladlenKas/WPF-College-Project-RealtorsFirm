@@ -77,6 +77,21 @@ namespace RealtorsFirm_3cursEO.Classes
         }
         #endregion
 
+        #region Услуги
+        public static List<object> SorterPrices()
+        {
+            var sorterList = new List<object>(_sorterList);
+            var strings = new List<object>
+            {
+                "По наименованию",
+                "По цене",
+                "По статусу удаления"
+            };
+            sorterList.AddRange(strings);
+            return sorterList;
+        }
+        #endregion
+
         #region Недвижимость
 
         public static List<object> FilterEstates()

@@ -121,5 +121,57 @@ namespace RealtorsFirm_3cursEO.Classes.DataOperations
                 }
             }
         }
+
+        public static bool ValidationPrice(Price price, string name, int cost)
+        {
+            using (var context = new RealtorsFirmContext())
+            {
+                // Создаем лист для исключений
+                List<string> errorsList = new List<string>();
+
+                // Проверка на пустые поля
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    errorsList.Add("Заполните поле с наименованием.");
+                }
+                else if (cost == 0)
+                {
+                    errorsList.Add("Стоимость не может быть бесплатной. Укажите цену.");
+                }
+                // Все остальные проверки
+                else
+                {
+                    // При редактировании
+                    if (price != null)
+                    {
+                        if (context.Prices.Any(r => r.Name == name && r.IdPrice != price.IdPrice))
+                        {
+                            errorsList.Add("Ввденное название услуги уже существует. Используйте другое");
+                        }
+                    }
+                    // При добавлении
+                    else
+                    {
+                        // Проверка на номер телефона (на повторение)
+                        if (context.Prices.Any(r => r.Name == name))
+                        {
+                            errorsList.Add("Ввденное название услуги уже существует. Используйте другое.");
+                        }
+                    }
+                }
+
+                if (errorsList.Count != 0)
+                {
+                    string error = errorsList[0];
+
+                    MessageBox.Show($"{error}", "Ошибка.", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
     }
 }

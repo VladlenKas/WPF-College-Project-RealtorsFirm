@@ -109,5 +109,67 @@ namespace RealtorsFirm_3cursEO.Model
         // Редактирование
 
         #endregion
+
+        #region Услуги
+
+        // Удаление
+        public static void DeletePrice(Price price)
+        {
+            using (var dbContext = new RealtorsFirmContext())
+            {
+                var priceEdit = dbContext.Prices.Single(r => r.IdPrice == price.IdPrice);
+                priceEdit.IsDeleted = 1;
+                dbContext.SaveChanges();
+            }
+        }
+
+        // Архивирование
+        public static void ArchivePrice(Price price)
+        {
+            using (var dbContext = new RealtorsFirmContext())
+            {
+                var priceEdit = dbContext.Prices.Single(r => r.IdPrice == price.IdPrice);
+                priceEdit.IsArchive = 1;
+                dbContext.SaveChanges();
+            }
+        }
+
+        // Добавление
+        public static void AddPrice(string Name, int Cost)
+        {
+            using (var dbContext = new RealtorsFirmContext())
+            {
+                // Создаем новый объект Employee
+                var newPrice = new Price
+                {
+                    Name = Name,
+                    Cost = Cost,
+                };
+
+                // Добавляем нового сотрудника в контекст
+                dbContext.AllPrices.Add(newPrice);
+
+                // Сохраняем изменения в базе данных
+                dbContext.SaveChanges();
+            }
+        }
+
+        // Редактирование
+        public static void EditPrices(Price price, string Name, int Cost)
+        {
+            using (var dbContext = new RealtorsFirmContext())
+            {
+                // Находим услугу по айди
+                var newEmployee = dbContext.Prices.Single(r => r.IdPrice == price.IdPrice);
+
+                // Обновляем данные
+                newEmployee.Name = Name;
+                newEmployee.Cost = Cost;
+
+                // Сохраняем изменения в базе данных
+                dbContext.SaveChanges();
+            }
+        }
+        #endregion
     }
 }

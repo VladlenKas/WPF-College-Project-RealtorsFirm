@@ -48,6 +48,7 @@ namespace RealtorsFirm_3cursEO
                     ContentFrame.Navigate(new ClientsAdmin(_employee));
                     break;
                 case 2:
+                    ContentFrame.Navigate(new PricesAdmin(_employee));
                     break;
                 case 3:
                     ContentFrame.Navigate(new EstatesAdmin(_employee));
