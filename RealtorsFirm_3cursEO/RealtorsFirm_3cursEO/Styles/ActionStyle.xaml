@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                    xmlns:input="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit">
+                    xmlns:local="clr-namespace:RealtorsFirm_3cursEO.Classes">
 
     <!--#region Buttons -->
     <Style TargetType="{x:Type Button}" x:Key="ActionButton">
@@ -189,7 +189,6 @@
     <!--#endregion-->
     
     <!--#region ComboBoxes-->
-    <!--#region Combobox -->
     <Style TargetType="ComboBoxItem">
         <Setter Property="Template">
             <Setter.Value>
@@ -219,6 +218,7 @@
     <Style TargetType="{x:Type ComboBox}" x:Key="ActionComboBox">
         <Setter Property="Height" Value="35"/>
         <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="Regular"/>
         <Setter Property="Padding" Value="5 0 15 0"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="BorderBrush" Value="{StaticResource LGBase}"/>
@@ -240,31 +240,34 @@
                             <!-- Кнопочка стрелочки -->
                             <ToggleButton 
                                 Focusable="False"
-                                    IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                    ClickMode="Press">
+                                IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                ClickMode="Press">
                                 <ToggleButton.Template>
                                     <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                        <Grid 
-                                            Background="Transparent"
-                                            Width="40"
+                                        <Path 
+                                            Cursor="Hand"
+                                            Data="M 0 0 L 10 10 L 20 0"
+                                            Stroke="{StaticResource LGBase}"
+                                            Fill="#ffffff"
                                             HorizontalAlignment="Right"
-                                            Cursor="Hand">
-                                            <Path 
-                                                Data="M 0 0 L 10 10 L 20 0"
-                                                Stroke="{StaticResource LGBase}"
-                                                Fill="#ffffff"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Center"
-                                                Margin="10 0">      
-                                            </Path>
-                                        </Grid>
-
+                                            VerticalAlignment="Center"
+                                            Margin="0 0 10 0">
+                                        </Path>
                                     </ControlTemplate>
                                 </ToggleButton.Template>
                             </ToggleButton>
 
+                            <TextBlock
+                                Name="textblock"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Text="Выберите элемент"
+                                Visibility="Collapsed"
+                                Margin="40 0"
+                                FontWeight="Light"
+                                FontSize="16"/>
+
                             <ContentPresenter 
-                                Name="ContentSite"
                                 Content="{TemplateBinding SelectionBoxItem}"
                                 ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                 VerticalAlignment="Center"
@@ -308,6 +311,17 @@
                             </Popup>
                         </Grid>
                     </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="SelectedIndex" Value="-1">
+                            <Setter TargetName="textblock" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="textblock" Property="Text" Value="Выберите элемент"/>
+                        </Trigger>
+                        <!--<Trigger SourceName="textblock" Property="Text" Value="Сначала выберите клиента">
+                            <Setter TargetName="textblock" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="textblock" Property="Text" Value="Сначала выберите клиента"/>
+                        </Trigger>-->
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

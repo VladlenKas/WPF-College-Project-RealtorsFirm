@@ -232,13 +232,12 @@
                                     </Grid>
                                 </StackPanel>
 
-
                                 <TextBlock 
                                     FontSize="20"
                                     Margin="0 50"
                                     DockPanel.Dock="Bottom">
-                                    <Run FontWeight="Bold" Text="Общая стоимость услуг:"/>
-                                    <Run Foreground="ForestGreen" Text="{Binding AmountPrices, StringFormat={}{0} руб}"/>
+                                    <Run Text="Общая стоимость услуг:"/>
+                                    <Run Name="amountPricesTextBlock" Foreground="ForestGreen" Text="{Binding AmountPrices, StringFormat={}{0} руб}"/>
                                 </TextBlock>
                             </DockPanel>
                         </Grid>

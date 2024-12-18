@@ -97,8 +97,12 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
         /// </summary>
         private void InputTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SelectedItem = null;
-            ItemsListBox.SelectedItem = null;
+            if (SelectedItem != null)
+            {
+                SelectedItem = null;
+                ItemsListBox.SelectedItem = null;
+                ItemSelected?.Invoke(null); 
+            }
 
             UpdateListBox(); // Обновляем список при изменении текста
             ItemsListBox.Visibility = Visibility.Visible;
@@ -142,6 +146,13 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
                     DisplayMemberPath = "Message";
                     // Если ничего не найдено, можно добавить элемент "Ничего не найдено"
                     var noDataItem = new[] { new { Message = "Ничего не найдено" } };
+                    ItemsListBox.ItemsSource = noDataItem;
+                }
+                else if (ItemsListBox.ItemsSource == null)
+                {
+                    DisplayMemberPath = "Message";
+                    // Если коллекции нет, можно добавить элемент "Нет элементов для выбора"
+                    var noDataItem = new[] { new { Message = "Нет элементов для выбора" } };
                     ItemsListBox.ItemsSource = noDataItem;
                 }
             }
