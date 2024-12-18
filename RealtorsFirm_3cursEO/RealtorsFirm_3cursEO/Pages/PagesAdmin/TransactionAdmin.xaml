@@ -10,6 +10,40 @@
       
       Loaded="Page_Loaded">
 
+    <Page.Resources>
+        <Style TargetType="{x:Type TextBox}" 
+            BasedOn="{StaticResource ActionTextBox}"/>
+        <Style TargetType="{x:Type TextBlock}"
+            BasedOn="{StaticResource ActionTextBlock}"/>
+        <Style TargetType="materialDesign:PackIcon"
+            BasedOn="{StaticResource ActionIcon}"
+            x:Key="icon"/>
+
+        <Style TargetType="ListViewItem">
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Padding" Value="5 3"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border 
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                            <Grid Margin="5">
+                                <TextBlock Style="{x:Null}">
+                                    <Run FontWeight="Regular" Text="Наименование:"/>
+                                    <Run FontWeight="Bold" Text="{Binding Name, StringFormat={}{0}.}"/>
+                                    <Run FontWeight="Regular" Text="Цена:"/>
+                                    <Run Foreground="ForestGreen" Text="{Binding Cost, StringFormat={}{0} руб.}"/>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    
     <Grid>
         <DockPanel Margin="20">
             <Grid>
@@ -20,7 +54,9 @@
             </Grid>
 
             <!-- Верхняя панель с заголовком и фио -->
-            <Grid Grid.Row="0" DockPanel.Dock="Top">
+            <Grid 
+                Grid.Row="0" 
+                DockPanel.Dock="Top">
                 <DockPanel LastChildFill="False">
 
                     <Grid DockPanel.Dock="Left">
@@ -72,11 +108,12 @@
             </Grid>
 
 
-            <!-- Buttons -->
+            <!-- Панель нижняя -->
             <Grid 
                 Grid.Row="1" 
                 Margin="0" 
                 DockPanel.Dock="Top">
+                
                 <Border
                     Background="White"
                     Height="Auto"
@@ -93,6 +130,12 @@
 
                         <!-- Выбранные услуги -->
                         <Grid Grid.Column="0">
+                            
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
                             <DockPanel>
                                 <TextBlock 
                                     Margin="0 0 0 20"
@@ -104,28 +147,106 @@
                                     TextWrapping="WrapWithOverflow"/>
 
                                 <Grid DockPanel.Dock="Top">
-                                    <Grid Panel.ZIndex="0">
-                                        <control:AutoCompleteControl
-                                            x:Name="pricesSearch"
-                                            DisplayMemberPath="Name"/>
+                                    <StackPanel Panel.ZIndex="0">
+                                        <TextBlock Text="Выбор услуги *"/>
+                                        <Grid>
+                                            <control:AutoCompleteControl
+                                                x:Name="PricesSearch"
+                                                DisplayMemberPath="Name"/>
 
-                                        <materialDesign:PackIcon 
-                                            Kind="Search"
-                                            Style="{StaticResource ActionIcon}"/>
-                                    </Grid>
+                                            <materialDesign:PackIcon 
+                                                Kind="Search"
+                                                Style="{StaticResource ActionIcon}"/>
+                                        </Grid>
+                                    </StackPanel>
 
                                     <Border
                                         Panel.ZIndex="-1"
-                                        Margin="0 50 0 0"
+                                        Margin="0 80 0 0"
                                         BorderThickness="1"
                                         BorderBrush="{StaticResource LGBase}"
-                                        CornerRadius="20"/>
+                                        CornerRadius="20">
+
+                                        <DockPanel LastChildFill="False">
+                                            <ListView
+                                                DockPanel.Dock="Top"
+                                                IsHitTestVisible="False"
+                                                x:Name="selectedPricesListView"
+                                                FontWeight="Bold"
+                                                BorderThickness="0"
+                                                Margin="15"/>
+                                        </DockPanel>
+                                    </Border>
                                 </Grid>
+                            </DockPanel>
+
+                            <DockPanel 
+                                Width="450"
+                                Margin="50 0 0 0"
+                                Grid.Column="1">
+                                <TextBlock 
+                                    Margin="0 0 0 20"
+                                    HorizontalAlignment="Center"
+                                    DockPanel.Dock="Top"
+                                    Text="Данные"
+                                    FontSize="26"
+                                    FontWeight="Bold"
+                                    TextWrapping="WrapWithOverflow"/>
+                                <StackPanel DockPanel.Dock="Top">
+                                    <TextBlock Text="ФИО клиента *"/>
+                                    <Grid>
+                                        <control:AutoCompleteControl
+                                            x:Name="CLientSearch"
+                                            DisplayMemberPath="FullName"/>
+                                        <materialDesign:PackIcon
+                                            Style="{StaticResource icon}"
+                                            Kind="User"/>
+                                    </Grid>
+                                </StackPanel>
+
+                                <StackPanel DockPanel.Dock="Top">
+                                    <TextBlock Text="Недвижимость клиента *"/>
+                                    <Grid>
+                                        <ComboBox
+                                            Margin="0 0 0 20"
+                                            Style="{StaticResource ActionComboBox}"
+                                            x:Name="EstateComboBox"
+                                            DisplayMemberPath="Address"/>
+                                        <materialDesign:PackIcon
+                                            Style="{StaticResource icon}"
+                                            Kind="House"/>
+                                    </Grid>
+                                </StackPanel>
+
+                                <StackPanel DockPanel.Dock="Top">
+                                    <TextBlock Text="Статус *"/>
+                                    <Grid>
+                                        <ComboBox
+                                            Margin="0 0 0 20"
+                                            Style="{StaticResource ActionComboBox}"
+                                            x:Name="StatusComboBox"
+                                            DisplayMemberPath="Name"/>
+                                        <materialDesign:PackIcon
+                                            Style="{StaticResource icon}"
+                                            Kind="Timelapse"/>
+                                    </Grid>
+                                </StackPanel>
+
+
+                                <TextBlock 
+                                    FontSize="20"
+                                    Margin="0 50"
+                                    DockPanel.Dock="Bottom">
+                                    <Run FontWeight="Bold" Text="Общая стоимость услуг:"/>
+                                    <Run Foreground="ForestGreen" Text="{Binding AmountPrices, StringFormat={}{0} руб}"/>
+                                </TextBlock>
                             </DockPanel>
                         </Grid>
                     </Grid>
                 </Border>
             </Grid>
+            
+            
         </DockPanel>
     </Grid>
 </Page>

@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 
 namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
 {
@@ -46,6 +47,20 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
         {
             get { return (string)GetValue(DisplayMemberPathProperty); }
             set { SetValue(DisplayMemberPathProperty, value); }
+        }
+        private string _displayMemberPath;
+
+        /// <summary>
+        /// Текст автозаполнителя.
+        /// </summary>
+        public string Text
+        {
+            set
+            {
+                InputTextBox.Text = value;
+                ItemsListBox.SelectedItem = null;
+                SelectedItem = null;
+            }
         }
 
         // Выбранный элемент из списка
@@ -82,7 +97,11 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
         /// </summary>
         private void InputTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            SelectedItem = null;
+            ItemsListBox.SelectedItem = null;
+
             UpdateListBox(); // Обновляем список при изменении текста
+            ItemsListBox.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -90,6 +109,15 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
         /// </summary>
         private void UpdateListBox()
         {
+            if (_displayMemberPath == null)
+            {
+                _displayMemberPath = DisplayMemberPath;
+            }
+            else
+            {
+                DisplayMemberPath = _displayMemberPath;
+            }
+
             if (ItemsSource == null)
             {
                 ItemsListBox.ItemsSource = null; // Или можно установить пустую коллекцию
@@ -111,12 +139,10 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
 
                 if (ItemsListBox.Items.Count == 0)
                 {
-                    var list = new[]
-                    {
-                        new { Name = "Ничего не найдено" }
-                    };
-
-                    ItemsListBox.ItemsSource = (IEnumerable)list;
+                    DisplayMemberPath = "Message";
+                    // Если ничего не найдено, можно добавить элемент "Ничего не найдено"
+                    var noDataItem = new[] { new { Message = "Ничего не найдено" } };
+                    ItemsListBox.ItemsSource = noDataItem;
                 }
             }
         }
@@ -128,12 +154,18 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
         {
             if (item == null) return false;
 
+            if (DisplayMemberPath == "None") // Проверка на специальное значение
+            {
+                return false; // Не фильтруем, если DisplayMemberPath отключен
+            }
+
             PropertyInfo propertyInfo = item.GetType().GetProperty(DisplayMemberPath);
             if (propertyInfo != null)
             {
                 var value = propertyInfo.GetValue(item)?.ToString().ToLower();
                 return value != null && value.Contains(filter); // Проверяем наличие фильтра в значении свойства
             }
+
             return false;
         }
 
@@ -146,21 +178,46 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
         }
 
         /// <summary>
+        /// Проверка на анонимный тип данных
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static bool IsAnonymousType(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            var type = obj.GetType();
+            return type.IsGenericType && type.Name.StartsWith("<>f__AnonymousType");
+        }
+
+        /// <summary>
         /// Обработчик изменения выбора элемента в списке.
         /// </summary>
         private void ItemsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ItemsListBox.SelectedItem is object selectedItem)
             {
+                if (IsAnonymousType(selectedItem))
+                {
+                    ItemsListBox.SelectedItem = null;
+                    return;
+                }
+
                 SelectedItem = selectedItem; // Сохраняем выбранный элемент
                 PropertyInfo propertyInfo = selectedItem.GetType().GetProperty(DisplayMemberPath);
+
+                InputTextBox.TextChanged -= InputTextBox_TextChanged;
                 InputTextBox.Text = propertyInfo?.GetValue(selectedItem)?.ToString(); // Устанавливаем текст в TextBox
+                InputTextBox.TextChanged += InputTextBox_TextChanged;
 
                 // Вызываем событие уведомления о выборе элемента
                 ItemSelected?.Invoke(selectedItem);
 
-                ItemsListBox.Visibility = Visibility.Collapsed; // Скрываем список после выбора
             }
+            ItemsListBox.Visibility = Visibility.Collapsed; // Скрываем список после выбора
         }
 
         /// <summary>

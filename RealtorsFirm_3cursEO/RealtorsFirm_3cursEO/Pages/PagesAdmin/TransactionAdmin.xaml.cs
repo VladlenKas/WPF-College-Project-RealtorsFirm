@@ -1,4 +1,6 @@
-﻿using RealtorsFirm_3cursEO.Model;
+﻿using Pomelo.EntityFrameworkCore.MySql.Storage.Internal;
+using RealtorsFirm_3cursEO.Classes;
+using RealtorsFirm_3cursEO.Model;
 using System;
 using System.Collections.Generic;
 using System.IO.Pipes;
@@ -25,22 +27,39 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
         public TransactionAdmin(Employee employee)
         {
             InitializeComponent();
-
-            pricesSearch.ItemSelected += OnItemSelected;
-            pricesSearch.ItemsSource = App.Context.Prices.ToList();
+            UserFio.Text = $"{employee.FullName}";
         }
 
-        private void OnItemSelected(object selectedItem)
+        private void OnPriceSelected(object selectedItem)
         {
             if (selectedItem is Price price)
             {
-                MessageBox.Show($"Выбран: {price.Name}"); 
+                if (!selectedPricesListView.Items.Contains(price))
+                {
+                    selectedPricesListView.Items.Add(price);
+                }
+                PricesSearch.Text = string.Empty;
+            }
+        }
+
+        private void OnClientSelected(object selectedItem)
+        {
+            if (selectedItem is Client client)
+            {
+                MessageBox.Show(client.FullName);
             }
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            PricesSearch.ItemSelected += OnPriceSelected;
+            PricesSearch.ItemsSource = App.Context.Prices.ToList();
 
+            CLientSearch.ItemSelected += OnClientSelected;
+            CLientSearch.ItemsSource = App.Context.Clients.ToList();
+
+            EstateComboBox.ItemsSource = App.Context.Estates.ToList();
+            StatusComboBox.ItemsSource = App.Context.StatusTransactions.ToList();
         }
     }
 }

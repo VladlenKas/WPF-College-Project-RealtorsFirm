@@ -39,7 +39,7 @@ namespace RealtorsFirm_3cursEO.Classes.DataOperations
                     // Проверка на имя
                     if (!nameIsValid)
                     {
-                        errorsList.Add("Имя, содержащее '-' должно быть формата 'имя-имя'.");
+                        errorsList.Add("Имя, содержащее тире, должно  быть формата \"имя-имя\".");
                     }
                     // Проверка на возраст (на валидную дату)
                     else if (Birthday.Equals(DateOnly.MinValue))

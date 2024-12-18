@@ -58,7 +58,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}" 
                             BorderThickness="1" 
                             CornerRadius="15">
-                            <ScrollViewer Margin="5">
+                            <ScrollViewer Margin="5 5 10 5">
                                 <ItemsPresenter />
                             </ScrollViewer>
                         </Border>

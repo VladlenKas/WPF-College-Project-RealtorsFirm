@@ -133,87 +133,6 @@
         </Setter>
     </Style>
 
-    <Style x:Key="AutoCompleteBoxStyleAction" TargetType="{x:Type input:AutoCompleteBox}">
-        <Setter Property="IsTabStop" Value="False"/>
-        <Setter Property="Padding" Value="2"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LGBase}"/>
-        <Setter Property="Background" Value="#FFFFFFFF"/>
-        <Setter Property="Foreground" Value="#FF000000"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type input:AutoCompleteBox}">
-                    <Grid Opacity="{TemplateBinding Opacity}">
-                        <TextBox x:Name="Text" Style="{StaticResource ActionTextBox}" Margin="0"/>
-
-                        <ToggleButton 
-                            Name="togglebtn"
-                            Focusable="False"
-                            ClickMode="Press">
-                            <ToggleButton.Template>
-                                <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                    <Grid 
-                                        Background="Transparent"
-                                        Width="40"
-                                        HorizontalAlignment="Right"
-                                        Cursor="Hand">
-                                        <Path 
-                                            Data="M 0 0 L 10 10 L 20 0"
-                                            Fill="{StaticResource LGBase}"
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Center"
-                                            Margin="10 0">
-                                        </Path>
-                                    </Grid>
-                                </ControlTemplate>
-                            </ToggleButton.Template>
-                        </ToggleButton>
-
-                        <Popup 
-                            Focusable="False"
-                            AllowsTransparency="True" 
-                            x:Name="Popup">
-                            <Grid 
-                                SnapsToDevicePixels="True"                
-                                MinWidth="{TemplateBinding ActualWidth}"
-                                MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                <!-- Установите белый фон для Popup -->
-                                <Border 
-                                    BorderBrush="{StaticResource LGBase}"
-                                    BorderThickness="1"
-                                    CornerRadius="20">
-                                    <Border.Background>
-                                        <SolidColorBrush Color="White" Opacity="0.9"/>
-                                    </Border.Background>
-                                    
-                                    <ListBox 
-                                        BorderThickness="0"
-                                        Margin="10 3"
-                                        x:Name="Selector"
-                                        Background="Transparent"
-                                        Foreground="{TemplateBinding Foreground}"
-                                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                        ItemTemplate="{TemplateBinding ItemTemplate}"
-                                        ItemContainerStyle="{TemplateBinding ItemContainerStyle}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                        FontSize="16">
-                                    </ListBox>
-                                </Border>
-                            </Grid>
-                        </Popup>
-                    </Grid>
-
-                    <ControlTemplate.Triggers>
-                        <Trigger SourceName="togglebtn" Property="IsChecked" Value="True">
-                            <Setter TargetName="Popup" Property="IsOpen" Value="True"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-
     <Style TargetType="{x:Type PasswordBox}" x:Key="ActionPasswordBox" BasedOn="{StaticResource PassBase}">
         <Setter Property="Width" Value="Auto"/>
         <Setter Property="Height" Value="35"/>
@@ -271,8 +190,35 @@
     
     <!--#region ComboBoxes-->
     <!--#region Combobox -->
+    <Style TargetType="ComboBoxItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Border 
+                        Padding="{TemplateBinding Padding}"
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="10">
+                        <ContentPresenter Margin="5 0"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource LGPressed}"/>
+                        </Trigger>
+
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="FontWeight" Value="Bold"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="{x:Type ComboBox}" x:Key="ActionComboBox">
         <Setter Property="Height" Value="35"/>
+        <Setter Property="FontSize" Value="16"/>
         <Setter Property="Padding" Value="5 0 15 0"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="BorderBrush" Value="{StaticResource LGBase}"/>
@@ -305,10 +251,11 @@
                                             Cursor="Hand">
                                             <Path 
                                                 Data="M 0 0 L 10 10 L 20 0"
-                                                Fill="{StaticResource LGBase}"
+                                                Stroke="{StaticResource LGBase}"
+                                                Fill="#ffffff"
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Center"
-                                                Margin="10 0">
+                                                Margin="10 0">      
                                             </Path>
                                         </Grid>
 
@@ -322,17 +269,7 @@
                                 ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
-                                Margin="40 0">
-                                <ContentPresenter.ContentTemplate>
-                                    <DataTemplate>
-                                        <TextBlock 
-                                            Text="{Binding}" 
-                                            FontSize="16"
-                                            IsHitTestVisible="False">
-                                        </TextBlock>
-                                    </DataTemplate>
-                                </ContentPresenter.ContentTemplate>
-                            </ContentPresenter>
+                                Margin="40 0"/>
 
                             <!-- Контейнер с элементами -->
                             <Popup 
@@ -358,7 +295,7 @@
                                     </Border>
 
                                     <ScrollViewer 
-                                        Margin="4 6" 
+                                        Margin="6" 
                                         SnapsToDevicePixels="True" 
                                         HorizontalAlignment="Center">
                                         <StackPanel 
@@ -375,6 +312,5 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <!--#endregion-->
     <!--#endregion-->
 </ResourceDictionary>
