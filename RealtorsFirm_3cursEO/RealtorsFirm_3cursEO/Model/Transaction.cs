@@ -17,7 +17,9 @@ public partial class Transaction
 
     public DateTime Date { get; set; }
 
-    public int Cost { get; set; }
+    public int AmountTotal { get; set; }
+
+    public int AmountDiscount { get; set; }
 
     public virtual Employee IdEmployeeNavigation { get; set; } = null!;
 

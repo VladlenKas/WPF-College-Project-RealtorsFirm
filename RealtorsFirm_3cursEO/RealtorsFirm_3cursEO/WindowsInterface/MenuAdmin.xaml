@@ -21,7 +21,7 @@
 
         <!-- Cтиль для текста -->
         <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MenuTextBlock}" x:Key="TextBlock">
-           
+            <Setter Property="HorizontalAlignment" Value="Left"/>
         </Style>
     </Window.Resources>
 
@@ -65,7 +65,8 @@
 
                     <Button Style="{StaticResource Navigation}"
                             Content="Оформить чек"
-                            DockPanel.Dock="Top">
+                            DockPanel.Dock="Top"
+                            Click="ButtonTransaction_Click">
                     </Button>
                     
                     <Button Style="{StaticResource Navigation}"

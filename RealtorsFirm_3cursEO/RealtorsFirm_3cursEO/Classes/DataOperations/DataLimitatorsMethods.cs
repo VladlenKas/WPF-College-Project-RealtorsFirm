@@ -59,7 +59,21 @@ namespace RealtorsFirm_3cursEO.Classes
                 return false;
             }
             return true;
-        } 
+        }
+
+        // Ограничение на имя
+        public static bool LimitatorName(string name)
+        {
+            if (name.Contains('-'))
+            {
+                var regex = new Regex(@"^[а-яА-Я]+\-[а-яА-Я]+$");
+                if (!regex.IsMatch(name))
+                {
+                    return false;
+                } 
+            }
+            return true;
+        }
 
         #endregion
     }

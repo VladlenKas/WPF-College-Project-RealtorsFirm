@@ -15,7 +15,7 @@ namespace RealtorsFirm_3cursEO.Classes
         // Ввод КИРРИЛИЦА
         public static void ValidateInputCyrillic(TextCompositionEventArgs e)
         {
-            var regex = new Regex(@"[а-яА-Я\s]");
+            var regex = new Regex(@"[а-яА-Я\-]");
             if (!regex.IsMatch(e.Text))
             {
                 e.Handled = true;
@@ -73,7 +73,7 @@ namespace RealtorsFirm_3cursEO.Classes
             // Извлекаем текст из буфера обмена и конвертурием в текст
             string pastedText = e.DataObject.GetData(DataFormats.Text) as string;
 
-            if (!Regex.IsMatch(pastedText, @"[а-яА-Я\s]"))
+            if (!Regex.IsMatch(pastedText, @"[а-яА-Я\-]"))
             {
                 e.CancelCommand(); // Блокируем ввод
             }

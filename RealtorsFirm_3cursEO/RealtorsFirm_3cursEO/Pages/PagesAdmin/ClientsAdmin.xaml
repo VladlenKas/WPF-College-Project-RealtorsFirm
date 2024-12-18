@@ -168,6 +168,7 @@
                         <DataGridTextColumn Header="Паспорт" Binding="{Binding Passport}"/>
                         <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"/>
                         <DataGridTextColumn Header="Эл. почта" Binding="{Binding Email}"/>
+                        <DataGridTextColumn Header="Бонусов (кол-во)" Binding="{Binding Bonuses}"/>
                         <DataGridTextColumn Header="Архивирован?" Binding="{Binding IsArchive, Converter={StaticResource ArchiveStatusConverter}}"/>
                     </DataGrid.Columns>
                 </DataGrid>

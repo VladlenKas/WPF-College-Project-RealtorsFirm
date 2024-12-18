@@ -1,0 +1,131 @@
+﻿<Page x:Class="RealtorsFirm_3cursEO.Pages.PagesAdmin.TransactionAdmin"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:RealtorsFirm_3cursEO.Pages.PagesAdmin"
+      
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:control="clr-namespace:RealtorsFirm_3cursEO.UserControls.TextBoxes"
+      
+      Loaded="Page_Loaded">
+
+    <Grid>
+        <DockPanel Margin="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+            </Grid>
+
+            <!-- Верхняя панель с заголовком и фио -->
+            <Grid Grid.Row="0" DockPanel.Dock="Top">
+                <DockPanel LastChildFill="False">
+
+                    <Grid DockPanel.Dock="Left">
+                        <TextBlock 
+                            Margin="0 20"
+                            Text="Оформление чека" 
+                            x:Name="NameDataGrid"
+                            FontSize="36"
+                            DockPanel.Dock="Left" 
+                            FontFamily="Segoe UI Variable Display Semibold"/>
+                    </Grid>
+
+                    <Grid DockPanel.Dock="Right">
+                        <DockPanel LastChildFill="False">
+                            <Border 
+                                Width="50" 
+                                Height="50" 
+                                DockPanel.Dock="Left" 
+                                Margin="10 0">
+                                <Border.Background>
+                                    <ImageBrush 
+                                        Stretch="UniformToFill"
+                                        ImageSource="/Images/AdminIconImage.png"/>
+                                </Border.Background>
+                            </Border>
+
+                            <Grid VerticalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock 
+                                    x:Name="UserFio" 
+                                    Grid.Row="0"
+                                    FontFamily="Arial Rounded MT Bold"/>
+                                <TextBlock 
+                                    Text="Администратор" 
+                                    Grid.Row="1"
+                                    FontFamily="Arial Rounded MT Bold">
+                                    <TextBlock.Foreground>
+                                        <SolidColorBrush Color="Black" Opacity="0.6"/>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                            </Grid>
+                        </DockPanel>
+                    </Grid>
+                </DockPanel>
+            </Grid>
+
+
+            <!-- Buttons -->
+            <Grid 
+                Grid.Row="1" 
+                Margin="0" 
+                DockPanel.Dock="Top">
+                <Border
+                    Background="White"
+                    Height="Auto"
+                    BorderThickness="1"
+                    BorderBrush="{StaticResource LGBase}"
+                    CornerRadius="20"
+                    Margin="0">
+
+                    <Grid Margin="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Выбранные услуги -->
+                        <Grid Grid.Column="0">
+                            <DockPanel>
+                                <TextBlock 
+                                    Margin="0 0 0 20"
+                                    HorizontalAlignment="Center"
+                                    DockPanel.Dock="Top"
+                                    Text="Услуги"
+                                    FontSize="26"
+                                    FontWeight="Bold"
+                                    TextWrapping="WrapWithOverflow"/>
+
+                                <Grid DockPanel.Dock="Top">
+                                    <Grid Panel.ZIndex="0">
+                                        <control:AutoCompleteControl
+                                            x:Name="pricesSearch"
+                                            DisplayMemberPath="Name"/>
+
+                                        <materialDesign:PackIcon 
+                                            Kind="Search"
+                                            Style="{StaticResource ActionIcon}"/>
+                                    </Grid>
+
+                                    <Border
+                                        Panel.ZIndex="-1"
+                                        Margin="0 50 0 0"
+                                        BorderThickness="1"
+                                        BorderBrush="{StaticResource LGBase}"
+                                        CornerRadius="20"/>
+                                </Grid>
+                            </DockPanel>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Page>

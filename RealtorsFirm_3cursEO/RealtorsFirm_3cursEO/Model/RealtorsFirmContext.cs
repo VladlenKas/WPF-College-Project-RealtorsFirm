@@ -85,6 +85,9 @@ public partial class RealtorsFirmContext : DbContext
             entity.Property(e => e.Phone)
                 .HasMaxLength(12)
                 .HasColumnName("phone");
+            entity.Property(e => e.Bonuses)
+            .HasDefaultValueSql("'0'")
+            .HasColumnName("bonuses");
         });
 
         modelBuilder.Entity<Employee>(entity =>
@@ -230,7 +233,8 @@ public partial class RealtorsFirmContext : DbContext
             entity.HasIndex(e => e.IdStatus, "id_status");
 
             entity.Property(e => e.IdTransaction).HasColumnName("id_transaction");
-            entity.Property(e => e.Cost).HasColumnName("cost");
+            entity.Property(e => e.AmountTotal).HasColumnName("amount_total");
+            entity.Property(e => e.AmountDiscount).HasColumnName("amount_discount");
             entity.Property(e => e.Date)
                 .HasColumnType("datetime")
                 .HasColumnName("date");

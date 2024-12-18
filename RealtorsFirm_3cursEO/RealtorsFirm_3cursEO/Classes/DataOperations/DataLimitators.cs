@@ -29,13 +29,20 @@ namespace RealtorsFirm_3cursEO.Classes.DataOperations
                 // Все остальные проверки
                 else
                 {
+                    // Проверки для имени
+                    bool nameIsValid = DataLimitatorsMethods.LimitatorName(Name);
                     // Проверки для даты
                     bool ageIsValid = DataLimitatorsMethods.LimitatorAge(Birthday);
                     // Проверка для емайла
                     bool emailIsValid = DataLimitatorsMethods.LimitatorEmail(Email);
 
+                    // Проверка на имя
+                    if (!nameIsValid)
+                    {
+                        errorsList.Add("Имя, содержащее '-' должно быть формата 'имя-имя'.");
+                    }
                     // Проверка на возраст (на валидную дату)
-                    if (Birthday.Equals(DateOnly.MinValue))
+                    else if (Birthday.Equals(DateOnly.MinValue))
                     {
                         errorsList.Add("Укажите корректный формат для даты.");
                     }
