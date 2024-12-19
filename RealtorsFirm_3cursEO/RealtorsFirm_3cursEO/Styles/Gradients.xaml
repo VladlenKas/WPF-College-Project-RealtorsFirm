@@ -63,4 +63,20 @@
         <GradientStop Color="#0D47A1" Offset="0"/>
         <GradientStop Color="#071B4C" Offset="1"/>
     </LinearGradientBrush>
+
+    <!-- For button when not hovered or pressed -->
+    <LinearGradientBrush EndPoint="0.0 0" StartPoint="1.1 1" x:Key="None">
+        <GradientStop Color="#FF989595" Offset="0"/>
+    </LinearGradientBrush>
+
+    <!-- For button when hovered -->
+    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" x:Key="NoneMouseOver">
+        <GradientStop Color="#FF6F6D6D" Offset="0"/>
+    </LinearGradientBrush>
+
+    <!-- For button when pressed -->
+    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" x:Key="NonePressed">
+        <GradientStop Color="#FF5A5858" Offset="0"/>
+    </LinearGradientBrush>
+    <!--#endregion-->
 </ResourceDictionary>

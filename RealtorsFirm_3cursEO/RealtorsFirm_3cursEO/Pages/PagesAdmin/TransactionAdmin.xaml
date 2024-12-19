@@ -34,7 +34,8 @@
                                     <Run FontWeight="Regular" Text="Наименование:"/>
                                     <Run FontWeight="Bold" Text="{Binding Name, StringFormat={}{0}.}"/>
                                     <Run FontWeight="Regular" Text="Цена:"/>
-                                    <Run Foreground="ForestGreen" Text="{Binding Cost, StringFormat={}{0} руб.}"/>
+                                    <Run Foreground="ForestGreen" Text="{Binding Cost}"/>
+                                    <Run FontWeight="Regular" Text="руб."/>
                                 </TextBlock>
                             </Grid>
                         </Border>
@@ -113,7 +114,7 @@
                 Grid.Row="1" 
                 Margin="0" 
                 DockPanel.Dock="Top">
-                
+
                 <Border
                     Background="White"
                     Height="Auto"
@@ -130,12 +131,12 @@
 
                         <!-- Выбранные услуги -->
                         <Grid Grid.Column="0">
-                            
+
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            
+
                             <DockPanel>
                                 <TextBlock 
                                     Margin="0 0 0 20"
@@ -159,7 +160,7 @@
                                                 Style="{StaticResource ActionIcon}"/>
                                         </Grid>
                                     </StackPanel>
-
+                                    
                                     <Border
                                         Panel.ZIndex="-1"
                                         Margin="0 80 0 0"
@@ -167,15 +168,33 @@
                                         BorderBrush="{StaticResource LGBase}"
                                         CornerRadius="20">
 
-                                        <DockPanel LastChildFill="False">
-                                            <ListView
-                                                DockPanel.Dock="Top"
-                                                IsHitTestVisible="False"
-                                                x:Name="selectedPricesListView"
-                                                FontWeight="Bold"
-                                                BorderThickness="0"
-                                                Margin="15"/>
-                                        </DockPanel>
+                                        <Grid>
+                                            <DockPanel LastChildFill="False">
+                                                <ListView
+                                                    DockPanel.Dock="Top"
+                                                    IsHitTestVisible="False"
+                                                    x:Name="selectedPricesListView"
+                                                    FontWeight="Bold"
+                                                    BorderThickness="0"
+                                                    Margin="15"/>
+                                            </DockPanel>
+                                            <Grid 
+                                                VerticalAlignment="Top"
+                                                HorizontalAlignment="Right"
+                                                Margin="20">
+                                                <Button 
+                                                    Click="ClearPricesListView_Click"
+                                                    Style="{StaticResource DeleteButton}"/>
+                                                <materialDesign:PackIcon 
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center"
+                                                    Height="25"
+                                                    Width="25"
+                                                    Margin="0"
+                                                    Kind="Loop"
+                                                    Style="{StaticResource ActionIcon}"/>
+                                            </Grid>
+                                        </Grid>
                                     </Border>
                                 </Grid>
                             </DockPanel>
@@ -192,60 +211,192 @@
                                     FontSize="26"
                                     FontWeight="Bold"
                                     TextWrapping="WrapWithOverflow"/>
-                                <StackPanel DockPanel.Dock="Top">
-                                    <TextBlock Text="ФИО клиента *"/>
-                                    <Grid>
-                                        <control:AutoCompleteControl
-                                            x:Name="CLientSearch"
-                                            DisplayMemberPath="FullName"/>
-                                        <materialDesign:PackIcon
-                                            Style="{StaticResource icon}"
-                                            Kind="User"/>
-                                    </Grid>
-                                </StackPanel>
 
-                                <StackPanel DockPanel.Dock="Top">
-                                    <TextBlock Text="Недвижимость клиента *"/>
-                                    <Grid>
-                                        <ComboBox
-                                            Margin="0 0 0 20"
-                                            Style="{StaticResource ActionComboBox}"
-                                            x:Name="EstateComboBox"
-                                            DisplayMemberPath="Address"/>
-                                        <materialDesign:PackIcon
-                                            Style="{StaticResource icon}"
-                                            Kind="House"/>
-                                    </Grid>
-                                </StackPanel>
+                                <Grid DockPanel.Dock="Top">
+                                    <StackPanel 
+                                        Margin="0 0 0 0"
+                                        Panel.ZIndex="0"
+                                        DockPanel.Dock="Top">
+                                        <TextBlock Text="ФИО клиента *"/>
+                                        <Grid>
+                                            <control:AutoCompleteControl
+                                                x:Name="CLientSearch"
+                                                DisplayMemberPath="FullName"/>
+                                            <materialDesign:PackIcon
+                                                Style="{StaticResource icon}"
+                                                Kind="User"/>
+                                        </Grid>
+                                    </StackPanel>
 
-                                <StackPanel DockPanel.Dock="Top">
-                                    <TextBlock Text="Статус *"/>
-                                    <Grid>
-                                        <ComboBox
-                                            Margin="0 0 0 20"
-                                            Style="{StaticResource ActionComboBox}"
-                                            x:Name="StatusComboBox"
-                                            DisplayMemberPath="Name"/>
-                                        <materialDesign:PackIcon
-                                            Style="{StaticResource icon}"
-                                            Kind="Timelapse"/>
-                                    </Grid>
-                                </StackPanel>
+                                    <StackPanel
+                                        Margin="0 80 0 0"
+                                        Panel.ZIndex="-1"
+                                        DockPanel.Dock="Top">
+                                        <TextBlock Text="Недвижимость клиента *"/>
+                                        <Grid>
+                                            <ComboBox
+                                                SelectionChanged="EstateComboBox_SelectionChanged"
+                                                Style="{StaticResource ActionComboBox}"
+                                                x:Name="EstateComboBox"
+                                                DisplayMemberPath="Address"/>
+                                                <materialDesign:PackIcon
+                                                Style="{StaticResource icon}"
+                                                Kind="House"/>
+                                        </Grid>
+                                    </StackPanel>
 
-                                <TextBlock 
-                                    FontSize="20"
-                                    Margin="0 50"
+                                    <StackPanel 
+                                        Margin="0 160 0 0"
+                                        Panel.ZIndex="-1"
+                                        DockPanel.Dock="Top">
+                                        <TextBlock Text="Статус *"/>
+                                        <Grid>
+                                            <ComboBox
+                                                SelectionChanged="StatusComboBox_SelectionChanged"
+                                                Style="{StaticResource ActionComboBox}"
+                                                x:Name="StatusComboBox"
+                                                DisplayMemberPath="Name"/>
+                                            <materialDesign:PackIcon
+                                                Style="{StaticResource icon}"
+                                                Kind="Timelapse"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel 
+                                        Margin="0 240 0 0"
+                                        Panel.ZIndex="-1"
+                                        DockPanel.Dock="Top">
+                                        <TextBlock Text="Бонусы *"/>
+                                        <Grid Margin="0 0 0 20">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <RadioButton 
+                                                Click="RadioButton_Click"
+                                                Name="WriteOffButton"
+                                                IsChecked="True"
+                                                Content="Начислить"
+                                                Style="{StaticResource RadioButtonDesign}"/>
+                                            <RadioButton
+                                                Click="RadioButton_Click"
+                                                Name="ChargeBonusesButton"
+                                                Content="Списать"
+                                                Grid.Column="2"
+                                                Style="{StaticResource RadioButtonDesign}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <StackPanel
+                                    Margin="0 50 0 0"
                                     DockPanel.Dock="Bottom">
-                                    <Run Text="Общая стоимость услуг:"/>
-                                    <Run Name="amountPricesTextBlock" Foreground="ForestGreen" Text="{Binding AmountPrices, StringFormat={}{0} руб}"/>
-                                </TextBlock>
+                                    <Grid>
+                                        <TextBlock 
+                                            Margin="0"
+                                            FontSize="20"
+                                            DockPanel.Dock="Bottom">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsChecked, ElementName=WriteOffButton}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                            <Run Text="Бонусов:"/>
+                                            <Run Name="amountBonusesAddTextBlock" Foreground="ForestGreen" Text="{Binding CountBonuses}"/>
+                                            <Run Text="шт."/>
+                                        </TextBlock>
+
+                                        <DockPanel>
+                                            <DockPanel.Style>
+                                                <Style TargetType="DockPanel">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsChecked, ElementName=ChargeBonusesButton}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DockPanel.Style>
+                                            <TextBlock 
+                                                VerticalAlignment="Bottom"
+                                                Margin="0 0 10 10"
+                                                DockPanel.Dock="Left"
+                                                FontSize="20">
+                                                <Run Text="Бонусов:"/>
+                                            </TextBlock>
+
+                                            <Grid Margin="0 -25 0 0">
+                                                <StackPanel>
+                                                    <TextBlock>
+                                                        <Run Text="У выбранного клиента"/>
+                                                        <Run Name="BonusesSelectedClientTextBlock" Foreground="ForestGreen" Text="{Binding BonusesSelectedClient}"/>
+                                                        <Run Text="бонусов."/>
+                                                    </TextBlock>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition/>
+                                                            <ColumnDefinition Width="10"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <Grid>
+                                                            <TextBox
+                                                                MaxLength="4"
+                                                                DockPanel.Dock="Left"
+                                                                Margin="0"
+                                                                Tag="Не более 2000 бонусов"
+                                                                TextChanged="AmountBonusesMinusTextBox_TextChanged"
+                                                                Name="amountBonusesMinusTextBox"
+                                                                PreviewTextInput="AmountBonusesMinusTextBox_PreviewTextInput"
+                                                                DataObject.Pasting="AmountBonusesMinusTextBox_Pasting"/>
+                                                            <materialDesign:PackIcon
+                                                                Margin="15 12 5 0"
+                                                                Style="{StaticResource icon}"
+                                                                Kind="Star"/>
+                                                        </Grid>
+                                                        
+                                                        <Button 
+                                                            Click="AllBonusesSelect_Click"
+                                                            Grid.Column="2"
+                                                            Content="Все"
+                                                            FontSize="16"
+                                                            FontWeight="Regular"
+                                                            Padding="20 0"
+                                                            Style="{StaticResource ActionButtonGradientBigger}"/>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </Grid>
+                                        </DockPanel>
+                                    </Grid>
+
+                                    <TextBlock 
+                                        FontSize="20"
+                                        Margin="0 5 0 50"
+                                        DockPanel.Dock="Bottom">
+                                        <Run Text="Общая стоимость:"/>
+                                        <Run Name="amountPricesTextBlock" Foreground="ForestGreen" Text="{Binding AmountTotal}"/>
+                                        <Run Text="руб."/>
+                                    </TextBlock>
+
+                                    <Button
+                                        Name="CreateNewTransatcionButton"
+                                        FontSize="16"
+                                        FontWeight="Bold"
+                                        Content="Оформить услуги"
+                                        Style="{StaticResource ActionButtonGradientBigger}"
+                                        Click="CreateNewTransatcion_Click"/>
+                                </StackPanel>
                             </DockPanel>
                         </Grid>
                     </Grid>
                 </Border>
             </Grid>
-            
-            
         </DockPanel>
     </Grid>
 </Page>
