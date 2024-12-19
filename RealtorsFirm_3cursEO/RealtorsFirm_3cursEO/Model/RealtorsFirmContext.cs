@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
@@ -17,13 +16,13 @@ public partial class RealtorsFirmContext : DbContext
     {
     }
 
-    public virtual DbSet<Client> AllClients { get; set; } // существующие + удаленные
+    public virtual DbSet<Client> AllClients { get; set; }
 
-    public virtual DbSet<Employee> AllEmployees { get; set; } // существующие + удаленные
+    public virtual DbSet<Employee> AllEmployees { get; set; }
 
-    public virtual DbSet<Estate> AllEstates { get; set; } // существующие + удаленные
+    public virtual DbSet<Estate> AllEstates { get; set; }
 
-    public virtual DbSet<Price> AllPrices { get; set; } // существующие + удаленные
+    public virtual DbSet<Price> AllPrices { get; set; }
 
     public virtual DbSet<RoleEmployee> RoleEmployees { get; set; }
 
@@ -61,6 +60,9 @@ public partial class RealtorsFirmContext : DbContext
 
             entity.Property(e => e.IdClient).HasColumnName("id_client");
             entity.Property(e => e.Birthday).HasColumnName("birthday");
+            entity.Property(e => e.Bonuses)
+                .HasDefaultValueSql("'0'")
+                .HasColumnName("bonuses");
             entity.Property(e => e.Email)
                 .HasMaxLength(45)
                 .HasColumnName("email");
@@ -83,11 +85,8 @@ public partial class RealtorsFirmContext : DbContext
                 .HasMaxLength(45)
                 .HasColumnName("patronymic");
             entity.Property(e => e.Phone)
-                .HasMaxLength(12)
+                .HasMaxLength(11)
                 .HasColumnName("phone");
-            entity.Property(e => e.Bonuses)
-            .HasDefaultValueSql("'0'")
-            .HasColumnName("bonuses");
         });
 
         modelBuilder.Entity<Employee>(entity =>
@@ -126,7 +125,7 @@ public partial class RealtorsFirmContext : DbContext
                 .HasMaxLength(45)
                 .HasColumnName("patronymic");
             entity.Property(e => e.Phone)
-                .HasMaxLength(12)
+                .HasMaxLength(11)
                 .HasColumnName("phone");
 
             entity.HasOne(d => d.IdRoleNavigation).WithMany(p => p.Employees)
@@ -233,8 +232,8 @@ public partial class RealtorsFirmContext : DbContext
             entity.HasIndex(e => e.IdStatus, "id_status");
 
             entity.Property(e => e.IdTransaction).HasColumnName("id_transaction");
-            entity.Property(e => e.AmountTotal).HasColumnName("amount_total");
             entity.Property(e => e.AmountDiscount).HasColumnName("amount_discount");
+            entity.Property(e => e.AmountTotal).HasColumnName("amount_total");
             entity.Property(e => e.Date)
                 .HasColumnType("datetime")
                 .HasColumnName("date");
@@ -269,9 +268,7 @@ public partial class RealtorsFirmContext : DbContext
 
             entity.HasIndex(e => e.IdTransaction, "id_transaction_idx");
 
-            entity.Property(e => e.IdTransactionPriceRelations)
-                .ValueGeneratedNever()
-                .HasColumnName("id_transaction_price_relations");
+            entity.Property(e => e.IdTransactionPriceRelations).HasColumnName("id_transaction_price_relations");
             entity.Property(e => e.IdPrice).HasColumnName("id_price");
             entity.Property(e => e.IdTransaction).HasColumnName("id_transaction");
 

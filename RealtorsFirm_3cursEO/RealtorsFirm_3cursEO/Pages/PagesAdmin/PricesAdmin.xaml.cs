@@ -1,6 +1,7 @@
 ﻿using RealtorsFirm_3cursEO.Classes;
 using RealtorsFirm_3cursEO.Edits;
 using RealtorsFirm_3cursEO.Model;
+using RealtorsFirm_3cursEO.Model;
 using RealtorsFirm_3cursEO.WindowsActions.Price;
 using System;
 using System.Collections.Generic;

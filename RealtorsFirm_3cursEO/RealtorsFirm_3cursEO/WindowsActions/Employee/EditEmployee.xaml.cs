@@ -17,6 +17,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using RealtorsFirm_3cursEO.Model;
 
 namespace RealtorsFirm_3cursEO.Edits
 {

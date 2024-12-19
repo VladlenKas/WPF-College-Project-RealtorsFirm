@@ -27,7 +27,7 @@ public partial class Client
 
     public sbyte? IsArchive { get; set; }
 
-    public int Bonuses { get; set; }
+    public int? Bonuses { get; set; }
 
     public virtual ICollection<Estate> Estates { get; set; } = new List<Estate>();
 }

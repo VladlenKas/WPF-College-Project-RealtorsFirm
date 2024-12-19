@@ -60,6 +60,7 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
                 InputTextBox.Text = value;
                 ItemsListBox.SelectedItem = null;
                 SelectedItem = null;
+                ItemsListBox.Visibility = Visibility.Collapsed;
             }
         }
 

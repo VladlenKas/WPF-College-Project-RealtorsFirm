@@ -1,9 +1,12 @@
-﻿using Pomelo.EntityFrameworkCore.MySql.Storage.Internal;
+﻿using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Storage.Internal;
 using RealtorsFirm_3cursEO.Classes;
+using RealtorsFirm_3cursEO.Model;
 using RealtorsFirm_3cursEO.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.IO.Pipes;
 using System.Linq;
 using System.Text;
@@ -147,11 +150,12 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             get { return _selectedClient; }
             set
             {
+                dbContext = new();
                 _selectedClient = value;
 
                 if (_selectedClient is Client client)
                 {
-                    List<Estate> estates = new(App.Context.Estates.Where(r => r.IdClient == client.IdClient).ToList());
+                    List<Estate> estates = new(dbContext.Estates.Where(r => r.IdClient == client.IdClient).ToList());
                     if (estates.Count == 0)
                     {
                         var noDataItem = new[] { new { Address = "У данного клиента нет недвижимостей" } };
@@ -161,7 +165,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
                     }
                     else
                     {
-                        EstateComboBox.ItemsSource = App.Context.Estates.Where(r => r.IdClient == client.IdClient).ToList();
+                        EstateComboBox.ItemsSource = dbContext.Estates.Where(r => r.IdClient == client.IdClient).ToList();
                         EstateComboBox.FontWeight = System.Windows.FontWeight.FromOpenTypeWeight(400);
                     }
                 }
@@ -236,13 +240,20 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             }
         }
 
+        private Employee Employee;
+        private RealtorsFirmContext dbContext;
         #endregion
 
         public TransactionAdmin(Employee employee)
         {
             InitializeComponent();
 
+            // Устанавливаем контекст привязки, чтобы
+            // все элементы обновлялись автоматически
             DataContext = this;
+
+            dbContext = new();
+            Employee = employee;
             UserFio.Text = $"{employee.FullName}";
         }
 
@@ -287,6 +298,63 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             return allFieldsFilled;
         }
 
+        private void CreateNewTransaction()
+        {
+            var result = MessageBox.Show("Вы уверены, что заполнили все поля верно и хотите осуществить транзакцию?",
+                "Подтверждение",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                bool IsAccrualBonuses = WriteOffButton.IsChecked == true;
+                ModelActions.CreateTransaction(Employee.IdEmployee, SelectedClient.IdClient, SelectedEstate.IdEstate,
+                    SelectedStatusTransaction.IdStatus, AmountDiscard, AmountTotal, SelectedPrices, CountBonuses,
+                    BonusesDiscardSelectedClient, IsAccrualBonuses);
+                MessageBox.Show($"Транзакция на клиента {SelectedClient.FullName} успешно создана!",
+                    "Успешно",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
+                ClearFields();
+                DataUpdate();
+            }
+        }
+
+        private void ClearFields()
+        {
+            SelectedClient = null;
+            SelectedEstate = null;
+            EstateComboBox.SelectedIndex = 0;
+            StatusComboBox.SelectedIndex = -1;
+            AmountDiscard = 0;
+            AmountTotal = 0;
+            SelectedPrices = new List<Price>();
+            CountBonuses = 0;
+            BonusesDiscardSelectedClient = 0;
+            selectedPricesListView.Items.Clear();
+            CLientSearch.Text = string.Empty;
+
+            WriteOffButton.IsChecked = true;
+        }
+
+        private void DataUpdate()
+        {
+            PricesSearch.ItemSelected -= OnPriceSelected;
+            CLientSearch.ItemSelected -= OnClientSelected;
+
+            dbContext = new();
+            PricesSearch.ItemSelected += OnPriceSelected;
+            PricesSearch.ItemsSource = dbContext.Prices.ToList();
+
+            CLientSearch.ItemSelected += OnClientSelected;
+            CLientSearch.ItemsSource = dbContext.Clients.ToList();
+
+            StatusComboBox.ItemsSource = dbContext.StatusTransactions.ToList();
+
+            SelectedClient = null;
+        }
+
         /// <summary>
         /// Событие для выбора услуги
         /// </summary>
@@ -304,7 +372,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
                     var lisrPrices = new List<Price>();
                     foreach (var selectedPrice in selectedPricesListView.Items)
                     {
-                        lisrPrices.Add(price);
+                        lisrPrices.Add(selectedPrice as Price);
                     }
                     SelectedPrices = new List<Price>(lisrPrices);
                 }
@@ -330,15 +398,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            PricesSearch.ItemSelected += OnPriceSelected;
-            PricesSearch.ItemsSource = App.Context.Prices.ToList();
-
-            CLientSearch.ItemSelected += OnClientSelected;
-            CLientSearch.ItemsSource = App.Context.Clients.ToList();
-
-            StatusComboBox.ItemsSource = App.Context.StatusTransactions.ToList();
-
-            SelectedClient = null;
+            DataUpdate();
         }
 
         private void AmountBonusesMinusTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -405,25 +465,34 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             {
                 int minusBonuses = int.Parse(textBox.Text);
 
-                if (BonusesSelectedClient >= minusBonuses)
+                if (BonusesSelectedClient >= minusBonuses && minusBonuses <= 2000)
                 {
                     AmountTotal = AmountDiscard;
 
                     BonusesDiscardSelectedClient = minusBonuses;
                     AmountTotal = AmountDiscard - BonusesDiscardSelectedClient;
+
+                    return;
+                }
+                else if (minusBonuses > 2000)
+                {
+                    MessageBox.Show("Вы не можете списать больше 2000 бонусов.",
+                            "Предупреждение",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning);
                 }
                 else
                 {
-                    amountBonusesMinusTextBox.TextChanged -= AmountBonusesMinusTextBox_TextChanged;
-                    textBox.Text = BonusesDiscardSelectedClient.ToString();
-                    textBox.SelectionStart = textBox.Text.Length;
-                    amountBonusesMinusTextBox.TextChanged += AmountBonusesMinusTextBox_TextChanged;
-
                     MessageBox.Show("Вы не можете списать бонусов больше, чем есть у клиента.",
                             "Предупреждение",
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
                 }
+
+                amountBonusesMinusTextBox.TextChanged -= AmountBonusesMinusTextBox_TextChanged;
+                textBox.Text = BonusesDiscardSelectedClient.ToString();
+                textBox.SelectionStart = textBox.Text.Length;
+                amountBonusesMinusTextBox.TextChanged += AmountBonusesMinusTextBox_TextChanged;
             }
             else
             {
@@ -433,12 +502,20 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
         private void AllBonusesSelect_Click(object sender, RoutedEventArgs e)
         {
-            amountBonusesMinusTextBox.Text = SelectedClient.Bonuses.ToString();
+            int minusBonuses = Convert.ToInt32(SelectedClient.Bonuses);
+            if (minusBonuses > 2000)
+            {
+                amountBonusesMinusTextBox.Text = "2000";
+            }
+            else
+            {
+                amountBonusesMinusTextBox.Text = SelectedClient.Bonuses.ToString();
+            }
         }
 
         private void CreateNewTransatcion_Click(object sender, RoutedEventArgs e)
         {
-
+            CreateNewTransaction();
         }
 
         private void EstateComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

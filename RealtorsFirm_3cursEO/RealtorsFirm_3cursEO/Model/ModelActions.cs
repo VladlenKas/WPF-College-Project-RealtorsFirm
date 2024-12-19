@@ -82,8 +82,8 @@ namespace RealtorsFirm_3cursEO.Model
                 newEmployee.Phone = Phone;
                 newEmployee.Passport = Passport;
                 newEmployee.Email = Email;
-                newEmployee.Password = Password; 
-                newEmployee.IdRole = idRole; 
+                newEmployee.Password = Password;
+                newEmployee.IdRole = idRole;
 
                 // Сохраняем изменения в базе данных
                 dbContext.SaveChanges();
@@ -170,6 +170,70 @@ namespace RealtorsFirm_3cursEO.Model
                 dbContext.SaveChanges();
             }
         }
+        #endregion
+
+        #region Транзакция
+
+        // Добавление
+        public static void CreateTransaction(int IdEmployee, int IdClient, int IdEstate, int IdStatus,
+            int AmountTotal, int AmountDiscount, List<Price> prices, int AccrualBonuses, int DiscardBonuses, bool IsAccrualBonuses)
+        {
+            RealtorsFirmContext dbContext = new RealtorsFirmContext();
+
+            // Создаем новый объект Transaction
+            var newTransaction = new Transaction
+            {
+                IdEmployee = IdEmployee,
+                IdClient = IdClient,
+                IdEstate = IdEstate,
+                IdStatus = IdStatus,
+                Date = DateTime.Now,
+                AmountTotal = AmountTotal,
+                AmountDiscount = AmountDiscount
+            };
+
+            // Добавляем нового сотрудника в контекст
+            dbContext.Transactions.Add(newTransaction);
+
+            // Сохраняем изменения в базе данных
+            dbContext.SaveChanges();
+
+            // Обновляем бд
+            dbContext = new();
+
+            // Передаем id для табличной части
+            int idTransaction = newTransaction.IdTransaction;
+            // Создаем список для хранения отношений цен
+            foreach (var price in prices)
+            {
+                var priceOutDb = dbContext.Prices.Single(r => r.IdPrice == price.IdPrice);
+                TransactionPriceRelation relation = new TransactionPriceRelation()
+                {
+                    IdTransaction = idTransaction,
+                    IdPrice = priceOutDb.IdPrice
+                };
+                dbContext.TransactionPriceRelations.Add(relation);
+            }
+
+            // Сохраняем изменения в базе данных
+            dbContext.SaveChanges();
+
+            // Начисляем или списываем бонусы у клиента
+            var client = dbContext.Clients.Single(r => r.IdClient == IdClient);
+            if (IsAccrualBonuses)
+            {
+                client.Bonuses += AccrualBonuses; // Начисляем бонусы
+            }
+            else
+            {
+                client.Bonuses -= DiscardBonuses; // Списываем бонусы
+            }
+
+            //  Обновляем и сохраняем изменения в базе данных
+            dbContext.Update(client);
+            dbContext.SaveChanges();
+        }
+
         #endregion
     }
 }

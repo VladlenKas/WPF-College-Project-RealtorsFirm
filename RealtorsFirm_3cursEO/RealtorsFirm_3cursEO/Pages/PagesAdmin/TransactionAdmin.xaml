@@ -178,6 +178,23 @@
                                                     BorderThickness="0"
                                                     Margin="15"/>
                                             </DockPanel>
+
+                                            <TextBlock
+                                                Text="Выберите услуги"
+                                                FontSize="26"
+                                                Margin="20">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Items.Count, ElementName=selectedPricesListView}" Value="0">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            
                                             <Grid 
                                                 VerticalAlignment="Top"
                                                 HorizontalAlignment="Right"
@@ -307,7 +324,7 @@
                                                     </Style.Triggers>
                                                 </Style>
                                             </TextBlock.Style>
-                                            <Run Text="Бонусов:"/>
+                                            <Run Text="Бонусов начислится:"/>
                                             <Run Name="amountBonusesAddTextBlock" Foreground="ForestGreen" Text="{Binding CountBonuses}"/>
                                             <Run Text="шт."/>
                                         </TextBlock>
@@ -328,7 +345,7 @@
                                                 Margin="0 0 10 10"
                                                 DockPanel.Dock="Left"
                                                 FontSize="20">
-                                                <Run Text="Бонусов:"/>
+                                                <Run Text="Бонусов спишется:"/>
                                             </TextBlock>
 
                                             <Grid Margin="0 -25 0 0">
@@ -350,7 +367,7 @@
                                                                 MaxLength="4"
                                                                 DockPanel.Dock="Left"
                                                                 Margin="0"
-                                                                Tag="Не более 2000 бонусов"
+                                                                Tag="Не более 2000 шт."
                                                                 TextChanged="AmountBonusesMinusTextBox_TextChanged"
                                                                 Name="amountBonusesMinusTextBox"
                                                                 PreviewTextInput="AmountBonusesMinusTextBox_PreviewTextInput"
@@ -377,7 +394,7 @@
 
                                     <TextBlock 
                                         FontSize="20"
-                                        Margin="0 5 0 50"
+                                        Margin="0 5 0 30"
                                         DockPanel.Dock="Bottom">
                                         <Run Text="Общая стоимость:"/>
                                         <Run Name="amountPricesTextBlock" Foreground="ForestGreen" Text="{Binding AmountTotal}"/>
