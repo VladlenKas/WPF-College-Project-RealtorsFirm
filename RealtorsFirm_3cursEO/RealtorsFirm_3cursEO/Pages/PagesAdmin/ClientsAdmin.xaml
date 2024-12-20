@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:RealtorsFirm_3cursEO.PagesAdmin"
 
-      xmlns:ArchiveConverter="clr-namespace:RealtorsFirm_3cursEO.Classes"
+      xmlns:Converter="clr-namespace:RealtorsFirm_3cursEO.Classes.Converters"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
    
       Title="EmployeesAdmin"
@@ -13,35 +13,29 @@
 
     <Page.Resources>
         <!-- Конвертер для обозначения архивированных записей -->
-        <ArchiveConverter:ArchiveStatusConverter x:Key="ArchiveStatusConverter"/>
-
-        <Style TargetType="materialDesign:PackIcon" 
-            BasedOn="{StaticResource IconButton}">
-        </Style>
-
-        <!-- Cтиль для текста -->
-        <Style TargetType="{x:Type TextBlock}" x:Key="TextBlock">
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-        </Style>
-
-        <!-- Переопределенный стиль для кнопки -->
-        <Style TargetType="{x:Type Button}"
-                BasedOn="{StaticResource BGradient}">
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="Width" Value="Auto"/>
-            <Setter Property="FontSize" Value="16"/>
-        </Style>
-
-        <!-- Переопределенный стиль для текстовых полей -->
-        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TBBase}">
-            <Setter Property="Width" Value="550"/>
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="36 0 0 0"/>
-        </Style>
+        <Converter:ArchiveStatusConverter x:Key="ArchiveStatusConverter"/>
+        <!-- Конвертер для обозначения статуса входа -->
+        <Converter:RegisteredStatusConverter x:Key="RegisteredStatusConverter"/>
+        <!-- Конвертер форматирования текста с паспортом -->
+        <Converter:PassportConverter x:Key="PassportConverter"/>
+        <!-- Конвертер для форматирования текста с номером телефона -->
+        <Converter:PhoneConverter x:Key="PhoneConverter"/>
+        <!-- Кнопки для дата грид -->
+        <DataTemplate x:Key="ActionsTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Button 
+               Margin="0 0 12 0"
+               Style="{StaticResource EditDG}"
+               Click="ButtonEdit_Click"/>
+                <Button 
+               Margin="0 0 12 0"
+               Style="{StaticResource ArchiveDG}"
+               Click="ButtonArchive_Click"/>
+                <Button 
+               Style="{StaticResource DeleteDG}"
+               Click="ButtonDelete_Click"/>
+            </StackPanel>
+        </DataTemplate>
     </Page.Resources>
 
     <Grid>
@@ -60,6 +54,7 @@
                     <!-- TextBox search -->
                     <Grid DockPanel.Dock="Left">
                         <TextBox 
+                            Style="{StaticResource SearchTextBox}"
                             x:Name="SearchTextBox"
                             TextChanged="SearchTextBox_TextChanged"
                             Tag="Поиск по ФИО"/>
@@ -134,6 +129,21 @@
                         Text="Клиенты" 
                         DockPanel.Dock="Left" />
 
+
+                    <!-- Button add -->
+                    <Grid DockPanel.Dock="Right">
+                        <Button Width="250"
+                        Style="{StaticResource BGradient}"
+                        Click="AddButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Margin="0 0 5 0"
+                                    Kind="Add"/>
+                                <TextBlock Text="Добавить клиента" Style="{StaticResource MenuTextBlock}"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
                     <!--Button sort -->
                     <Grid 
                         Width="400"
@@ -158,18 +168,52 @@
             <Grid>
                 <DataGrid 
                     Name="ClientsDataGrid"
+                    SelectionChanged="ClientsDataGrid_SelectionChanged"
                     Style="{StaticResource MenuDataGrid}"
                     ColumnHeaderStyle="{StaticResource MenuDataGridColumnHeader}"
                     RowStyle="{StaticResource MenuDataGridRow}"
                     CellStyle="{StaticResource MenuDataGridCell}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
+                        <DataGridTemplateColumn Header="ФИО" MaxWidth="200">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock 
+                                        Text="{Binding FullName}" 
+                                        TextWrapping="Wrap" 
+                                        MaxWidth="200">
+                                    </TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         <DataGridTextColumn Header="Дата рождения" Binding="{Binding Birthday, StringFormat=dd.MM.yyyy}"/>
-                        <DataGridTextColumn Header="Паспорт" Binding="{Binding Passport}"/>
-                        <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"/>
-                        <DataGridTextColumn Header="Эл. почта" Binding="{Binding Email}"/>
-                        <DataGridTextColumn Header="Бонусов (кол-во)" Binding="{Binding Bonuses}"/>
+                        <DataGridTextColumn Header="Паспорт" Binding="{Binding Passport, Converter={StaticResource PassportConverter}}"/>
+                        <DataGridTextColumn Header="Телефон" Binding="{Binding Phone, Converter={StaticResource PhoneConverter}}"/>
+                        <DataGridTemplateColumn Header="Эл. почта" MaxWidth="200">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock 
+                                        Text="{Binding Email}" 
+                                        TextWrapping="Wrap" 
+                                        MaxWidth="200">
+                                    </TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Пароль" MaxWidth="200">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock 
+                                        Text="{Binding Password}" 
+                                        TextWrapping="Wrap" 
+                                        MaxWidth="200">
+                                    </TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Бонусов" Binding="{Binding Bonuses, StringFormat={}{0} шт.}"/>
                         <DataGridTextColumn Header="Архивирован?" Binding="{Binding IsArchive, Converter={StaticResource ArchiveStatusConverter}}"/>
+                        <DataGridTextColumn Header="Статус входа" Binding="{Binding IsRegistered, Converter={StaticResource RegisteredStatusConverter}}"/>
+                        <DataGridTemplateColumn Header="Действия" CellTemplate="{StaticResource ActionsTemplate}"/>
                     </DataGrid.Columns>
                 </DataGrid>
 

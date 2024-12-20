@@ -2,7 +2,6 @@
 using Pomelo.EntityFrameworkCore.MySql.Storage.Internal;
 using RealtorsFirm_3cursEO.Classes;
 using RealtorsFirm_3cursEO.Model;
-using RealtorsFirm_3cursEO.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -155,7 +154,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
                 if (_selectedClient is Client client)
                 {
-                    List<Estate> estates = new(dbContext.Estates.Where(r => r.IdClient == client.IdClient).ToList());
+                    List<Estate> estates = new(dbContext.Estates.Where(r => r.IdClient == client.IdClient && r.IsArchive != 1).ToList());
                     if (estates.Count == 0)
                     {
                         var noDataItem = new[] { new { Address = "У данного клиента нет недвижимостей" } };
@@ -177,26 +176,8 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
                     EstateComboBox.SelectedIndex = 0;
                 }
                 OnPropertyChanged(nameof(SelectedClient));
-            }
-        }
+                WriteOffButton.IsChecked = true;
 
-        /// <summary>
-        /// Приватное поле для хранения значения с выбранным статусом транзакции
-        /// </summary>
-        private StatusTransaction _selectedStatusTransaction;
-        /// <summary>
-        /// Свойство для доступа к полю с выбранным статусом транзакции
-        /// </summary>
-        public StatusTransaction SelectedStatusTransaction
-        {
-            get { return _selectedStatusTransaction; }
-            set
-            {
-                if (_selectedStatusTransaction != value)
-                {
-                    _selectedStatusTransaction = value;
-                    OnPropertyChanged(nameof(SelectedStatusTransaction));
-                }
             }
         }
 
@@ -257,6 +238,9 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             UserFio.Text = $"{employee.FullName}";
         }
 
+        /// <summary>
+        /// Отвечает за отображение кнопки для создания транзакции
+        /// </summary>
         private void VisibilityButtonAdd()
         {
             // Удаляем событие для того, чтобы кнопка были недоступна до проверки
@@ -275,6 +259,10 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             }
         }
 
+        /// <summary>
+        /// Отвечает за проверку на пустоту для всех полей и списков
+        /// </summary>
+        /// <returns></returns>
         private bool CheckFields()
         {
             bool allFieldsFilled = false;
@@ -283,14 +271,12 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             {
                 allFieldsFilled = SelectedClient != null &&
                                            SelectedEstate != null &&
-                                           SelectedStatusTransaction != null &&
                                            SelectedPrices.Count != 0; 
             }
             else if (ChargeBonusesButton.IsChecked == true)
             {
                 allFieldsFilled = SelectedClient != null &&
                                            SelectedEstate != null &&
-                                           SelectedStatusTransaction != null &&
                                            SelectedPrices.Count != 0 &&
                                            amountBonusesMinusTextBox.Text != string.Empty;
             }
@@ -298,6 +284,9 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             return allFieldsFilled;
         }
 
+        /// <summary>
+        /// Создает новую транзакцию
+        /// </summary>
         private void CreateNewTransaction()
         {
             var result = MessageBox.Show("Вы уверены, что заполнили все поля верно и хотите осуществить транзакцию?",
@@ -309,7 +298,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             {
                 bool IsAccrualBonuses = WriteOffButton.IsChecked == true;
                 ModelActions.CreateTransaction(Employee.IdEmployee, SelectedClient.IdClient, SelectedEstate.IdEstate,
-                    SelectedStatusTransaction.IdStatus, AmountDiscard, AmountTotal, SelectedPrices, CountBonuses,
+                    AmountDiscard, AmountTotal, SelectedPrices, CountBonuses,
                     BonusesDiscardSelectedClient, IsAccrualBonuses);
                 MessageBox.Show($"Транзакция на клиента {SelectedClient.FullName} успешно создана!",
                     "Успешно",
@@ -321,12 +310,14 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             }
         }
 
+        /// <summary>
+        /// Очищает все поля и списки
+        /// </summary>
         private void ClearFields()
         {
             SelectedClient = null;
             SelectedEstate = null;
             EstateComboBox.SelectedIndex = 0;
-            StatusComboBox.SelectedIndex = -1;
             AmountDiscard = 0;
             AmountTotal = 0;
             SelectedPrices = new List<Price>();
@@ -338,6 +329,9 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             WriteOffButton.IsChecked = true;
         }
 
+        /// <summary>
+        /// Загружает все данные, тем самым динамически их обновляет 
+        /// </summary>
         private void DataUpdate()
         {
             PricesSearch.ItemSelected -= OnPriceSelected;
@@ -345,12 +339,10 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
             dbContext = new();
             PricesSearch.ItemSelected += OnPriceSelected;
-            PricesSearch.ItemsSource = dbContext.Prices.ToList();
+            PricesSearch.ItemsSource = dbContext.Prices.Where(r => r.IsArchive != 1).ToList();
 
             CLientSearch.ItemSelected += OnClientSelected;
-            CLientSearch.ItemsSource = dbContext.Clients.ToList();
-
-            StatusComboBox.ItemsSource = dbContext.StatusTransactions.ToList();
+            CLientSearch.ItemsSource = dbContext.Clients.Where(r => r.IsArchive != 1).ToList();
 
             SelectedClient = null;
         }
@@ -420,7 +412,6 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
                 if (SelectedClient == null)
                 {
                     WriteOffButton.IsChecked = true;
-                    ChargeBonusesButton.IsChecked = false;
 
                     MessageBox.Show("Сначала выберите клиента!",
                         "Предупреждение",
@@ -430,7 +421,6 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
                 else if (SelectedClient != null && SelectedClient.Bonuses == 0)
                 {
                     WriteOffButton.IsChecked = true;
-                    ChargeBonusesButton.IsChecked = false;
 
                     MessageBox.Show("У данного клиента нет бонусов.",
                         "Предупреждение",
@@ -522,12 +512,6 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
         {
             ComboBox comboBox = sender as ComboBox;
             SelectedEstate = comboBox.SelectedItem as Estate;
-        }
-
-        private void StatusComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ComboBox comboBox = sender as ComboBox;
-            SelectedStatusTransaction = comboBox.SelectedItem as StatusTransaction;
         }
     }
 }

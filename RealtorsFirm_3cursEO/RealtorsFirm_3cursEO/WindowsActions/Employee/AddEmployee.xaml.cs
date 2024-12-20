@@ -65,7 +65,7 @@ namespace RealtorsFirm_3cursEO
 
             if (result == MessageBoxResult.Yes)
             {
-                ModelActions.AddEmployee(Role, Name, Firstname, Birthday, Phone, Passport, Email, Password);
+                ModelActions.AddEmployee(Role, Name, Firstname, Patronymic, Birthday, Phone, Passport, Email, Password);
                 MessageBox.Show($"Новый сотрдуник {Firstname} {Name} успешно добавлен!",
                     "Успешно",
                     MessageBoxButton.OK,
@@ -77,7 +77,7 @@ namespace RealtorsFirm_3cursEO
         #region Обработчики событий
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            bool fieldsIsValid = DataLimitators.ValidationEmployee(null, Role, Name,
+            bool fieldsIsValid = DataLimitators.LimitatorEmployee(null, Role, Name,
                 Firstname, Birthday, Phone, Passport, Email, Password);
 
             if (fieldsIsValid)

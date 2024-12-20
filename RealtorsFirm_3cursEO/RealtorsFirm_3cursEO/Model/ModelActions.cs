@@ -35,7 +35,7 @@ namespace RealtorsFirm_3cursEO.Model
         }
 
         // Добавление
-        public static void AddEmployee(string Role, string Name, string Firstname,
+        public static void AddEmployee(string Role, string Name, string Firstname, string Patronymic,
         DateOnly Birthday, string Phone, string Passport, string Email, string Password)
         {
             using (var dbContext = new RealtorsFirmContext())
@@ -49,6 +49,7 @@ namespace RealtorsFirm_3cursEO.Model
                     IdRole = idRole,
                     Name = Name,
                     Firstname = Firstname,
+                    Patronymic = Patronymic,
                     Birthday = Birthday,
                     Phone = Phone,
                     Passport = Passport,
@@ -66,7 +67,7 @@ namespace RealtorsFirm_3cursEO.Model
 
         // Редактирование
         public static void EditEmployee(Employee employee, string Role, string Name, string Firstname,
-        DateOnly Birthday, string Phone, string Passport, string Email, string Password)
+        string Patronymic, DateOnly Birthday, string Phone, string Passport, string Email, string Password)
         {
             using (var dbContext = new RealtorsFirmContext())
             {
@@ -78,6 +79,7 @@ namespace RealtorsFirm_3cursEO.Model
                 // Обновляем данные
                 newEmployee.Name = Name;
                 newEmployee.Firstname = Firstname;
+                newEmployee.Patronymic = Patronymic;
                 newEmployee.Birthday = Birthday;
                 newEmployee.Phone = Phone;
                 newEmployee.Passport = Passport;
@@ -104,10 +106,67 @@ namespace RealtorsFirm_3cursEO.Model
             }
         }
 
+        // Архивирование
+        public static void ArchiveClient(Client client)
+        {
+            using (var dbContext = new RealtorsFirmContext())
+            {
+                var employeeEdit = dbContext.Clients.Single(r => r.IdClient == client.IdClient);
+                employeeEdit.IsArchive = 1;
+                dbContext.SaveChanges();
+            }
+        }
+
         // Добавление
+        public static void AddClient(string Name, string Firstname, string Patronymic,
+        DateOnly Birthday, string Phone, string Passport, string Email, string Password)
+        {
+            using (var dbContext = new RealtorsFirmContext())
+            {
+                // Создаем новый объект Employee
+                var newClient = new Client
+                {
+                    Name = Name,
+                    Firstname = Firstname,
+                    Patronymic = Patronymic,
+                    Birthday = Birthday,
+                    Phone = Phone,
+                    Passport = Passport,
+                    Email = Email,
+                    Password = Password,
+                };
+
+                // Добавляем нового клиента в контекст
+                dbContext.AllClients.Add(newClient);
+
+                // Сохраняем изменения в базе данных
+                dbContext.SaveChanges();
+            }
+        }
 
         // Редактирование
+        public static void EditClient(Client client, string Name, string Firstname,
+        string Patronymic, DateOnly Birthday, string Phone, string Passport, string Email, string Password)
+        {
+            using (var dbContext = new RealtorsFirmContext())
+            {
+                // Находим пользователя по айди
+                var newClient = dbContext.Clients.Single(r => r.IdClient == client.IdClient);
 
+                // Обновляем данные
+                newClient.Name = Name;
+                newClient.Firstname = Firstname;
+                newClient.Patronymic = Patronymic;
+                newClient.Birthday = Birthday;
+                newClient.Phone = Phone;
+                newClient.Passport = Passport;
+                newClient.Email = Email;
+                newClient.Password = Password;
+
+                // Сохраняем изменения в базе данных
+                dbContext.SaveChanges();
+            }
+        }
         #endregion
 
         #region Услуги
@@ -175,7 +234,7 @@ namespace RealtorsFirm_3cursEO.Model
         #region Транзакция
 
         // Добавление
-        public static void CreateTransaction(int IdEmployee, int IdClient, int IdEstate, int IdStatus,
+        public static void CreateTransaction(int IdEmployee, int IdClient, int IdEstate,
             int AmountTotal, int AmountDiscount, List<Price> prices, int AccrualBonuses, int DiscardBonuses, bool IsAccrualBonuses)
         {
             RealtorsFirmContext dbContext = new RealtorsFirmContext();
@@ -186,7 +245,6 @@ namespace RealtorsFirm_3cursEO.Model
                 IdEmployee = IdEmployee,
                 IdClient = IdClient,
                 IdEstate = IdEstate,
-                IdStatus = IdStatus,
                 Date = DateTime.Now,
                 AmountTotal = AmountTotal,
                 AmountDiscount = AmountDiscount

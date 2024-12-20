@@ -34,4 +34,16 @@ public partial class Employee
     public virtual RoleEmployee IdRoleNavigation { get; set; } = null!;
 
     public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+
+    // Свойство для контроля переноса текста
+    public bool IsTextWrapped
+    {
+        get
+        {
+            // Логика определения необходимости переноса текста
+            return FullName.Length > 40 ||
+                Email.Length > 20 ||
+                Password.Length > 20; // Пример: перенос, если длина больше 40 символов
+        }
+    }
 }

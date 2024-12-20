@@ -5,14 +5,18 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:RealtorsFirm_3cursEO.PagesAdmin"
       
-      xmlns:ArchiveConverter="clr-namespace:RealtorsFirm_3cursEO.Classes"
+      xmlns:Converter="clr-namespace:RealtorsFirm_3cursEO.Classes.Converters"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       
       Loaded="Page_Loaded">
 
     <Page.Resources>
         <!-- Конвертер для обозначения архивированных записей -->
-        <ArchiveConverter:ArchiveStatusConverter x:Key="ArchiveStatusConverter"/>
+        <Converter:ArchiveStatusConverter x:Key="ArchiveStatusConverter"/>
+        <!-- Конвертер форматирования текста с паспортом -->
+        <Converter:PassportConverter x:Key="PassportConverter"/>
+        <!-- Конвертер для форматирования текста с номером телефона -->
+        <Converter:PhoneConverter x:Key="PhoneConverter"/>
         
         <!-- Кнопки для дата грид -->
         <DataTemplate x:Key="ActionsTemplate">
@@ -181,12 +185,42 @@
                     CellStyle="{StaticResource MenuDataGridCell}">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
+                        <DataGridTemplateColumn Header="ФИО" MaxWidth="200">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock 
+                                        Text="{Binding FullName}" 
+                                        TextWrapping="Wrap" 
+                                        MaxWidth="200">
+                                    </TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         <DataGridTextColumn Header="Дата рождения" Binding="{Binding Birthday, StringFormat=dd.MM.yyyy}"/>
-                        <DataGridTextColumn Header="Паспорт" Binding="{Binding Passport}"/>
-                        <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"/>
-                        <DataGridTextColumn Header="Эл. почта" Binding="{Binding Email}"/>
-                        <DataGridTextColumn Header="Пароль" Binding="{Binding Password}"/>
+                        <DataGridTextColumn Header="Паспорт" Binding="{Binding Passport, Converter={StaticResource PassportConverter}}"/>
+                        <DataGridTextColumn Header="Телефон" Binding="{Binding Phone, Converter={StaticResource PhoneConverter}}"/>
+                        <DataGridTemplateColumn Header="Эл. почта" MaxWidth="200">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock 
+                                        Text="{Binding Email}" 
+                                        TextWrapping="Wrap" 
+                                        MaxWidth="200">
+                                    </TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Пароль" MaxWidth="200">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock 
+                                        Text="{Binding Password}" 
+                                        TextWrapping="Wrap" 
+                                        MaxWidth="200">
+                                    </TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         <DataGridTextColumn Header="Должность" Binding="{Binding IdRoleNavigation.Name}"/>
                         <DataGridTextColumn Header="Архивирован?" Binding="{Binding IsArchive, Converter={StaticResource ArchiveStatusConverter}}"/>
                         <DataGridTemplateColumn Header="Действия" CellTemplate="{StaticResource ActionsTemplate}"/>

@@ -256,7 +256,7 @@
                                                 Style="{StaticResource ActionComboBox}"
                                                 x:Name="EstateComboBox"
                                                 DisplayMemberPath="Address"/>
-                                                <materialDesign:PackIcon
+                                            <materialDesign:PackIcon
                                                 Style="{StaticResource icon}"
                                                 Kind="House"/>
                                         </Grid>
@@ -264,23 +264,6 @@
 
                                     <StackPanel 
                                         Margin="0 160 0 0"
-                                        Panel.ZIndex="-1"
-                                        DockPanel.Dock="Top">
-                                        <TextBlock Text="Статус *"/>
-                                        <Grid>
-                                            <ComboBox
-                                                SelectionChanged="StatusComboBox_SelectionChanged"
-                                                Style="{StaticResource ActionComboBox}"
-                                                x:Name="StatusComboBox"
-                                                DisplayMemberPath="Name"/>
-                                            <materialDesign:PackIcon
-                                                Style="{StaticResource icon}"
-                                                Kind="Timelapse"/>
-                                        </Grid>
-                                    </StackPanel>
-
-                                    <StackPanel 
-                                        Margin="0 240 0 0"
                                         Panel.ZIndex="-1"
                                         DockPanel.Dock="Top">
                                         <TextBlock Text="Бонусы *"/>

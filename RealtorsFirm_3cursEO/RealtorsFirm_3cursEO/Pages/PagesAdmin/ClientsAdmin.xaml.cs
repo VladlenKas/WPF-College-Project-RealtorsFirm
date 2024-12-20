@@ -2,6 +2,7 @@
 using RealtorsFirm_3cursEO.Classes;
 using RealtorsFirm_3cursEO.Edits;
 using RealtorsFirm_3cursEO.Model;
+using RealtorsFirm_3cursEO.WindowsActions.ClientAct;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,9 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
         // Работа с бд
         private RealtorsFirmContext dbContext;
         private Employee _employeeAuth;
+
+        // Выбранный пользователь
+        private Client _selectedClient;
         #endregion
 
         public ClientsAdmin(Employee employee)
@@ -39,7 +43,7 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
             _employeeAuth = employee;
         }
 
-        private void UpdateDataEmployees()
+        private void UpdateDataClients()
         {
             dbContext = new RealtorsFirmContext();
 
@@ -76,14 +80,72 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
             ComboBoxSort.SelectedIndex = 0;
 
             // Загрузка датагрид
-            UpdateDataEmployees();
+            UpdateDataClients();
+        }
+
+        private void ButtonDelete_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Вы точно хотите удалить данного сотрудника?",
+                "Подтверждение",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                ModelActions.DeleteClient(_selectedClient);
+                _selectedClient = null;
+
+                UpdateDataClients();
+            }
+        }
+
+        private void ButtonEdit_Click(object sender, RoutedEventArgs e)
+        {
+            EditClient window = new EditClient(_selectedClient, _employeeAuth);
+            window.ShowDialog();
+
+            _selectedClient = null;
+            UpdateDataClients();
+        }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddClient window = new AddClient();
+            window.ShowDialog();
+
+            UpdateDataClients();
+        }
+
+        private void ButtonArchive_Click(object sender, RoutedEventArgs e)
+        {
+            
+            MessageBoxResult result = MessageBox.Show("Вы точно хотите архивировать данного сотрудника?",
+                "Подтверждение",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                ModelActions.ArchiveClient(_selectedClient);
+                _selectedClient = null;
+
+                UpdateDataClients();
+            }
+        }
+
+        private void ClientsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ClientsDataGrid.SelectedItem != null)
+            {
+                _selectedClient = (Client)ClientsDataGrid.SelectedItem;
+            }
         }
 
         private void ComboBoxSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender != null)
             {
-                UpdateDataEmployees();
+                UpdateDataClients();
             }
         }
 
@@ -91,7 +153,7 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
         {
             if (sender != null)
             {
-                UpdateDataEmployees();
+                UpdateDataClients();
             }
         }
 
@@ -99,7 +161,7 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
         {
             if (sender != null)
             {
-                UpdateDataEmployees();
+                UpdateDataClients();
             }
         } 
         
@@ -110,7 +172,7 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
                 SortCheckBox.IsChecked = false;
                 ComboBoxSort.SelectedIndex = 0;
                 SearchTextBox.Text = "";
-                UpdateDataEmployees();
+                UpdateDataClients();
             }
         } 
         #endregion

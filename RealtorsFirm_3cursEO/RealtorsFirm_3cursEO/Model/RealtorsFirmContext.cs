@@ -66,6 +66,9 @@ public partial class RealtorsFirmContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(45)
                 .HasColumnName("email");
+            entity.Property(e => e.Password)
+                .HasMaxLength(45)
+                .HasColumnName("password");
             entity.Property(e => e.Firstname)
                 .HasMaxLength(45)
                 .HasColumnName("firstname");
@@ -75,6 +78,9 @@ public partial class RealtorsFirmContext : DbContext
             entity.Property(e => e.IsDeleted)
                 .HasDefaultValueSql("'0'")
                 .HasColumnName("is_deleted");
+            entity.Property(e => e.IsRegistered)
+                .HasDefaultValueSql("'1'")
+                .HasColumnName("is_registered");
             entity.Property(e => e.Name)
                 .HasMaxLength(45)
                 .HasColumnName("name");
@@ -240,7 +246,8 @@ public partial class RealtorsFirmContext : DbContext
             entity.Property(e => e.IdClient).HasColumnName("id_client");
             entity.Property(e => e.IdEmployee).HasColumnName("id_employee");
             entity.Property(e => e.IdEstate).HasColumnName("id_estate");
-            entity.Property(e => e.IdStatus).HasColumnName("id_status");
+            entity.Property(e => e.IdStatus).HasColumnName("id_status")
+                .HasDefaultValueSql("'1'");
 
             entity.HasOne(d => d.IdEmployeeNavigation).WithMany(p => p.Transactions)
                 .HasForeignKey(d => d.IdEmployee)

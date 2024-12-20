@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace RealtorsFirm_3cursEO.Classes
+namespace RealtorsFirm_3cursEO.Classes.Converters
 {
     public class ArchiveStatusConverter : IValueConverter
     {

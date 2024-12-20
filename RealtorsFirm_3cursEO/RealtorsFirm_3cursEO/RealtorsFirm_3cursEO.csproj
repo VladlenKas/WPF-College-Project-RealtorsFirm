@@ -33,8 +33,4 @@
     <Resource Include="Images\Woman1.png" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="WindowsActions\Client\" />
-  </ItemGroup>
-
 </Project>

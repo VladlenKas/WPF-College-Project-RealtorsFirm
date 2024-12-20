@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RealtorsFirm_3cursEO.UserControls.Cards"
                          
-             xmlns:ArchiveConverter="clr-namespace:RealtorsFirm_3cursEO.Classes"
+             xmlns:ArchiveConverter="clr-namespace:RealtorsFirm_3cursEO.Classes.Converters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              Height="500" Width="700">
 

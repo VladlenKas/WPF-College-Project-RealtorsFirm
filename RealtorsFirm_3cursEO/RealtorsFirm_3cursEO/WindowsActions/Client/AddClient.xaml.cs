@@ -1,5 +1,6 @@
 ﻿using RealtorsFirm_3cursEO.Classes.DataOperations;
 using RealtorsFirm_3cursEO.Classes;
+using RealtorsFirm_3cursEO.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,49 +14,52 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using RealtorsFirm_3cursEO.Model;
 
-namespace RealtorsFirm_3cursEO.WindowsActions.Price
+namespace RealtorsFirm_3cursEO.WindowsActions.ClientAct
 {
     /// <summary>
-    /// Логика взаимодействия для AddPrice.xaml
+    /// Логика взаимодействия для AddClient.xaml
     /// </summary>
-    public partial class AddPrice : Window
+    public partial class AddClient : Window
     {
         #region Свойства для хранения значений из текстбоксов
         private string Name => NameTextBox.Text; // Не должен быть пустой
 
-        private int Cost // Не должен быть пустой + не должен повторяться + правильный формат
-        {
-            get
-            {
-                if (CostTextBox.Text == "")
-                {
-                    return 0;
-                }
+        private string Firstname => FirstnameTextBox.Text; // Не должен быть пустой
 
-                return int.Parse(CostTextBox.Text);
-            }
-        } 
+        private string? Patronymic => PatronymicTextBox.Text;
 
+        private DateOnly Birthday => DateTextBox.Text; // Не должен быть пустой + от 18 до 80 лет
+
+        private string Phone => PhoneTextBox.Text; // Не должен быть пустой + не должен повторяться + минимум цифр
+
+        private string Passport => PassportTextBox.Text; // Не должен быть пустой + не должен повторяться + минимум цифр
+
+        private string Email => EmailTextBox.Text; // Не должен быть пустой + не должен повторяться + правильный формат
+
+        private string Password => WindowHelper.GetPassword(PasswordTextBoxHid, PasswordTextBoxVis); // Не должен быть пустой
         #endregion
 
-        public AddPrice()   
+        private RealtorsFirmContext dbContext;
+
+        public AddClient()
         {
             InitializeComponent();
+
+            dbContext = new RealtorsFirmContext();
         }
 
         private void CreateNewEmployee()
         {
-            var result = MessageBox.Show("Вы уверены, что заполнили все поля верно и хотите добавить новую услугу?",
+            var result = MessageBox.Show("Вы уверены, что заполнили все поля верно и хотите добавить нового клиента?",
                 "Подтверждение",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
-                ModelActions.AddPrice(Name, Cost);
-                MessageBox.Show($"Новая услуга {Name} успешно добавлена!",
+                ModelActions.AddClient(Name, Firstname, Patronymic, Birthday, Phone, Passport, Email, Password);
+                MessageBox.Show($"Новый клиент {Firstname} {Name} успешно добавлен!",
                     "Успешно",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -66,7 +70,8 @@ namespace RealtorsFirm_3cursEO.WindowsActions.Price
         #region Обработчики событий
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            bool fieldsIsValid = DataLimitators.LimitatorPrice(null, Name, Cost);
+            bool fieldsIsValid = DataLimitators.LimitatorClient(null, Name,
+                Firstname, Birthday, Phone, Passport, Email, Password);
 
             if (fieldsIsValid)
             {
@@ -88,6 +93,11 @@ namespace RealtorsFirm_3cursEO.WindowsActions.Price
             this.Close();
         }
 
+        private void ViewPasswordCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.HiddenPassword(sender, PasswordTextBoxHid, PasswordTextBoxVis);
+        }
+
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             DataValidations.ValidateInputCyrillic(e);
@@ -97,17 +107,6 @@ namespace RealtorsFirm_3cursEO.WindowsActions.Price
         {
             DataValidations.ValidatePasteCyrillic(e);
         }
-
-        private void TextBoxNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            DataValidations.ValidateInputNumbers(e);
-        }
-
-        private void TextBoxNumber_Pasting(object sender, DataObjectPastingEventArgs e)
-        {
-            DataValidations.ValidatePasteNumbers(e);
-        }
-
         private void PasswordTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             DataValidations.ValidateInputPassword(e);

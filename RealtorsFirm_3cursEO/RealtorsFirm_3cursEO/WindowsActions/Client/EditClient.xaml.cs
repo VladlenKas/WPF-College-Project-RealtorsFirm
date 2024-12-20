@@ -1,11 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RealtorsFirm_3cursEO.Classes.DataOperations;
+﻿using RealtorsFirm_3cursEO.Classes.DataOperations;
 using RealtorsFirm_3cursEO.Classes;
 using RealtorsFirm_3cursEO.Model;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,18 +14,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using RealtorsFirm_3cursEO.Model;
 
-namespace RealtorsFirm_3cursEO.Edits
+namespace RealtorsFirm_3cursEO.WindowsActions.ClientAct
 {
     /// <summary>
-    /// Логика взаимодействия для EditEmployee.xaml
+    /// Логика взаимодействия для EditClient.xaml
     /// </summary>
-    public partial class EditEmployee : Window
+    public partial class EditClient : Window
     {
         #region Свойства для хранения значений из текстбоксов
-        private string Role => ComboBoxRole.Text; // Не должен быть пустой
-
         private string Name => NameTextBox.Text; // Не должен быть пустой
 
         private string Firstname => FirstnameTextBox.Text; // Не должен быть пустой
@@ -60,17 +54,16 @@ namespace RealtorsFirm_3cursEO.Edits
 
         private RealtorsFirmContext dbContext;
         private Employee _thisEmployee;
-        private Employee _selectEmployee;
+        private Client _selectClient;
 
-        public EditEmployee(Employee selectEmployee, Employee thisEmployee)
+        public EditClient(Client client, Employee thisEmployee)
         {
             InitializeComponent();
 
             _thisEmployee = thisEmployee;
-            _selectEmployee = selectEmployee;
+            _selectClient = client;
 
             dbContext = new RealtorsFirmContext();
-            ComboBoxRole.ItemsSource = dbContext.RoleEmployees.Select(r => r.Name).ToList();
         }
 
         private void DataEditEmployee()
@@ -86,15 +79,15 @@ namespace RealtorsFirm_3cursEO.Edits
                 return;
             }
 
-            var resultCreate = MessageBox.Show("Вы уверены, что заполнили все поля верно и хотите отредактирвоать данные сотрудника?",
+            var resultCreate = MessageBox.Show("Вы уверены, что заполнили все поля верно и хотите отредактирвоать данные клиента?",
                 "Подтверждение",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
 
             if (resultCreate == MessageBoxResult.Yes)
             {
-                ModelActions.EditEmployee(_selectEmployee, Role, Name, Firstname, Patronymic, Birthday, Phone, Passport, Email, Password);
-                MessageBox.Show($"Сотрдуник {Firstname} {Name} успешно отредактирован!",
+                ModelActions.EditClient(_selectClient, Name, Firstname, Patronymic, Birthday, Phone, Passport, Email, Password);
+                MessageBox.Show($"Клиент {Firstname} {Name} успешно отредактирован!",
                     "Успешно",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -105,10 +98,9 @@ namespace RealtorsFirm_3cursEO.Edits
         private bool HasDataChanged()
         {
             // Сравниваем текущие значения с оригинальными
-            return Role != _originalRole ||
-                   Name != _originalName ||
+            return Name != _originalName ||
                    Firstname != _originalFirstname ||
-                   (Patronymic ?? "") != (_originalPatronymic ?? "") || 
+                   (Patronymic ?? "") != (_originalPatronymic ?? "") ||
                    Birthday != _originalBirthday ||
                    Phone != _originalPhone ||
                    Passport != _originalPassport ||
@@ -118,7 +110,7 @@ namespace RealtorsFirm_3cursEO.Edits
         #region Обработчики событий
         private void ButtonEdit_Click(object sender, RoutedEventArgs e)
         {
-            bool fieldsIsValid = DataLimitators.LimitatorEmployee(_selectEmployee, Role, Name,
+            bool fieldsIsValid = DataLimitators.LimitatorClient(_selectClient, Name,
                 Firstname, Birthday, Phone, Passport, Email, Password);
 
             if (fieldsIsValid)
@@ -130,18 +122,16 @@ namespace RealtorsFirm_3cursEO.Edits
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // Сохраняем старые данные для проверки на то, были ли изменения
-            _originalRole = _selectEmployee.IdRoleNavigation.Name;
-            _originalName = _selectEmployee.Name;
-            _originalFirstname = _selectEmployee.Firstname;
-            _originalPatronymic = _selectEmployee.Patronymic;
-            _originalBirthday = _selectEmployee.Birthday;
-            _originalPhone = _selectEmployee.Phone;
-            _originalPassport = _selectEmployee.Passport;
-            _originalEmail = _selectEmployee.Email;
-            _originalPassword = _selectEmployee.Password;   
+            _originalName = _selectClient.Name;
+            _originalFirstname = _selectClient.Firstname;
+            _originalPatronymic = _selectClient.Patronymic;
+            _originalBirthday = _selectClient.Birthday;
+            _originalPhone = _selectClient.Phone;
+            _originalPassport = _selectClient.Passport;
+            _originalEmail = _selectClient.Email;
+            _originalPassword = _selectClient.Password;
 
             // Загружаем данные в текстбоксы для редактирования
-            ComboBoxRole.Text = _originalRole;
             NameTextBox.Text = _originalName;
             FirstnameTextBox.Text = _originalFirstname;
             PatronymicTextBox.Text = _originalPatronymic;

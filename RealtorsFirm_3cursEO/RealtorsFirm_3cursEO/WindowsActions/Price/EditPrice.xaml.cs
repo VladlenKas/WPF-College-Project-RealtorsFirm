@@ -90,7 +90,7 @@ namespace RealtorsFirm_3cursEO.WindowsActions.Price
         #region Обработчики событий
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            bool fieldsIsValid = DataLimitators.ValidationPrice(_selectPrice, Name, Cost);
+            bool fieldsIsValid = DataLimitators.LimitatorPrice(_selectPrice, Name, Cost);
 
             if (fieldsIsValid)
             {

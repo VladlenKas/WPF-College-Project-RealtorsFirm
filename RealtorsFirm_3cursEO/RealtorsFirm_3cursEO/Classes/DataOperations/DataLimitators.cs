@@ -12,8 +12,8 @@ namespace RealtorsFirm_3cursEO.Classes.DataOperations
 {
     public static class DataLimitators
     {
-        // Создание/редактирование сотрдуника
-        public static bool ValidationEmployee(Employee employee, string Role, string Name, string Firstname,
+        #region Сотрудники
+        public static bool LimitatorEmployee(Employee employee, string Role, string Name, string Firstname,
             DateOnly Birthday, string Phone, string Passport, string Email, string Password)
         {
             using (var context = new RealtorsFirmContext())
@@ -129,7 +129,129 @@ namespace RealtorsFirm_3cursEO.Classes.DataOperations
             }
         }
 
-        public static bool ValidationPrice(Price price, string name, int cost)
+        #endregion
+
+        #region Клиенты
+        public static bool LimitatorClient(Client client, string Name, string Firstname,
+            DateOnly Birthday, string Phone, string Passport, string Email, string Password)
+        {
+            using (var context = new RealtorsFirmContext())
+            {
+                // Создаем лист для исключений
+                List<string> errorsList = new List<string>();
+
+                // Проверка на пустые поля
+                if (new[] { Name, Firstname, Phone, Passport, Email, Password }.Any(string.IsNullOrWhiteSpace))
+                {
+                    errorsList.Add("Заполните все обязательные поля.");
+                }
+                // Все остальные проверки
+                else
+                {
+                    // Проверки для имени
+                    bool nameIsValid = DataLimitatorsMethods.LimitatorName(Name);
+                    // Проверки для даты
+                    bool ageIsValid = DataLimitatorsMethods.LimitatorAge(Birthday);
+                    // Проверка для емайла
+                    bool emailIsValid = DataLimitatorsMethods.LimitatorEmail(Email);
+
+                    // Проверка на имя
+                    if (!nameIsValid)
+                    {
+                        errorsList.Add("Имя, содержащее тире, должно  быть формата \"имя-имя\".");
+                    }
+                    // Проверка на возраст (на валидную дату)
+                    else if (Birthday.Equals(DateOnly.MinValue))
+                    {
+                        errorsList.Add("Укажите корректный формат для даты.");
+                    }
+
+                    // Проверка на возраст (на допустимый возраст)
+                    else if (!ageIsValid)
+                    {
+                        errorsList.Add("Возраст должен быть от 18 до 85 лет.");
+                    }
+
+                    // Проверка на номер телефона (на мин. длину)
+                    else if (Phone.Length < 11)
+                    {
+                        errorsList.Add("Номер телефона должен содержать 11 цифр.");
+                    }
+
+                    // Проверка на паспорт (на мин. длину)
+                    if (Passport.Length < 10)
+                    {
+                        errorsList.Add("Паспорт должен содержать 10 цифр.");
+                    }
+
+                    // Проверка на верный формат эл почты
+                    if (!emailIsValid)
+                    {
+                        errorsList.Add("Укажите корректный формат для электронной почты.");
+                    }
+
+                    // При редактировании
+                    if (client != null)
+                    {
+                        // Проверка на номер телефона (на повторение)
+                        if (context.Clients.Any(r => r.Phone == Phone && r.IdClient != client.IdClient))
+                        {
+                            errorsList.Add("Введенный номер телефона уже существует. Используйте другой.");
+                        }
+
+                        // Проверка на паспорт (на повторение)
+                        else if (context.Clients.Any(r => r.Passport == Passport && r.IdClient != client.IdClient))
+                        {
+                            errorsList.Add("Введенный паспорт уже существует. Используйте другой.");
+                        }
+
+                        // Проверка на электронную почту (на повторение)
+                        else if (context.Clients.Any(r => r.Email == Email && r.IdClient != client.IdClient))
+                        {
+                            errorsList.Add("Введенный адрес электронной почты уже существует. Используйте другой.");
+                        }
+                    }
+                    // При добавлении
+                    else
+                    {
+                        // Проверка на номер телефона (на повторение)
+                        if (context.Clients.Any(r => r.Phone == Phone))
+                        {
+                            errorsList.Add("Введенный номер телефона уже существует. Используйте другой.");
+                        }
+
+                        // Проверка на паспорт (на повторение)
+                        else if (context.Clients.Any(r => r.Passport == Passport))
+                        {
+                            errorsList.Add("Введенный паспорт уже существует. Используйте другой.");
+                        }
+
+                        // Проверка на электронную почту (на повторение)
+                        else if (context.Clients.Any(r => r.Email == Email))
+                        {
+                            errorsList.Add("Введенный адрес электронной почты уже существует. Используйте другой.");
+                        }
+                    }
+                }
+
+                if (errorsList.Count != 0)
+                {
+                    string error = errorsList[0];
+
+                    MessageBox.Show($"{error}", "Ошибка.", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Услуги
+        public static bool LimitatorPrice(Price price, string name, int cost)
         {
             using (var context = new RealtorsFirmContext())
             {
@@ -179,6 +301,7 @@ namespace RealtorsFirm_3cursEO.Classes.DataOperations
                     return true;
                 }
             }
-        }
+        } 
+        #endregion
     }
 }
