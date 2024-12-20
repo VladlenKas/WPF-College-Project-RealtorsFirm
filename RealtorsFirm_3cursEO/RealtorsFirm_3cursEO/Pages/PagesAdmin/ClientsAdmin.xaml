@@ -20,6 +20,7 @@
         <Converter:PassportConverter x:Key="PassportConverter"/>
         <!-- Конвертер для форматирования текста с номером телефона -->
         <Converter:PhoneConverter x:Key="PhoneConverter"/>
+        
         <!-- Кнопки для дата грид -->
         <DataTemplate x:Key="ActionsTemplate">
             <StackPanel Orientation="Horizontal">
@@ -222,10 +223,20 @@
                     HorizontalAlignment="Left"
                     Name="textFound"
                     FontSize="32"
-                    Style="{StaticResource MenuTextBlockHeader}" 
                     Text="Ничего не найдено"
                     Margin="20 65"
-                    Visibility="Collapsed"/>
+                    Visibility="Collapsed">
+                    <TextBlock.Style>
+                        <Style BasedOn="{StaticResource MenuTextBlockHeader}" TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Items.Count, ElementName=ClientsDataGrid}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
             </Grid>
         </DockPanel>
     </Grid>

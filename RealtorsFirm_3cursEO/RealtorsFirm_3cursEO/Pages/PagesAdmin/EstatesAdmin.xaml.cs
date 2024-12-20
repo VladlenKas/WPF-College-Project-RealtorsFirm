@@ -52,17 +52,16 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             ItemsControlItems.Items.Clear();
             foreach (var estate in estates)
             {
-                ItemsControlItems.Items.Add(new EstateUCView(estate));
+                var estateCard = new EstateUCEdit(estate); // Инициализируем карточку с недвижимостью
+                estateCard.RemoveEstateRequested += EstateAdmin_RemoveEstateRequested; // Добавляем событие
+                ItemsControlItems.Items.Add(estateCard); // добавляем в ItemsControl
             }
+        }
 
-            if (ItemsControlItems.Items.Count == 0)
-            {
-                textFound.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                textFound.Visibility = Visibility.Hidden;
-            }
+        // Обработчик события для удаления/архивирования недвижимости
+        private void EstateAdmin_RemoveEstateRequested(object sender, EstateEventArgs e)
+        {
+            UpdateDataEstates(); // Обновляем список 
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

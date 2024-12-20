@@ -113,6 +113,10 @@ namespace RealtorsFirm_3cursEO.Model
             {
                 var employeeEdit = dbContext.Clients.Single(r => r.IdClient == client.IdClient);
                 employeeEdit.IsArchive = 1;
+
+                List<Estate> estates = new(dbContext.Estates.Where(r => r.IdClient == client.IdClient && r.IsArchive != 1).ToList());
+                estates.ForEach(r => r.IsArchive = 1);
+
                 dbContext.SaveChanges();
             }
         }
@@ -290,6 +294,32 @@ namespace RealtorsFirm_3cursEO.Model
             //  Обновляем и сохраняем изменения в базе данных
             dbContext.Update(client);
             dbContext.SaveChanges();
+        }
+
+        #endregion
+
+        #region Недвижимость
+
+        // Удаление
+        public static void DeleteEstate(Estate estate)
+        {
+            using (var dbContext = new RealtorsFirmContext())
+            {
+                var employeeEdit = dbContext.Estates.Single(r => r.IdEstate == estate.IdEstate);
+                employeeEdit.IsDeleted = 1;
+                dbContext.SaveChanges();
+            }
+        }
+
+        // Архивирование
+        public static void ArchiveEstate(Estate estate)
+        {
+            using (var dbContext = new RealtorsFirmContext())
+            {
+                var employeeEdit = dbContext.Estates.Single(r => r.IdEstate == estate.IdEstate);
+                employeeEdit.IsArchive = 1;
+                dbContext.SaveChanges();
+            }
         }
 
         #endregion

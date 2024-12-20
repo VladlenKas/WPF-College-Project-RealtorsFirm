@@ -150,8 +150,18 @@
                         Name="textFound"
                         FontSize="42"
                         Text="Ничего не найдено"
-                        Margin="0 30"
-                        Visibility="Collapsed"/>
+                        Margin="0 30">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Items.Count, ElementName=ItemsControlItems}" Value="0">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                     <ItemsControl 
                         x:Name="ItemsControlItems">
                         <ItemsControl.ItemsPanel>

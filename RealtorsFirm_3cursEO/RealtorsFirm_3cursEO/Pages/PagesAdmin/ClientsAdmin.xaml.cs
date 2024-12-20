@@ -57,14 +57,14 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
             ClientsDataGrid.ItemsSource = null;
             ClientsDataGrid.ItemsSource = employeesList;
 
-            if (employeesList.Count == 0)
+            /*if (employeesList.Count == 0)
             {
                 textFound.Visibility = Visibility.Visible;
             }
             else
             {
                 textFound.Visibility = Visibility.Hidden;
-            }
+            }*/
         }
 
         #region Обработчики_событий
@@ -85,7 +85,7 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Вы точно хотите удалить данного сотрудника?",
+            MessageBoxResult result = MessageBox.Show("Вы точно хотите удалить данного клиента?",
                 "Подтверждение",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning);
@@ -94,6 +94,11 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
             {
                 ModelActions.DeleteClient(_selectedClient);
                 _selectedClient = null;
+
+                MessageBox.Show("Клиент удален.",
+                "Успех",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
 
                 UpdateDataClients();
             }
@@ -119,7 +124,8 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
         private void ButtonArchive_Click(object sender, RoutedEventArgs e)
         {
             
-            MessageBoxResult result = MessageBox.Show("Вы точно хотите архивировать данного сотрудника?",
+            MessageBoxResult result = MessageBox.Show("Вы точно хотите архивировать данного клиента? " +
+                "При архивации так же архивируются все привязанные недвижимости.",
                 "Подтверждение",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning);
@@ -128,6 +134,11 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
             {
                 ModelActions.ArchiveClient(_selectedClient);
                 _selectedClient = null;
+
+                MessageBox.Show("Клиент архивирован.",
+                "Успех",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
 
                 UpdateDataClients();
             }
