@@ -34,7 +34,7 @@ public class DataFilterEmployees
     public List<Employee> ApplySearch(List<Employee> employees)
     {
         string search = _searchTextBox.Text.ToLower();
-        if (!string.IsNullOrEmpty(search))
+        if (!string.IsNullOrWhiteSpace(search))
         {
             employees = employees.Where(r => r.FullName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
         }
@@ -140,7 +140,7 @@ public class DataFilterClients
     public List<Client> ApplySearch(List<Client> clients)
     {
         string search = _searchTextBox.Text.ToLower();
-        if (!string.IsNullOrEmpty(search))
+        if (!string.IsNullOrWhiteSpace(search))
         {
             clients = clients.Where(r => r.FullName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
         }
@@ -240,7 +240,7 @@ public class DataFilterEstates
     public List<Estate> ApplySearch(List<Estate> estates)
     {
         string search = _searchTextBox.Text.ToLower();
-        if (!string.IsNullOrEmpty(search))
+        if (!string.IsNullOrWhiteSpace(search))
         {
             estates = estates.Where(r => r.IdClientNavigation.FullName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
         }
@@ -323,7 +323,7 @@ public class DataFilterPrices
     public List<Price> ApplySearch(List<Price> prices)
     {
         string search = _searchTextBox.Text.ToLower();
-        if (!string.IsNullOrEmpty(search))
+        if (!string.IsNullOrWhiteSpace(search))
         {
             prices = prices.Where(r => r.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
         }

@@ -28,21 +28,13 @@ namespace RealtorsFirm_3cursEO.Edits
     {
         #region Свойства для хранения значений из текстбоксов
         private string Role => ComboBoxRole.Text; // Не должен быть пустой
-
         private string Name => NameTextBox.Text; // Не должен быть пустой
-
         private string Firstname => FirstnameTextBox.Text; // Не должен быть пустой
-
         private string? Patronymic => PatronymicTextBox.Text;
-
         private DateOnly Birthday => DateTextBox.Text; // Не должен быть пустой + от 18 до 80 лет
-
         private string Phone => PhoneTextBox.Text; // Не должен быть пустой + не должен повторяться + минимум цифр
-
         private string Passport => PassportTextBox.Text; // Не должен быть пустой + не должен повторяться + минимум цифр
-
         private string Email => EmailTextBox.Text; // Не должен быть пустой + не должен повторяться + правильный формат
-
         private string Password => WindowHelper.GetPassword(PasswordTextBoxHid, PasswordTextBoxVis); // Не должен быть пустой
         #endregion
 
@@ -82,7 +74,6 @@ namespace RealtorsFirm_3cursEO.Edits
                     "Уведомление",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
-
                 return;
             }
 

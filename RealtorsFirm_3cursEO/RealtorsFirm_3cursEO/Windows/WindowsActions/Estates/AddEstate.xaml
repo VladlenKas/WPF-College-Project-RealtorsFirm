@@ -1,0 +1,246 @@
+﻿<Window x:Class="RealtorsFirm_3cursEO.Windows.WindowsActions.Estates.AddEstate"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RealtorsFirm_3cursEO.Windows.WindowsActions.Estates"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:Control="clr-namespace:RealtorsFirm_3cursEO.UserControls.TextBoxes"
+
+        Title="Добавление новой недвижимости" 
+        Height="900" Width="1200" 
+        MinHeight="900" MinWidth="1200"
+        Closed="Window_Closed" 
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBox}" 
+            BasedOn="{StaticResource ActionTextBox}"/>
+
+        <Style TargetType="{x:Type PasswordBox}" 
+            BasedOn="{StaticResource ActionPasswordBox}"/>
+
+        <Style TargetType="{x:Type TextBlock}"
+            BasedOn="{StaticResource ActionTextBlock}"/>
+
+        <Style TargetType="materialDesign:PackIcon"
+            BasedOn="{StaticResource ActionIcon}"
+            x:Key="Icon"/>
+
+        <Style TargetType="{x:Type ComboBox}"
+            BasedOn="{StaticResource ActionComboBox}"/>
+    </Window.Resources>
+
+    <Grid Background="#ffffff">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center">
+
+            <StackPanel>
+                <TextBlock Text="Изображение"/>
+
+                <Grid>
+                    <Border
+                    CornerRadius="20"
+                    BorderBrush="Gray">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Source, ElementName=ImageBorder}" Value="{x:Null}">
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Image 
+                            Source="{Binding Photo}"
+                            Height="700"
+                            Width="700"
+                            Grid.Column="0"
+                            x:Name="ImageBorder"
+                            Stretch="UniformToFill"/>
+                    </Border>
+
+                    <TextBlock
+                    Text="Выберите изображение"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    FontSize="32">
+                        <TextBlock.Style>
+                            <Style BasedOn="{StaticResource MenuTextBlockHeader}" TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Source, ElementName=ImageBorder}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+            </StackPanel>
+
+            <Grid 
+                Margin="20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom">
+                <StackPanel Orientation="Horizontal">
+                    <Grid DockPanel.Dock="Bottom">
+                        <Button 
+                            Style="{StaticResource DeleteButton}"
+                            Name="DeleteImage"
+                            Click="DeleteImage_Click"/>
+                        <materialDesign:PackIcon 
+                            Kind="Trash"
+                            Style="{StaticResource UCIcon}"/>
+                    </Grid>
+
+                    <Grid 
+                        Margin="10 0 0 0"
+                        DockPanel.Dock="Bottom">
+                        <Button 
+                            Style="{StaticResource EditButton}"
+                            Name="EditImage"
+                            Click="EditImage_Click"/>
+                        <materialDesign:PackIcon 
+                            Kind="Edit"
+                            Style="{StaticResource UCIcon}"/>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        
+        <DockPanel 
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            Width="400"
+            Margin="0 60 20 60"
+            LastChildFill="False">
+
+            <RichTextBox 
+                FontSize="30" 
+                BorderThickness="0"
+                DockPanel.Dock="Top"
+                Margin="0 0 0 20"
+                IsReadOnly="True" 
+                VerticalAlignment="Top">
+                <FlowDocument>
+                    <Paragraph TextAlignment="Center">
+                        <Run 
+                            Text="Добавление новой недвижимости" 
+                            FontFamily="Arial Rounded MT Bold">
+                        </Run>
+                    </Paragraph>
+                </FlowDocument>
+            </RichTextBox>
+
+            <StackPanel DockPanel.Dock="Top">
+                <Grid>
+                    <StackPanel Panel.ZIndex="1">
+                        <TextBlock Text="Клиент (ФИ, номер телефона) *"/>
+                        <Grid>
+                            <Control:AutoCompleteControl
+                            DisplayMemberPath="PassportFI"
+                            x:Name="ClientAutoComplete"
+                            PreviewTextInput="TextBox_PreviewTextInput"
+                            DataObject.Pasting="TextBox_Pasting"/>
+                            <materialDesign:PackIcon Kind="User" Style="{StaticResource Icon}"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Margin="0 80 0 0">
+                        <TextBlock Text="Тип недвижимости *"/>
+                        <Grid>
+                            <ComboBox 
+                            DisplayMemberPath="Name"
+                            Margin="0 0 0 20"
+                            x:Name="TypeEstateComboBox"
+                            PreviewTextInput="TextBox_PreviewTextInput"
+                            DataObject.Pasting="TextBox_Pasting"/>
+                            <materialDesign:PackIcon Kind="Label" Style="{StaticResource Icon}"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Margin="0 160 0 0">
+                        <TextBlock Text="Площадь (кв.м.) *"/>
+                        <Grid>
+                            <TextBox 
+                            x:Name="AreaTextBox"
+                            PreviewTextInput="NumberTextBox_PreviewTextInput"
+                            MaxLength="5"
+                            DataObject.Pasting="NumberTextBox_Pasting"/>
+                            <materialDesign:PackIcon Kind="AspectRatio" Style="{StaticResource Icon}"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Margin="0 240 0 0">
+                        <TextBlock Text="Количество комнат *"/>
+                        <Grid>
+                            <TextBox 
+                            x:Name="NumberRoomsTextBox"
+                            PreviewTextInput="NumberTextBox_PreviewTextInput"
+                            MaxLength="5"
+                            DataObject.Pasting="NumberTextBox_Pasting"/>
+                            <materialDesign:PackIcon Kind="FamilyRoom" Style="{StaticResource Icon}"/>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel>
+                    <TextBlock Text="Цена (руб.) *"/>
+                    <Grid>
+                        <TextBox 
+                            x:Name="CostTextBox"
+                            PreviewTextInput="NumberTextBox_PreviewTextInput"
+                            MaxLength="8"
+                            DataObject.Pasting="NumberTextBox_Pasting"/>
+                        <materialDesign:PackIcon Kind="Money" Style="{StaticResource Icon}"/>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Text="Адрес *"/>
+                    <Grid>
+                        <TextBox 
+                            Padding="37 5 10 0"
+                            VerticalContentAlignment="Top"
+                            TextWrapping="Wrap"
+                            Height="120"
+                            x:Name="AddressTextBox"
+                            PreviewTextInput="DescriptionTextBox_PreviewTextInput"
+                            MaxLength="120"
+                            DataObject.Pasting="DescriptionTextBox_Pasting"/>
+                        <materialDesign:PackIcon Kind="AddressMarker" Style="{StaticResource Icon}"/>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+
+            <DockPanel
+                DockPanel.Dock="Bottom">
+                <Button 
+                    Content="Добавить недвижимость"
+                    x:Name="ButtonAdd"
+                    Click="ButtonAdd_Click"
+                    DockPanel.Dock="Bottom"
+                    Margin="40 20 40 0"
+                    Style="{StaticResource ActionButtonGradient}"/>
+                <Button 
+                    Content="Выйти"
+                    x:Name="ButtonExit"
+                    Click="ButtonExit_Click"
+                    DockPanel.Dock="Bottom"
+                    Margin="40 0"
+                    Style="{StaticResource ActionButton}"/>
+            </DockPanel>
+        </DockPanel>
+    </Grid>
+</Window>

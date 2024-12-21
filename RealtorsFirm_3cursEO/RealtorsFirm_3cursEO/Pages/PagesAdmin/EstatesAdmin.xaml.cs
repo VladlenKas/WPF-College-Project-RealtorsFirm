@@ -2,6 +2,7 @@
 using RealtorsFirm_3cursEO.Classes;
 using RealtorsFirm_3cursEO.Model;
 using RealtorsFirm_3cursEO.UserControls.Cards;
+using RealtorsFirm_3cursEO.Windows.WindowsActions.Estates;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,7 +31,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
         // Работа с бд
         private Employee _employeeAuth;
-
+        private RealtorsFirmContext dbContext;
         public EstatesAdmin(Employee employee)
         {
             InitializeComponent();
@@ -39,8 +40,10 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
         private void UpdateDataEstates()
         {
+            dbContext = new(); 
+
             DataFilterEstates = new DataFilterEstates(SearchTextBox, ComboBoxSort, SortCheckBox, ComboBoxFilter);
-            var estates = App.Context.Estates
+            var estates = dbContext.Estates
                 .Include(r => r.IdClientNavigation)
                 .Include(r => r.IdTypeNavigation)
                 .ToList();
@@ -53,7 +56,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             foreach (var estate in estates)
             {
                 var estateCard = new EstateUCEdit(estate); // Инициализируем карточку с недвижимостью
-                estateCard.RemoveEstateRequested += EstateAdmin_RemoveEstateRequested; // Добавляем событие
+                estateCard.RemoveEstateRequested += EstateAdmin_RemoveEstateRequested; // Добавляем событие для удаления
                 ItemsControlItems.Items.Add(estateCard); // добавляем в ItemsControl
             }
         }
@@ -120,6 +123,12 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             {
                 UpdateDataEstates();
             }
+        }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddEstate addEstate = new AddEstate();
+            addEstate.ShowDialog();
         }
     }
 }

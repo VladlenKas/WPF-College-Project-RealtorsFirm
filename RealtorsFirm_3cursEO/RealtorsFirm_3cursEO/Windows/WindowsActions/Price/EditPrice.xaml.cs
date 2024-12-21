@@ -30,7 +30,7 @@ namespace RealtorsFirm_3cursEO.WindowsActions.Price
         {
             get
             {
-                if (CostTextBox.Text == "")
+                if (string.IsNullOrWhiteSpace(CostTextBox.Text))
                 {
                     return 0;
                 }

@@ -9,123 +9,151 @@ using System.Windows;
 
 namespace RealtorsFirm_3cursEO.Classes
 {
-    public static class DataValidations
+    public static partial class DataValidations
     {
         #region Валидация на написание текста
-        // Ввод КИРРИЛИЦА
+
+        /// <summary>
+        /// Проверяет, что вводимый текст состоит только из кириллических символов.
+        /// </summary>
         public static void ValidateInputCyrillic(TextCompositionEventArgs e)
         {
-            var regex = new Regex(@"[а-яА-Я\-]");
-            if (!regex.IsMatch(e.Text))
-            {
-                e.Handled = true;
-            }
+            ValidateInput(e, Cyrillic());
         }
 
-        // Ввод ЦИФРЫ
+        /// <summary>
+        /// Проверяет, что вводимый текст состоит только из цифр.
+        /// </summary>
         public static void ValidateInputNumbers(TextCompositionEventArgs e)
         {
-            var regex = new Regex(@"[0-9]");
-            if (!regex.IsMatch(e.Text))
-            {
-                e.Handled = true;
-            }
+            ValidateInput(e, Numbers());
         }
 
-        // Ввод КИРРИЛИЦА + ЦИФРЫ + СИМВОЛЫ (для адреса)
-        public static void ValidateInputDescriptionForAddress(TextCompositionEventArgs e)
+        /// <summary>
+        /// Проверяет, что вводимый текст соответствует формату описания.
+        /// </summary>
+        public static void ValidateInputDescription(TextCompositionEventArgs e)
         {
-            // Ограничение на ввод описания (например, только буквы и пробелы)
-            var regex = new Regex(@"[a-zA-Z\s-().,;""':]");
-            if (!regex.IsMatch(e.Text))
-            {
-                e.Handled = true;
-            }
+            ValidateInput(e, Description());
         }
 
-        // Ввод ЭЛЕКТРОННАЯ ПОЧТА
+        /// <summary>
+        /// Проверяет, что вводимый текст соответствует формату электронной почты.
+        /// </summary>
         public static void ValidateInputEmail(TextCompositionEventArgs e)
         {
-            // Ограничение на ввод эл. почты
-            var regex = new Regex(@"^[a-zA-Z0-9\@\.]+$");
-            if (!regex.IsMatch(e.Text))
-            {
-                e.Handled = true;
-            }
+            ValidateInput(e, Email());
         }
 
-        // Ввод ЛАТИНИЦА
+        /// <summary>
+        /// Проверяет, что вводимый текст соответствует формату пароля.
+        /// </summary>
         public static void ValidateInputPassword(TextCompositionEventArgs e)
         {
-            // Ограничение на ввод пароля
-            var regex = new Regex(@"^[a-zA-Z!@#$&*0-9]+$");
-            if (!regex.IsMatch(e.Text))
-            {
-                e.Handled = true;
-            }
+            ValidateInput(e, Password());
         }
+
         #endregion
 
         #region Валидация на вставку текста
-        // Вставка КИРРИЛИЦА
+
+        /// <summary>
+        /// Проверяет вставляемый текст на соответствие кириллическим символам.
+        /// </summary>
         public static void ValidatePasteCyrillic(DataObjectPastingEventArgs e)
         {
-            // Извлекаем текст из буфера обмена и конвертурием в текст
-            string pastedText = e.DataObject.GetData(DataFormats.Text) as string;
-
-            if (!Regex.IsMatch(pastedText, @"[а-яА-Я\-]"))
-            {
-                e.CancelCommand(); // Блокируем ввод
-            }
+            ValidatePaste(e, Cyrillic());
         }
 
-        // Вставка ЦИФРЫ
+        /// <summary>
+        /// Проверяет вставляемый текст на соответствие числам.
+        /// </summary>
         public static void ValidatePasteNumbers(DataObjectPastingEventArgs e)
         {
-            // Извлекаем текст из буфера обмена и конвертурием в текст
-            string pastedText = e.DataObject.GetData(DataFormats.Text) as string;
-
-            if (!Regex.IsMatch(pastedText, @"[а-яА-Я\s]"))
-            {
-                e.CancelCommand(); // Блокируем ввод
-            }
+            ValidatePaste(e, Numbers());
         }
 
-        // Вставка КИРРИЛИЦА + ЦИФРЫ + СИМВОЛЫ (для адреса)
+        /// <summary>
+        /// Проверяет вставляемый текст на соответствие формату описания для адреса.
+        /// </summary>
         public static void ValidatePasteDescriptionForAddress(DataObjectPastingEventArgs e)
         {
-            // Извлекаем текст из буфера обмена и конвертурием в текст
-            string pastedText = e.DataObject.GetData(DataFormats.Text) as string;
-
-            if (!Regex.IsMatch(pastedText, @"[a-zA-Z\s-().,;""':]"))
-            {
-                e.CancelCommand(); // Блокируем ввод
-            }
+            ValidatePaste(e, Description());
         }
 
-        // Вставка ЭЛЕКТРОННАЯ ПОЧТА
+        /// <summary>
+        /// Проверяет вставляемый текст на соответствие формату электронной почты.
+        /// </summary>
         public static void ValidatePasteEmail(DataObjectPastingEventArgs e)
         {
-            // Извлекаем текст из буфера обмена и конвертурием в текст
-            string pastedText = e.DataObject.GetData(DataFormats.Text) as string;
-
-            if (!Regex.IsMatch(pastedText, @"^[a-zA-Z0-9\@\.]+$"))
-            {
-                e.CancelCommand(); // Блокируем ввод
-            }
+            ValidatePaste(e, Email());
         }
 
-        // Вставка ЛАТИНИЦА
+        /// <summary>
+        /// Проверяет вставляемый текст на соответствие формату пароля.
+        /// </summary>
         public static void ValidatePastePassword(DataObjectPastingEventArgs e)
         {
-            // Извлекаем текст из буфера обмена и конвертурием в текст
-            string pastedText = e.DataObject.GetData(DataFormats.Text) as string;
-
-            if (!Regex.IsMatch(pastedText, @"^[a-zA-Z!@#$&*0-9]+$"))
+            string pastedText = GetTextFromPaste(e);
+            var regex = Password();
+            if (!regex.IsMatch(pastedText))
             {
-                e.CancelCommand(); // Блокируем ввод
+                e.CancelCommand();
             }
         }
+
         #endregion
+
+        /// <summary>
+        /// Извлекает текст из буфера обмена при вставке.
+        /// </summary>
+        private static string GetTextFromPaste(DataObjectPastingEventArgs e)
+        {
+            return e.DataObject.GetData(DataFormats.Text)?.ToString() ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Проверяет, соответствует ли вводимый текст заданному регулярному выражению.
+        /// </summary>
+        private static void ValidateInput(TextCompositionEventArgs e, Regex regex)
+        {
+            if (!regex.IsMatch(e.Text))
+            {
+                e.Handled = true; // Блокируем ввод
+            }
+        }
+
+        /// <summary>
+        /// Проверяет, соответствует ли вставляемый текст заданному регулярному выражению.
+        /// </summary>
+        private static void ValidatePaste(DataObjectPastingEventArgs e, Regex regex)
+        {
+            string pastedText = GetTextFromPaste(e);
+            if (!regex.IsMatch(pastedText))
+            {
+                e.CancelCommand(); // Блокируем вставку
+            }
+        }
+
+
+        // Кирилика
+        [GeneratedRegex(@"[а-яА-Я\-]")]
+        private static partial Regex Cyrillic();
+
+        // Цифры
+        [GeneratedRegex(@"[0-9]")]
+        private static partial Regex Numbers();
+
+        // Описание
+        [GeneratedRegex(@"[а-яА-Я\d-().,;""':/]")]
+        private static partial Regex Description();
+
+        // Эл. почта
+        [GeneratedRegex(@"[a-zA-Z0-9\@\.]")]
+        private static partial Regex Email();
+
+        // Пароль
+        [GeneratedRegex(@"[a-zA-Z!@#$&*0-9]")]
+        private static partial Regex Password();
     }
 }

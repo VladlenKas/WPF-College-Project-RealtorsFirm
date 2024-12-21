@@ -232,10 +232,19 @@
                     HorizontalAlignment="Left"
                     Name="textFound"
                     FontSize="32"
-                    Style="{StaticResource MenuTextBlockHeader}" 
                     Text="Ничего не найдено"
-                    Margin="20 65"
-                    Visibility="Collapsed"/>
+                    Margin="20 65">
+                    <TextBlock.Style>
+                        <Style BasedOn="{StaticResource MenuTextBlockHeader}" TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Items.Count, ElementName=EmployeesDataGrid}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
             </Grid>
         </DockPanel>
     </Grid>

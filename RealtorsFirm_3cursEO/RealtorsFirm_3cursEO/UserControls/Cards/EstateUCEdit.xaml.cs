@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RealtorsFirm_3cursEO.Model;
+using RealtorsFirm_3cursEO.Windows.WindowsActions.Estates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,7 @@ namespace RealtorsFirm_3cursEO.UserControls.Cards
                            .Include(r => r.IdClientNavigation)
                            .Single(r => r.IdEstate == _estate.IdEstate);
 
+            _estate = thisEstate;
             DataContext = thisEstate;
 
             if (thisEstate.Photo == null)
@@ -67,7 +69,6 @@ namespace RealtorsFirm_3cursEO.UserControls.Cards
             if (result == MessageBoxResult.Yes)
             {
                 ModelActions.DeleteEstate(_estate);
-                _estate = null;
 
                 MessageBox.Show("Недвижимость удалена!",
                 "Успех",
@@ -81,7 +82,12 @@ namespace RealtorsFirm_3cursEO.UserControls.Cards
 
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
-                
+            EditEstate edit = new(_estate);
+            edit.ShowDialog();
+
+            // Передаем информацию о действии
+            RemoveEstateRequested?.Invoke(this, new EstateEventArgs { Estate = this.Estate });
+            DataLoad();
         }
 
         private void Archive_Click(object sender, RoutedEventArgs e)
@@ -94,7 +100,6 @@ namespace RealtorsFirm_3cursEO.UserControls.Cards
             if (result == MessageBoxResult.Yes)
             {
                 ModelActions.ArchiveEstate(_estate);
-                _estate = null;
 
                 MessageBox.Show("Недвижимость архивирована!",
                 "Успех",

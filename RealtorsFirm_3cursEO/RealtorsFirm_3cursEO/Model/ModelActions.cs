@@ -102,6 +102,10 @@ namespace RealtorsFirm_3cursEO.Model
             {
                 var employeeEdit = dbContext.Clients.Single(r => r.IdClient == client.IdClient);
                 employeeEdit.IsDeleted = 1;
+
+                List<Estate> estates = new(dbContext.Estates.Where(r => r.IdClient == client.IdClient && r.IsArchive != 1).ToList());
+                estates.ForEach(r => r.IsDeleted = 1);
+
                 dbContext.SaveChanges();
             }
         }
@@ -322,6 +326,50 @@ namespace RealtorsFirm_3cursEO.Model
             }
         }
 
+        // Добавление
+        public static void AddEstate(int IdClient, int IdType, string Address,
+        int Area, int NumberRooms, string Cost, byte[]? Photo)
+        {
+            using (var dbContext = new RealtorsFirmContext())
+            {
+                var newEstate = new Estate
+                {
+                    IdClient = IdClient,
+                    IdType = IdType,
+                    Address = Address,
+                    Area = Area,
+                    NumberRooms = NumberRooms,
+                    Cost = Cost,
+                    Photo = Photo
+                };
+
+                dbContext.AllEstates.Add(newEstate);
+                dbContext.SaveChanges();
+            }
+        }
+
+        // Редактирование
+        public static void EditEstate(Estate estate, int IdClient, int IdType, string Address,
+        int Area, int NumberRooms, string Cost, byte[]? Photo)
+        {
+            using (var dbContext = new RealtorsFirmContext())
+            {
+                // Находим пользователя по айди
+                var newEstate = dbContext.Estates.Single(r => r.IdEstate == estate.IdEstate);
+
+                // Обновляем данные
+                newEstate.IdClient = IdClient;
+                newEstate.IdType = IdType;
+                newEstate.Area = Area;
+                newEstate.Address = Address;
+                newEstate.NumberRooms = NumberRooms;
+                newEstate.Cost = Cost;
+                newEstate.Photo = Photo;
+
+                // Сохраняем изменения в базе данных
+                dbContext.SaveChanges();
+            }
+        }
         #endregion
     }
 }

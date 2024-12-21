@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Linq;
@@ -13,7 +14,7 @@ namespace RealtorsFirm_3cursEO.Classes.DataOperations
     public static class DataLimitators
     {
         #region Сотрудники
-        public static bool LimitatorEmployee(Employee employee, string Role, string Name, string Firstname,
+        public static bool LimitatorEmployee(Employee? employee, string Role, string Name, string Firstname,
             DateOnly Birthday, string Phone, string Passport, string Email, string Password)
         {
             using (var context = new RealtorsFirmContext())
@@ -30,11 +31,11 @@ namespace RealtorsFirm_3cursEO.Classes.DataOperations
                 else
                 {
                     // Проверки для имени
-                    bool nameIsValid = DataLimitatorsMethods.LimitatorName(Name);
+                    bool nameIsValid = LimitatorName(Name);
                     // Проверки для даты
-                    bool ageIsValid = DataLimitatorsMethods.LimitatorAge(Birthday);
+                    bool ageIsValid = LimitatorAge(Birthday);
                     // Проверка для емайла
-                    bool emailIsValid = DataLimitatorsMethods.LimitatorEmail(Email);
+                    bool emailIsValid = LimitatorEmail(Email);
 
                     // Проверка на имя
                     if (!nameIsValid)
@@ -132,7 +133,7 @@ namespace RealtorsFirm_3cursEO.Classes.DataOperations
         #endregion
 
         #region Клиенты
-        public static bool LimitatorClient(Client client, string Name, string Firstname,
+        public static bool LimitatorClient(Client? client, string Name, string Firstname,
             DateOnly Birthday, string Phone, string Passport, string Email, string Password)
         {
             using (var context = new RealtorsFirmContext())
@@ -149,11 +150,11 @@ namespace RealtorsFirm_3cursEO.Classes.DataOperations
                 else
                 {
                     // Проверки для имени
-                    bool nameIsValid = DataLimitatorsMethods.LimitatorName(Name);
+                    bool nameIsValid = LimitatorName(Name);
                     // Проверки для даты
-                    bool ageIsValid = DataLimitatorsMethods.LimitatorAge(Birthday);
+                    bool ageIsValid = LimitatorAge(Birthday);
                     // Проверка для емайла
-                    bool emailIsValid = DataLimitatorsMethods.LimitatorEmail(Email);
+                    bool emailIsValid = LimitatorEmail(Email);
 
                     // Проверка на имя
                     if (!nameIsValid)
@@ -251,7 +252,7 @@ namespace RealtorsFirm_3cursEO.Classes.DataOperations
         #endregion
 
         #region Услуги
-        public static bool LimitatorPrice(Price price, string name, int cost)
+        public static bool LimitatorPrice(Price? price, string name, int cost)
         {
             using (var context = new RealtorsFirmContext())
             {
@@ -301,7 +302,147 @@ namespace RealtorsFirm_3cursEO.Classes.DataOperations
                     return true;
                 }
             }
-        } 
+        }
+        #endregion
+
+        #region Недвижимость
+        public static bool LimitatorEstate(Estate? estate, Client? client, TypeEstate? typeEstate, string address,
+            int area, int numberRooms, string cost, byte[]? photo)
+        {
+            using (var context = new RealtorsFirmContext())
+            {
+                // Создаем лист для исключений
+                List<string> errorsList = new List<string>();
+
+                // Проверка на пустые поля
+                if (client is null)
+                {
+                    errorsList.Add("Выберите клиента.");
+                }
+                else if (typeEstate is null)
+                {
+                    errorsList.Add("Выберите тип недвижимости.");
+                }
+                else if (area == 0)
+                {
+                    errorsList.Add("Площадь недвижимости не может быть нулевой. " +
+                        "Укажите корректную площадь недвижимости.");
+                }
+                else if (numberRooms == 0)
+                {
+                    errorsList.Add("Количество комнат не может быть нулевым значением. " +
+                        "Укажите корректное количество комнат.");
+                }
+                else if (string.IsNullOrWhiteSpace(cost))
+                {
+                    errorsList.Add("Стоимость не может быть бесплатной. Укажите цену.");
+                }
+                else if (string.IsNullOrWhiteSpace(address))
+                {
+                    errorsList.Add("Укажите адресс недвижимости.");
+                }
+                // Все остальные проверки
+                else
+                {
+                    // При редактировании
+                    if (estate != null)
+                    {
+                        if (context.Estates.Any(r => r.Address == address && r.IdEstate != estate.IdEstate))
+                        {
+                            errorsList.Add("Ввденный адрес недвижимости уже занят. Укажите другой");
+                        }
+                    }
+                    // При добавлении
+                    else
+                    {
+                        // Проверка на номер телефона (на повторение)
+                        if (context.Estates.Any(r => r.Address == address))
+                        {
+                            errorsList.Add("Ввденный адрес недвижимости уже занят. Укажите другой.");
+                        }
+                    }
+                }
+
+                if (errorsList.Count != 0)
+                {
+                    string error = errorsList[0];
+
+                    MessageBox.Show($"{error}", "Ошибка.", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+        #endregion
+
+        #region Вспомогательные методы
+        private static short CalculateAge(DateOnly birthDate)
+        {
+            DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+            int age = today.Year - birthDate.Year;
+
+            if (today.Month < birthDate.Month || (today.Month == birthDate.Month && today.Day < birthDate.Day))
+            {
+                age--;
+            }
+
+            return (short)age;
+        }
+        #endregion
+
+        #region Ограничения
+
+        // Ограничение по возрасту 
+        public static bool LimitatorAge(DateOnly date)
+        {
+            short age = CalculateAge(date);
+
+            if (age < 18 || age > 80)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        // Ограничение по году 
+        public static bool LimitatorYear(short year)
+        {
+            int currentYear = DateTime.Now.Year;
+            if (year < 1990 || year > currentYear)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        // Ограничение на валидность почты
+        public static bool LimitatorEmail(string email)
+        {
+            var regex = new Regex(@"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}$");
+            if (!regex.IsMatch(email))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        // Ограничение на имя
+        public static bool LimitatorName(string name)
+        {
+            if (name.Contains('-'))
+            {
+                var regex = new Regex(@"^[а-яА-Я]+\-[а-яА-Я]+$");
+                if (!regex.IsMatch(name))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         #endregion
     }
 }

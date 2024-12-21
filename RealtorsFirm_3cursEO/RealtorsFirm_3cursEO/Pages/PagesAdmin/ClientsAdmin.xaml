@@ -224,8 +224,7 @@
                     Name="textFound"
                     FontSize="32"
                     Text="Ничего не найдено"
-                    Margin="20 65"
-                    Visibility="Collapsed">
+                    Margin="20 65">
                     <TextBlock.Style>
                         <Style BasedOn="{StaticResource MenuTextBlockHeader}" TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Collapsed"/>

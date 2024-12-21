@@ -238,7 +238,7 @@
                                         <Grid>
                                             <control:AutoCompleteControl
                                                 x:Name="CLientSearch"
-                                                DisplayMemberPath="FullName"/>
+                                                DisplayMemberPath="PassportFI"/>
                                             <materialDesign:PackIcon
                                                 Style="{StaticResource icon}"
                                                 Kind="User"/>

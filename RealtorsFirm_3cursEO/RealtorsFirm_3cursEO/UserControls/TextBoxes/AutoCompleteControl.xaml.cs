@@ -65,7 +65,16 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
         }
 
         // Выбранный элемент из списка
-        public object SelectedItem { get; private set; }
+        private object _selectedItem;
+        public object SelectedItem 
+        {
+            get { return _selectedItem; } 
+            set
+            {
+                _selectedItem = value;
+                ItemsListBox.SelectedItem = _selectedItem;
+            }
+        }
 
         /// <summary>
         /// Конструктор элемента управления.
@@ -131,7 +140,7 @@ namespace RealtorsFirm_3cursEO.UserControls.TextBoxes
 
             var filter = InputTextBox.Text.ToLower(); // Получаем текст в нижнем регистре
 
-            if (string.IsNullOrEmpty(filter))
+            if (string.IsNullOrWhiteSpace(filter))
             {
                 // Если текст пустой, показываем все элементы
                 ItemsListBox.ItemsSource = ItemsSource.Cast<object>().ToList();

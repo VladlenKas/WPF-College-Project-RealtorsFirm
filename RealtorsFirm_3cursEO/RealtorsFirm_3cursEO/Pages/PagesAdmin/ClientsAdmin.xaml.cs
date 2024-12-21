@@ -56,15 +56,6 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
 
             ClientsDataGrid.ItemsSource = null;
             ClientsDataGrid.ItemsSource = employeesList;
-
-            /*if (employeesList.Count == 0)
-            {
-                textFound.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                textFound.Visibility = Visibility.Hidden;
-            }*/
         }
 
         #region Обработчики_событий
@@ -85,7 +76,8 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Вы точно хотите удалить данного клиента?",
+            MessageBoxResult result = MessageBox.Show("Вы точно хотите удалить данного клиента? " +
+                "При удалении так же удалятся все привязанные недвижимости.",
                 "Подтверждение",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning);

@@ -76,15 +76,6 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
 
             EmployeesDataGrid.ItemsSource = null;
             EmployeesDataGrid.ItemsSource = employeesList;
-
-            if (employeesList.Count == 0)
-            {
-                textFound.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                textFound.Visibility = Visibility.Hidden;
-            }
         }
 
         #region Обработчики_событий
@@ -109,7 +100,12 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
                 {
                     ModelActions.DeleteEmployee(_selectedEmployee);
                     _selectedEmployee = null;
-                    
+
+                    MessageBox.Show("Сотрудник удален.",
+                    "Успех",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
                     UpdateDataEmployees();
                 }
             }
@@ -152,7 +148,14 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
                 {
                     ModelActions.ArchiveEmployee(_selectedEmployee);
                     _selectedEmployee = null;
-                    
+
+
+                    MessageBox.Show("Сотрудник архивирован.",
+                    "Успех",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
+
                     UpdateDataEmployees();
                 }
             }

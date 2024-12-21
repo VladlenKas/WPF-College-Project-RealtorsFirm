@@ -156,7 +156,7 @@ public partial class RealtorsFirmContext : DbContext
                 .HasColumnName("address");
             entity.Property(e => e.Area).HasColumnName("area");
             entity.Property(e => e.Cost)
-                .HasMaxLength(45)
+                .HasMaxLength(8)
                 .HasColumnName("cost");
             entity.Property(e => e.IdClient).HasColumnName("id_client");
             entity.Property(e => e.IdType).HasColumnName("id_type");

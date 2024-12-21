@@ -107,7 +107,7 @@
                                 x:Name="PART_ContentHost" 
                                 Focusable="False"/>
                             <TextBlock 
-                                Margin="37 0 0 0"
+                                Margin="37 0 10 0"
                                 x:Name="textBlock"
                                 IsHitTestVisible="False"
                                 Text="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"

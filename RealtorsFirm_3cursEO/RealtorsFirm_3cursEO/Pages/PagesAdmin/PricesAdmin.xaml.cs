@@ -1,7 +1,6 @@
 ﻿using RealtorsFirm_3cursEO.Classes;
 using RealtorsFirm_3cursEO.Edits;
 using RealtorsFirm_3cursEO.Model;
-using RealtorsFirm_3cursEO.Model;
 using RealtorsFirm_3cursEO.WindowsActions.Price;
 using System;
 using System.Collections.Generic;
@@ -72,15 +71,6 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
             PricesDataGrid.ItemsSource = null;
             PricesDataGrid.ItemsSource = pricesList;
-
-            if (pricesList.Count == 0)
-            {
-                textFound.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                textFound.Visibility = Visibility.Hidden;
-            }
         }
 
         #region Обработчики_событий
@@ -96,6 +86,11 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             {
                 ModelActions.DeletePrice(_selectedPrice);
                 _selectedPrice = null;
+
+                MessageBox.Show("Услуга удалена.",
+                "Успех",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
 
                 UpdateDataEmployees();
             }
@@ -129,6 +124,11 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             {
                 ModelActions.ArchivePrice(_selectedPrice);
                 _selectedPrice = null;
+
+                MessageBox.Show("Услуга архивирована.",
+                "Успех",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
 
                 UpdateDataEmployees();
             }

@@ -35,6 +35,15 @@ public partial class Client
 
     public virtual ICollection<Estate> Estates { get; set; } = new List<Estate>();
 
+    public string PassportFI // Свойство, чтобы передавать клиента для лучшего поиска
+    {
+        get
+        {
+            string phone = Phone.Insert(1, "-").Insert(5, "-").Insert(9, "-").Insert(12, "-");
+            return $"{Firstname} {Name}, {phone}";
+        }
+    }
+
     // Свойство для контроля переноса текста
     public bool IsTextWrapped
     {
@@ -52,5 +61,13 @@ public partial class Client
                 return FullName.Length > 40;
             }
         }
+    }
+}
+
+public static class ClientExtensions
+{
+    public static int GetEstateCount(this Client client, RealtorsFirmContext dbContext)
+    {
+        return dbContext.Estates.Count(e => e.IdClient == client.IdClient && e.IsArchive != 1);
     }
 }

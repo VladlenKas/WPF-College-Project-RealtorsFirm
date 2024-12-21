@@ -7,9 +7,9 @@
                          
              xmlns:ArchiveConverter="clr-namespace:RealtorsFirm_3cursEO.Classes.Converters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             Height="500" Width="700">
+             Height="850" Width="700">
 
-    <UserControl.Resources>
+    <UserControl.Resources> 
         <!-- Конвертер для обозначения архивированных записей -->
         <ArchiveConverter:ArchiveStatusConverter x:Key="ArchiveStatusConverter"/>
 
@@ -26,7 +26,6 @@
         BorderBrush="#30000000"
         Margin="15"
         CornerRadius="30">
-
         <Border.Style>
             <Style TargetType="Border">
                 <Style.Triggers>
@@ -48,7 +47,7 @@
                 Grid.Row="0"
                 Grid.RowSpan="2"
                 CornerRadius="30 30 0 0"
-                Height="380"
+                Height="630"
                 VerticalAlignment="Top">
 
                 <Border.Background>
@@ -67,17 +66,17 @@
 
                 <Grid Margin="20">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.7*"/>
+                        <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Grid VerticalAlignment="Top">
+                    <Grid VerticalAlignment="Top" Margin="0 0 20 0">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         
                         <TextBlock Grid.Row="0">
@@ -88,7 +87,7 @@
                             <Run 
                                 Text="{Binding IdEstate}" 
                                 FontWeight="Bold"
-                                FontSize="20"/>
+                                FontSize="18"/>
                         </TextBlock>
 
                         <TextBlock Grid.Row="1" TextWrapping="Wrap">
@@ -156,7 +155,7 @@
                                 FontSize="16"
                                 Foreground="Gray"/>
                             <Run 
-                                Text="{Binding Cost, StringFormat={}{0:N0}}" 
+                                Text="{Binding Cost, StringFormat={}{0} руб.}" 
                                 FontWeight="Bold"
                                 FontSize="18"/>
                         </TextBlock>
