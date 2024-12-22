@@ -19,6 +19,8 @@ namespace RealtorsFirm_3cursEO.Model
             {
                 var employeeEdit = dbContext.Employees.Single(r => r.IdEmployee == employee.IdEmployee);
                 employeeEdit.IsDeleted = 1;
+
+                dbContext.Update(employeeEdit);
                 dbContext.SaveChanges();
             }
         }
@@ -30,6 +32,8 @@ namespace RealtorsFirm_3cursEO.Model
             {
                 var employeeEdit = dbContext.Employees.Single(r => r.IdEmployee == employee.IdEmployee);
                 employeeEdit.IsArchive = 1;
+
+                dbContext.Update(employeeEdit);
                 dbContext.SaveChanges();
             }
         }
@@ -87,6 +91,7 @@ namespace RealtorsFirm_3cursEO.Model
                 newEmployee.Password = Password;
                 newEmployee.IdRole = idRole;
 
+                dbContext.Update(newEmployee);
                 // Сохраняем изменения в базе данных
                 dbContext.SaveChanges();
             }
@@ -100,12 +105,13 @@ namespace RealtorsFirm_3cursEO.Model
         {
             using (var dbContext = new RealtorsFirmContext())
             {
-                var employeeEdit = dbContext.Clients.Single(r => r.IdClient == client.IdClient);
-                employeeEdit.IsDeleted = 1;
+                var clientEdit = dbContext.Clients.Single(r => r.IdClient == client.IdClient);
+                clientEdit.IsDeleted = 1;
 
                 List<Estate> estates = new(dbContext.Estates.Where(r => r.IdClient == client.IdClient && r.IsArchive != 1).ToList());
                 estates.ForEach(r => r.IsDeleted = 1);
 
+                dbContext.Update(clientEdit);
                 dbContext.SaveChanges();
             }
         }
@@ -115,12 +121,13 @@ namespace RealtorsFirm_3cursEO.Model
         {
             using (var dbContext = new RealtorsFirmContext())
             {
-                var employeeEdit = dbContext.Clients.Single(r => r.IdClient == client.IdClient);
-                employeeEdit.IsArchive = 1;
+                var clientEdit = dbContext.Clients.Single(r => r.IdClient == client.IdClient);
+                clientEdit.IsArchive = 1;
 
                 List<Estate> estates = new(dbContext.Estates.Where(r => r.IdClient == client.IdClient && r.IsArchive != 1).ToList());
                 estates.ForEach(r => r.IsArchive = 1);
 
+                dbContext.Update(clientEdit);
                 dbContext.SaveChanges();
             }
         }
@@ -171,6 +178,7 @@ namespace RealtorsFirm_3cursEO.Model
                 newClient.Email = Email;
                 newClient.Password = Password;
 
+                dbContext.Update(newClient);
                 // Сохраняем изменения в базе данных
                 dbContext.SaveChanges();
             }
@@ -186,6 +194,8 @@ namespace RealtorsFirm_3cursEO.Model
             {
                 var priceEdit = dbContext.Prices.Single(r => r.IdPrice == price.IdPrice);
                 priceEdit.IsDeleted = 1;
+
+                dbContext.Update(priceEdit);
                 dbContext.SaveChanges();
             }
         }
@@ -197,6 +207,8 @@ namespace RealtorsFirm_3cursEO.Model
             {
                 var priceEdit = dbContext.Prices.Single(r => r.IdPrice == price.IdPrice);
                 priceEdit.IsArchive = 1;
+
+                dbContext.Update(priceEdit);
                 dbContext.SaveChanges();
             }
         }
@@ -233,6 +245,7 @@ namespace RealtorsFirm_3cursEO.Model
                 newEmployee.Name = Name;
                 newEmployee.Cost = Cost;
 
+                dbContext.Update(newEmployee);
                 // Сохраняем изменения в базе данных
                 dbContext.SaveChanges();
             }
@@ -309,8 +322,10 @@ namespace RealtorsFirm_3cursEO.Model
         {
             using (var dbContext = new RealtorsFirmContext())
             {
-                var employeeEdit = dbContext.Estates.Single(r => r.IdEstate == estate.IdEstate);
-                employeeEdit.IsDeleted = 1;
+                var estateEdit = dbContext.Estates.Single(r => r.IdEstate == estate.IdEstate);
+                estateEdit.IsDeleted = 1;
+
+                dbContext.Update(estateEdit);
                 dbContext.SaveChanges();
             }
         }
@@ -320,8 +335,10 @@ namespace RealtorsFirm_3cursEO.Model
         {
             using (var dbContext = new RealtorsFirmContext())
             {
-                var employeeEdit = dbContext.Estates.Single(r => r.IdEstate == estate.IdEstate);
-                employeeEdit.IsArchive = 1;
+                var estateEdit = dbContext.Estates.Single(r => r.IdEstate == estate.IdEstate);
+                estateEdit.IsArchive = 1;
+
+                dbContext.Update(estateEdit);
                 dbContext.SaveChanges();
             }
         }
@@ -367,6 +384,7 @@ namespace RealtorsFirm_3cursEO.Model
                 newEstate.Photo = Photo;
 
                 // Сохраняем изменения в базе данных
+                dbContext.Update(newEstate);
                 dbContext.SaveChanges();
             }
         }

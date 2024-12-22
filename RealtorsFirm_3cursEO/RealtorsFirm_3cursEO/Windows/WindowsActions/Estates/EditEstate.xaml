@@ -49,33 +49,22 @@
 
                 <Grid>
                     <Border
-                    CornerRadius="20"
-                    BorderBrush="Gray">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderThickness" Value="0"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Source, ElementName=ImageBorder}" Value="{x:Null}">
-                                        <Setter Property="BorderThickness" Value="1"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-
+                        Background="#15000000"
+                        CornerRadius="20">
                         <Image 
                             Source="{Binding Photo}"
-                            Height="700"
                             Width="700"
-                            Grid.Column="0"
+                            Height="700"
                             x:Name="ImageBorder"
-                            Stretch="UniformToFill"/>
+                            Stretch="Uniform">
+                        </Image>
                     </Border>
 
                     <TextBlock
-                    Text="Выберите изображение"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    FontSize="32">
+                        Text="Выберите изображение"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        FontSize="32">
                         <TextBlock.Style>
                             <Style BasedOn="{StaticResource MenuTextBlockHeader}" TargetType="TextBlock">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -94,15 +83,16 @@
                 Margin="20"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom">
-                
                 <StackPanel Orientation="Horizontal">
                     <Grid DockPanel.Dock="Bottom">
                         <Button 
                             Style="{StaticResource DeleteButton}"
-                            Click="DeleteImage_Click"/>
+                            Click="DeleteImage_Click">
+                        </Button>
                         <materialDesign:PackIcon 
                             Kind="Trash"
-                            Style="{StaticResource UCIcon}"/>
+                            Style="{StaticResource UCIcon}">
+                        </materialDesign:PackIcon>
                     </Grid>
 
                     <Grid 
@@ -110,10 +100,12 @@
                         DockPanel.Dock="Bottom">
                         <Button 
                             Style="{StaticResource EditButton}"
-                            Click="EditImage_Click"/>
+                            Click="EditImage_Click">
+                        </Button>
                         <materialDesign:PackIcon 
                             Kind="Edit"
-                            Style="{StaticResource UCIcon}"/>
+                            Style="{StaticResource UCIcon}">
+                        </materialDesign:PackIcon>
                     </Grid>
                 </StackPanel>
             </Grid>
@@ -125,7 +117,6 @@
             Width="400"
             Margin="0 60 20 60"
             LastChildFill="False">
-
             <RichTextBox 
                 FontSize="30" 
                 BorderThickness="0"
@@ -145,14 +136,18 @@
 
             <StackPanel DockPanel.Dock="Top">
                 <Grid>
-                    <StackPanel Panel.ZIndex="1">
+                    <StackPanel 
+                        Panel.ZIndex="1">
                         <TextBlock Text="Клиент (ФИ, номер телефона) *"/>
-                        <Grid>
+                        <Grid
+                            IsEnabled="False"
+                            Opacity="0.5">
                             <Control:AutoCompleteControl
-                            DisplayMemberPath="PassportFI"
-                            x:Name="ClientAutoComplete"
-                            PreviewTextInput="TextBox_PreviewTextInput"
-                            DataObject.Pasting="TextBox_Pasting"/>
+                                DisplayMemberPath="PassportFI"
+                                x:Name="ClientAutoComplete"
+                                PreviewTextInput="TextBox_PreviewTextInput"
+                                DataObject.Pasting="TextBox_Pasting">
+                            </Control:AutoCompleteControl>
                             <materialDesign:PackIcon Kind="User" Style="{StaticResource Icon}"/>
                         </Grid>
                     </StackPanel>
@@ -161,11 +156,12 @@
                         <TextBlock Text="Тип недвижимости *"/>
                         <Grid>
                             <ComboBox 
-                            DisplayMemberPath="Name"
-                            Margin="0 0 0 20"
-                            x:Name="TypeEstateComboBox"
-                            PreviewTextInput="TextBox_PreviewTextInput"
-                            DataObject.Pasting="TextBox_Pasting"/>
+                                DisplayMemberPath="Name"
+                                Margin="0 0 0 20"
+                                x:Name="TypeEstateComboBox"
+                                PreviewTextInput="TextBox_PreviewTextInput"
+                                DataObject.Pasting="TextBox_Pasting">
+                            </ComboBox>
                             <materialDesign:PackIcon Kind="Label" Style="{StaticResource Icon}"/>
                         </Grid>
                     </StackPanel>
@@ -174,10 +170,11 @@
                         <TextBlock Text="Площадь (кв.м.) *"/>
                         <Grid>
                             <TextBox 
-                            x:Name="AreaTextBox"
-                            PreviewTextInput="NumberTextBox_PreviewTextInput"
-                            MaxLength="5"
-                            DataObject.Pasting="NumberTextBox_Pasting"/>
+                                x:Name="AreaTextBox"
+                                PreviewTextInput="NumberTextBox_PreviewTextInput"
+                                MaxLength="5"
+                                DataObject.Pasting="NumberTextBox_Pasting">
+                            </TextBox>
                             <materialDesign:PackIcon Kind="AspectRatio" Style="{StaticResource Icon}"/>
                         </Grid>
                     </StackPanel>
@@ -186,10 +183,11 @@
                         <TextBlock Text="Количество комнат *"/>
                         <Grid>
                             <TextBox 
-                            x:Name="NumberRoomsTextBox"
-                            PreviewTextInput="NumberTextBox_PreviewTextInput"
-                            MaxLength="5"
-                            DataObject.Pasting="NumberTextBox_Pasting"/>
+                                x:Name="NumberRoomsTextBox"
+                                PreviewTextInput="NumberTextBox_PreviewTextInput"
+                                MaxLength="5"
+                                DataObject.Pasting="NumberTextBox_Pasting">
+                            </TextBox>
                             <materialDesign:PackIcon Kind="FamilyRoom" Style="{StaticResource Icon}"/>
                         </Grid>
                     </StackPanel>
@@ -202,7 +200,8 @@
                             x:Name="CostTextBox"
                             PreviewTextInput="NumberTextBox_PreviewTextInput"
                             MaxLength="8"
-                            DataObject.Pasting="NumberTextBox_Pasting"/>
+                            DataObject.Pasting="NumberTextBox_Pasting">
+                        </TextBox>
                         <materialDesign:PackIcon Kind="Money" Style="{StaticResource Icon}"/>
                     </Grid>
                 </StackPanel>
@@ -211,35 +210,37 @@
                     <TextBlock Text="Адрес *"/>
                     <Grid>
                         <TextBox 
-                            Padding="37 5 10 0"
+                            Padding="37 5 15 0"
                             VerticalContentAlignment="Top"
                             TextWrapping="Wrap"
                             Height="120"
                             x:Name="AddressTextBox"
                             PreviewTextInput="DescriptionTextBox_PreviewTextInput"
                             MaxLength="120"
-                            DataObject.Pasting="DescriptionTextBox_Pasting"/>
+                            DataObject.Pasting="DescriptionTextBox_Pasting">
+                        </TextBox>
                         <materialDesign:PackIcon Kind="AddressMarker" Style="{StaticResource Icon}"/>
                     </Grid>
                 </StackPanel>
             </StackPanel>
 
-            <DockPanel
-                DockPanel.Dock="Bottom">
+            <DockPanel DockPanel.Dock="Bottom">
                 <Button 
                     Content="Сохранить изменения"
                     x:Name="ButtonAdd"
                     Click="ButtonAdd_Click"
                     DockPanel.Dock="Bottom"
                     Margin="40 20 40 0"
-                    Style="{StaticResource ActionButtonGradient}"/>
+                    Style="{StaticResource ActionButtonGradient}">
+                </Button>
                 <Button 
                     Content="Выйти"
                     x:Name="ButtonExit"
                     Click="ButtonExit_Click"
                     DockPanel.Dock="Bottom"
                     Margin="40 0"
-                    Style="{StaticResource ActionButton}"/>
+                    Style="{StaticResource ActionButton}">
+                </Button>
             </DockPanel>
         </DockPanel>
     </Grid>

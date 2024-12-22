@@ -30,4 +30,14 @@ public partial class Estate
     public virtual TypeEstate IdTypeNavigation { get; set; } = null!;
 
     public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+
+    // Свойство для контроля переноса текста
+    public bool IsTextWrapped
+    {
+        get
+        {
+            // Логика определения необходимости переноса текста
+            return Address.Length > 40;
+        }
+    }
 }

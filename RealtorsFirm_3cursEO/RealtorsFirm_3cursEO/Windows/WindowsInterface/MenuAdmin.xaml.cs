@@ -52,11 +52,14 @@ namespace RealtorsFirm_3cursEO
                     break;
                 case 3:
                     ContentFrame.Navigate(new EstatesAdmin(_employee));
-                    break; 
+                    break;
                 case 4:
                     ContentFrame.Navigate(new TransactionAdmin(_employee));
                     break;
                 case 5:
+                    ContentFrame.Navigate(new StatisticsTransactionAdmin(_employee));
+                    break;
+                case 6:
                     break;
             }
         }
@@ -104,6 +107,11 @@ namespace RealtorsFirm_3cursEO
         private void ButtonTransaction_Click(object sender, RoutedEventArgs e)
         {
             ChoosePage(4);
+        }
+
+        private void ButtonStatistics_Click(object sender, RoutedEventArgs e)
+        {
+            ChoosePage(5);
         }
     }
 }

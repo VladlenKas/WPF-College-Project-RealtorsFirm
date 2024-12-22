@@ -48,33 +48,22 @@
 
                 <Grid>
                     <Border
-                    CornerRadius="20"
-                    BorderBrush="Gray">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderThickness" Value="0"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Source, ElementName=ImageBorder}" Value="{x:Null}">
-                                        <Setter Property="BorderThickness" Value="1"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-
+                        Background="#15000000"
+                        CornerRadius="20">
                         <Image 
                             Source="{Binding Photo}"
-                            Height="700"
                             Width="700"
-                            Grid.Column="0"
+                            Height="700"
                             x:Name="ImageBorder"
-                            Stretch="UniformToFill"/>
+                            Stretch="Uniform">
+                        </Image>
                     </Border>
 
                     <TextBlock
-                    Text="Выберите изображение"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    FontSize="32">
+                        Text="Выберите изображение"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        FontSize="32">
                         <TextBlock.Style>
                             <Style BasedOn="{StaticResource MenuTextBlockHeader}" TargetType="TextBlock">
                                 <Setter Property="Visibility" Value="Collapsed"/>

@@ -266,7 +266,6 @@
                                 IsHitTestVisible="False"
                                 Name="textblock"
                                 VerticalAlignment="Center"
-                                HorizontalAlignment="Left"
                                 Text="Выберите элемент"
                                 Visibility="Collapsed"
                                 Margin="40 0"
@@ -291,7 +290,8 @@
                                 Margin="10 0">
 
                                 <Grid 
-                                    SnapsToDevicePixels="True"                
+                                    SnapsToDevicePixels="True"
+                                    MaxWidth="{TemplateBinding ActualWidth}"
                                     MinWidth="{TemplateBinding ActualWidth}"
                                     MaxHeight="{TemplateBinding MaxDropDownHeight}">
 

@@ -74,7 +74,7 @@ namespace RealtorsFirm_3cursEO.Classes
         /// Открывает файловый менджер для выбора изображений
         /// </summary>
         /// <param name="image"></param>
-        public static bool OpenImage(Image image)
+        public static bool OpenImage(Image image, byte[]? originalImage, bool imageIsEditing)
         {
             var selectImage = new OpenFileDialog();
             selectImage.Filter = "Image files (*.jpg, *.jpeg, *.png *.webp)|*.jpg;*.jpeg;*.png;*.webp;";
@@ -83,9 +83,37 @@ namespace RealtorsFirm_3cursEO.Classes
             {
                 string selectedFilePath = selectImage.FileName;
                 image.Source = new BitmapImage(new Uri(selectedFilePath));
-                return true;
+                return true; // уведомляем об изменении
             }
-            return false;
+            
+            // Если изображения не было, а потом изменилось
+            if (image.Source != null && originalImage == null && imageIsEditing == false)
+            {
+                return true; // уведомляем об изменении
+            }
+            // Если изображения не было, но менялось, а потом снова удалили
+            else if (image.Source == null && originalImage == null && imageIsEditing == true)
+            {
+                return true; // уведомляем об изменении
+            }
+            // Если изображение изменилось
+            else if (imageIsEditing)
+            {
+                return true; // уведомляем об изменении
+            }
+            return false; // изменений нет
+        }
+
+        public static void OpenImage(Image image)
+        {
+            var selectImage = new OpenFileDialog();
+            selectImage.Filter = "Image files (*.jpg, *.jpeg, *.png *.webp)|*.jpg;*.jpeg;*.png;*.webp;";
+            selectImage.InitialDirectory = @"C:\Users";
+            if (selectImage.ShowDialog() == true)
+            {
+                string selectedFilePath = selectImage.FileName;
+                image.Source = new BitmapImage(new Uri(selectedFilePath));
+            }
         }
 
         /// <summary>

@@ -57,18 +57,12 @@
                             </TextBlock>
                         </Grid>
                     </StackPanel>
-                    
+
                     <TextBlock Text="Меню"
                                Style="{StaticResource TextBlock}"
                                Margin="0 30 0 10"
                                DockPanel.Dock="Top"/>
 
-                    <Button Style="{StaticResource Navigation}"
-                            Content="Оформить чек"
-                            DockPanel.Dock="Top"
-                            Click="ButtonTransaction_Click">
-                    </Button>
-                    
                     <Button Style="{StaticResource Navigation}"
                             Content="Недвижмости"
                             DockPanel.Dock="Top"
@@ -95,6 +89,24 @@
                             Click="ButtonClients_Click"
                             Content="Клиенты"
                             DockPanel.Dock="Top"/>
+
+                    <TextBlock Text="Действия"
+                               Style="{StaticResource TextBlock}"
+                               Margin="0 30 0 10"
+                               DockPanel.Dock="Top"/>
+
+                    <Button Style="{StaticResource Navigation}"
+                            Content="Оформить чек"
+                            DockPanel.Dock="Top"
+                            Click="ButtonTransaction_Click">
+                    </Button>
+
+                    <Button Style="{StaticResource Navigation}"
+                            Content="Статистика транзакций"
+                            DockPanel.Dock="Top"
+                            Width="250"
+                            Click="ButtonStatistics_Click">
+                    </Button>
 
                     <GridSplitter DockPanel.Dock="Top"
                                   Width="200"

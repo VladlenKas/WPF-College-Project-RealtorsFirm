@@ -65,7 +65,8 @@ namespace RealtorsFirm_3cursEO.Windows.WindowsActions.Estates
         }
         private string Address => AddressTextBox.Text; // Не должен быть пустой 
         private byte[]? Photo => WindowHelper.ImageSourceToBytes(ImageBorder.Source);
-        private bool _imageChanged = false;
+
+        private bool _imageIsEditing = false;
         #endregion
 
         #region Поля со старыми данными
@@ -110,11 +111,13 @@ namespace RealtorsFirm_3cursEO.Windows.WindowsActions.Estates
                    NumberRooms != _originalNumberRooms ||
                    Cost != _originalCost ||
                    Address != _originalAddress ||
-                   _imageChanged;
+                   _imageIsEditing;
         }
 
         private void CreateNewEmployee()
         {
+            dbContext = new();
+
             // Проверка на изменения данных
             if (!HasDataChanged())
             {
@@ -165,19 +168,20 @@ namespace RealtorsFirm_3cursEO.Windows.WindowsActions.Estates
         private void DeleteImage_Click(object sender, RoutedEventArgs e)
         {
             ImageBorder.Source = null;
+
             if (_originalPhoto != null)
             {
-                _imageChanged = true;
+                _imageIsEditing = true;
             }
-            else
+            else if (_originalPhoto == null && ImageBorder.Source == null)
             {
-                _imageChanged = false;
+                _imageIsEditing = false;
             }
         }
 
         private void EditImage_Click(object sender, RoutedEventArgs e)
         {
-            _imageChanged = WindowHelper.OpenImage(ImageBorder);
+            _imageIsEditing = WindowHelper.OpenImage(ImageBorder, _originalPhoto, _imageIsEditing);
         }
 
         private void Window_Closed(object sender, EventArgs e)

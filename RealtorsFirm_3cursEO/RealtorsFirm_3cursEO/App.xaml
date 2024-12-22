@@ -18,6 +18,9 @@
                 <!-- Menu style -->
                 <ResourceDictionary Source="/Styles/MenuStyle.xaml"/>
 
+                <!-- Statistics menu style -->
+                <ResourceDictionary Source="/Styles/StatisticsTransactionStyle.xaml"/>
+
                 <!-- Action style -->
                 <ResourceDictionary Source="/Styles/ActionStyle.xaml"/>
 

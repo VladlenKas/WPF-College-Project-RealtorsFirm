@@ -232,6 +232,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             // Устанавливаем контекст привязки, чтобы
             // все элементы обновлялись автоматически
             DataContext = this;
+            EmployeeTextBox.DataContext = employee;
 
             dbContext = new();
             Employee = employee;
