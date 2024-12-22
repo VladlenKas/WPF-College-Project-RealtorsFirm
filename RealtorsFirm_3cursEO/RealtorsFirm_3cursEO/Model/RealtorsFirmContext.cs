@@ -240,9 +240,12 @@ public partial class RealtorsFirmContext : DbContext
             entity.Property(e => e.IdTransaction).HasColumnName("id_transaction");
             entity.Property(e => e.AmountDiscount).HasColumnName("amount_discount");
             entity.Property(e => e.AmountTotal).HasColumnName("amount_total");
-            entity.Property(e => e.Date)
+            entity.Property(e => e.DateStart)
                 .HasColumnType("datetime")
-                .HasColumnName("date");
+                .HasColumnName("date_start");
+            entity.Property(e => e.DateFinish)
+                .HasColumnType("datetime")
+                .HasColumnName("date_finish");
             entity.Property(e => e.IdClient).HasColumnName("id_client");
             entity.Property(e => e.IdEmployee).HasColumnName("id_employee");
             entity.Property(e => e.IdEstate).HasColumnName("id_estate");

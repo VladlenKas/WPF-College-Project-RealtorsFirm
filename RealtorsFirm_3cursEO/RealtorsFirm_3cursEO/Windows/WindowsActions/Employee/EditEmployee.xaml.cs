@@ -63,6 +63,13 @@ namespace RealtorsFirm_3cursEO.Edits
 
             dbContext = new RealtorsFirmContext();
             ComboBoxRole.ItemsSource = dbContext.RoleEmployees.Select(r => r.Name).ToList();
+
+            // Чтобы пользователь не мог менять свою роль
+            if (selectEmployee.IdEmployee == thisEmployee.IdEmployee)
+            {
+                SelectRoleGrid.Opacity = 0.5;
+                SelectRoleGrid.IsEnabled = false;
+            }
         }
 
         private void DataEditEmployee()

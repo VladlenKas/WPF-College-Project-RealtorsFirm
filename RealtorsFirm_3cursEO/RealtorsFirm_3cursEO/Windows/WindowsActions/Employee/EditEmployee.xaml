@@ -136,7 +136,7 @@
 
                 <StackPanel>
                     <TextBlock Text="Должность *"/>
-                    <Grid>
+                    <Grid x:Name="SelectRoleGrid">
                         <ComboBox Name="ComboBoxRole"/>
                         <materialDesign:PackIcon Kind="work"/>
                     </Grid>

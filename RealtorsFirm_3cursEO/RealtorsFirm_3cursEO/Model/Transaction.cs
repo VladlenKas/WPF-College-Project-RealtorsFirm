@@ -15,7 +15,9 @@ public partial class Transaction
 
     public int IdStatus { get; set; }
 
-    public DateTime Date { get; set; }
+    public DateTime DateStart { get; set; }
+
+    public DateTime DateFinish { get; set; }
 
     public int AmountTotal { get; set; }
 

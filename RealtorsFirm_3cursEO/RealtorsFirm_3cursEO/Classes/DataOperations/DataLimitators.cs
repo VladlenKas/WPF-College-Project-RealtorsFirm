@@ -341,27 +341,6 @@ namespace RealtorsFirm_3cursEO.Classes.DataOperations
                 {
                     errorsList.Add("Укажите адресс недвижимости.");
                 }
-                // Все остальные проверки
-                else
-                {
-                    // При редактировании
-                    if (estate != null)
-                    {
-                        if (context.Estates.Any(r => r.Address == address && r.IdEstate != estate.IdEstate))
-                        {
-                            errorsList.Add("Ввденный адрес недвижимости уже занят. Укажите другой");
-                        }
-                    }
-                    // При добавлении
-                    else
-                    {
-                        // Проверка на номер телефона (на повторение)
-                        if (context.Estates.Any(r => r.Address == address))
-                        {
-                            errorsList.Add("Ввденный адрес недвижимости уже занят. Укажите другой.");
-                        }
-                    }
-                }
 
                 if (errorsList.Count != 0)
                 {

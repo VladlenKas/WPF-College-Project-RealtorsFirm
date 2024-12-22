@@ -28,7 +28,7 @@
                 <Button 
                     Margin="0 0 12 0"
                     Style="{StaticResource ViewPricesDG}"
-                    Click="ButtonEdit_Click"/>
+                    Click="GetStatistic_Click"/>
             </StackPanel>
         </DataTemplate>
     </Page.Resources>
@@ -52,7 +52,7 @@
                             Style="{StaticResource SearchTextBox}"
                             x:Name="SearchTextBox"
                             TextChanged="SearchTextBox_TextChanged"
-                            Tag="Поиск по ФИО"/>
+                            Tag="Поиск по ФИО или адресу недвижимости"/>
                         <materialDesign:PackIcon Kind="Search" 
                             Style="{StaticResource IconButton}"/>
                     </Grid>
@@ -106,7 +106,6 @@
                 </DockPanel>
             </Grid>
 
-
             <!-- Buttons -->
             <Grid Grid.Row="1" Margin="0 20" DockPanel.Dock="Top">
                 <Grid.ColumnDefinitions>
@@ -125,15 +124,20 @@
 
                     <!-- Button add -->
                     <Grid DockPanel.Dock="Right">
-                        <Button Width="250"
-                        Style="{StaticResource BGradient}"
-                        x:Name="AddButtonEmployee"
-                        Click="AddButtonEmployee_Click">
+                        <Button 
+                            Width="270"
+                            Style="{StaticResource BGradient}"
+                            Click="GetAllStatistics_Click">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon
-                                    Style="{StaticResource UCIcon}"
-                                    Kind="Add"/>
-                                <TextBlock Text="Добавить сотрудника" Style="{StaticResource MenuTextBlock}"/>
+                                <materialDesign:PackIcon 
+                                    Kind="Info"  
+                                    Margin="0 0 5 0"
+                                    Style="{StaticResource UCIcon}">
+                                </materialDesign:PackIcon>
+                                <TextBlock 
+                                    Text="Просмотреть статистику" 
+                                    Style="{StaticResource MenuTextBlock}">
+                                </TextBlock>
                             </StackPanel>
                         </Button>
                     </Grid>
@@ -143,7 +147,8 @@
                         DockPanel.Dock="Left"
                         Margin="50 0 0 0"
                         VerticalAlignment="Bottom">
-                        <ComboBox Width="220"
+                        <ComboBox 
+                            Width="220"
                             Name="ComboBoxFilter"
                             Style="{StaticResource ComboBoxSupportive}"
                             SelectionChanged="ComboBoxFilter_SelectionChanged"/>
@@ -155,7 +160,7 @@
                     <Grid 
                         Margin="20 0 0 0"
                         VerticalAlignment="Bottom"
-                        Width="400">
+                        Width="480">
                         <ComboBox 
                             DockPanel.Dock="Left" 
                             Name="ComboBoxSort"
@@ -182,13 +187,12 @@
                     CellStyle="{StaticResource MenuDataGridCell}">
 
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="ФИО сотрудника" MaxWidth="200">
+                        <DataGridTemplateColumn Header="ФИО сотрудника">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock 
                                         Text="{Binding IdEmployeeNavigation.FullName}" 
-                                        TextWrapping="Wrap" 
-                                        MaxWidth="200">
+                                        TextWrapping="Wrap">
                                     </TextBlock>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -204,7 +208,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Адрес недвижимости" MaxWidth="300">
+                        <DataGridTemplateColumn Header="Адрес и ID недвижимости" MaxWidth="300">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock 
@@ -234,7 +238,7 @@
                         <Style BasedOn="{StaticResource MenuTextBlockHeader}" TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Items.Count, ElementName=EmployeesDataGrid}" Value="0">
+                                <DataTrigger Binding="{Binding Items.Count, ElementName=TransactionsDataGrid}" Value="0">
                                     <Setter Property="Visibility" Value="Visible"/>
                                 </DataTrigger>
                             </Style.Triggers>

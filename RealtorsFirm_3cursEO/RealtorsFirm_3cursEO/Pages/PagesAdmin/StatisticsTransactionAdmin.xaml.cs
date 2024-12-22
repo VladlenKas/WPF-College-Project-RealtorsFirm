@@ -2,6 +2,8 @@
 using RealtorsFirm_3cursEO.Classes;
 using RealtorsFirm_3cursEO.Edits;
 using RealtorsFirm_3cursEO.Model;
+using RealtorsFirm_3cursEO.Windows;
+using RealtorsFirm_3cursEO.Windows.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,20 +28,28 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
     {
         #region Свойства_и_поля
         // Класс для фильтрации и сортировки
-        private DataFilterEmployees DataFilterEmployees;
+        private DataFilterTransactions DataFilterTransactions;
 
         // Работа с бд
         private RealtorsFirmContext dbContext;
         private Employee _employeeAuth;
 
-        // выбранный пользователь
-        private Employee _selectedEmployee;
+        // выбранная транзакция
+        private Transaction _selectedTransaction;
         #endregion
 
         public StatisticsTransactionAdmin(Employee employee)
         {
             InitializeComponent();
             this._employeeAuth = employee;
+
+            dbContext = new RealtorsFirmContext();
+            dbContext.Transactions
+                .Include(r => r.IdEmployeeNavigation)
+                .Include(r => r.IdStatusNavigation)
+                .Include(r => r.IdEstateNavigation)
+                .ThenInclude(e => e.IdClientNavigation)
+                .Load();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -48,8 +58,8 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             UserFio.Text = _employeeAuth.FullName;
 
             // Загрузка комбобоксов
-            var filterList = UploadDataFilter.FilterEmployees();
-            var sorterList = UploadDataFilter.SorterEmployees();
+            var filterList = UploadDataFilter.FilterTransactions();
+            var sorterList = UploadDataFilter.SorterTransactions();
             ComboBoxFilter.ItemsSource = filterList;
             ComboBoxSort.ItemsSource = sorterList;
 
@@ -62,24 +72,14 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
         private void UpdateDataTransactions()
         {
-            dbContext = new RealtorsFirmContext();
+            var transactionsList = dbContext.Transactions.ToList();
+            // Инициализация класса для фильтрации данных
+            DataFilterTransactions = new DataFilterTransactions(SearchTextBox, ComboBoxSort, SortCheckBox, ComboBoxFilter);
 
-            var transactionsList = dbContext.Transactions
-                .Include(r => r.IdEmployeeNavigation)
-                .Include(r => r.IdStatusNavigation)
-                .Include(r => r.IdEstateNavigation)
-                .ThenInclude(e => e.IdClientNavigation)
-                .ToList();
+            transactionsList = DataFilterTransactions.ApplyFilter(transactionsList);
+            transactionsList = DataFilterTransactions.ApplySorter(transactionsList);
+            transactionsList = DataFilterTransactions.ApplySearch(transactionsList);
 
-            /*// Инициализация класса для фильтрации данных
-            DataFilterEmployees = new DataFilterEmployees(SearchTextBox, ComboBoxFilter, ComboBoxSort, SortCheckBox);
-            var employeesList = dbContext.Employees.Include(e => e.IdRoleNavigation).ToList();
-
-            employeesList = DataFilterEmployees.ApplyFilter(employeesList);
-            employeesList = DataFilterEmployees.ApplySorter(employeesList);
-            employeesList = DataFilterEmployees.ApplySearch(employeesList);*/
-
-            TransactionsDataGrid.ItemsSource = null;
             TransactionsDataGrid.ItemsSource = transactionsList;
         }
 
@@ -91,28 +91,42 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             window.ShowDialog();
 
             _selectedEmployee = null;
+
+            dbContext = new RealtorsFirmContext();
+            dbContext.Transactions
+                .Include(r => r.IdEmployeeNavigation)
+                .Include(r => r.IdStatusNavigation)
+                .Include(r => r.IdEstateNavigation)
+                .ThenInclude(e => e.IdClientNavigation)
+                .Load();
             UpdateDataEmployees();*/
         }
 
-        private void AddButtonEmployee_Click(object sender, RoutedEventArgs e)
+        private void GetAllStatistics_Click(object sender, RoutedEventArgs e)
         {
-            /*AddEmployee window = new AddEmployee();
+            // Затемняем окно
+            App.MenuWindow.Opacity = 0.5;
+            this.Opacity = 0.5;
+
+            GetAllStatisticsMessage window = new GetAllStatisticsMessage();
             window.ShowDialog();
 
-            UpdateDataEmployees();*/
+            // Снова проявляем окно
+            App.MenuWindow.Opacity = 1;
+            this.Opacity = 1;
         }
 
         private void EmployeesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            /*if (TransactionsDataGrid.SelectedItem != null)
+            if (TransactionsDataGrid.SelectedItem != null)
             {
-                _selectedEmployee = (Employee)TransactionsDataGrid.SelectedItem;
-            }*/
+                _selectedTransaction = (Transaction)TransactionsDataGrid.SelectedItem;
+            }
         }
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (sender != null)
+            if (TransactionsDataGrid.ItemsSource != null)
             {
                 UpdateDataTransactions();
             }
@@ -120,7 +134,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
         private void ComboBoxFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender != null)
+            if (TransactionsDataGrid.ItemsSource != null)
             {
                 UpdateDataTransactions();
             }
@@ -128,7 +142,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
         private void ComboBoxSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender != null)
+            if (TransactionsDataGrid.ItemsSource != null)
             {
                 UpdateDataTransactions();
             }
@@ -136,7 +150,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
         private void SortCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            if (sender != null)
+            if (TransactionsDataGrid.ItemsSource != null)
             {
                 UpdateDataTransactions();
             }
@@ -144,7 +158,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
         private void ClearDataButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender != null)
+            if (TransactionsDataGrid.ItemsSource != null)
             {
                 SortCheckBox.IsChecked = false;
                 ComboBoxFilter.SelectedIndex = 0;
@@ -154,5 +168,19 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             }
         }
         #endregion
+
+        private void GetStatistic_Click(object sender, RoutedEventArgs e)
+        {
+            // Затемняем окно
+            App.MenuWindow.Opacity = 0.5;
+            this.Opacity = 0.5;
+
+            StatisticsMessage message = new(_selectedTransaction);
+            message.ShowDialog();
+
+            // Снова проявляем окно
+            App.MenuWindow.Opacity = 1;
+            this.Opacity = 1;
+        }
     }
 }

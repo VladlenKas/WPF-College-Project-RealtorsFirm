@@ -34,7 +34,7 @@
                                     <Run FontWeight="Regular" Text="Наименование:"/>
                                     <Run FontWeight="Bold" Text="{Binding Name, StringFormat={}{0}.}"/>
                                     <Run FontWeight="Regular" Text="Цена:"/>
-                                    <Run Foreground="ForestGreen" Text="{Binding Cost}"/>
+                                    <Run Foreground="ForestGreen" Text="{Binding Cost, StringFormat={}{0:N0}}"/>
                                     <Run FontWeight="Regular" Text="руб."/>
                                 </TextBlock>
                             </Grid>

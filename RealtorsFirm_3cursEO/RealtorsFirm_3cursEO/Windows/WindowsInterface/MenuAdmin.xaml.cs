@@ -34,6 +34,7 @@ namespace RealtorsFirm_3cursEO
             InitializeComponent();
             _employee = employee;
 
+            App.MenuWindow = this;
             ChoosePage(0);
         }
 

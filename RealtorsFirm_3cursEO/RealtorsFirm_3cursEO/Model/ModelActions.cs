@@ -266,7 +266,7 @@ namespace RealtorsFirm_3cursEO.Model
                 IdEmployee = IdEmployee,
                 IdClient = IdClient,
                 IdEstate = IdEstate,
-                Date = DateTime.Now,
+                DateStart = DateTime.Now,
                 AmountTotal = AmountTotal,
                 AmountDiscount = AmountDiscount
             };

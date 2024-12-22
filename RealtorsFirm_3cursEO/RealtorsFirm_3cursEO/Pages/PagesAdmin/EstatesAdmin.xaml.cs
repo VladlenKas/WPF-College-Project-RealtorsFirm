@@ -129,6 +129,8 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
         {
             AddEstate addEstate = new AddEstate();
             addEstate.ShowDialog();
+
+            UpdateDataEstates();
         }
     }
 }

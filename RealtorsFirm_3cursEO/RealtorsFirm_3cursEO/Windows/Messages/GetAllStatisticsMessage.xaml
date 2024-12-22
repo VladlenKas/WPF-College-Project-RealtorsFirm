@@ -1,0 +1,360 @@
+﻿<Window x:Class="RealtorsFirm_3cursEO.Windows.Messages.GetAllStatisticsMessage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RealtorsFirm_3cursEO.Windows.Messages"
+         
+        Height="700" Width="Auto"
+        WindowStyle="None" 
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style TargetType="ListViewItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border 
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                            <Grid>
+                                <TextBlock Style="{x:Null}">
+                                    <Run FontWeight="Regular" FontSize="18" Text="{Binding Name, StringFormat={}{0}:}"/>
+                                    <Run FontWeight="Bold" FontSize="20" Text="{Binding Percent, StringFormat={}{0:N0}}"/>
+                                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border
+        BorderThickness="1"
+        BorderBrush="#333335"
+        Background="#ffffff"
+        CornerRadius="30">
+
+        <Grid Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Заголовок -->
+            <TextBlock
+                Grid.ColumnSpan="3"
+                HorizontalAlignment="Center"
+                Text="Статистика по транзакциям"
+                FontWeight="Bold"
+                FontSize="32"
+                Padding="10"
+                Margin="0 0 0 30">
+            </TextBlock>
+
+            <!-- Вывод 1 колонка (общая) -->
+            <StackPanel 
+                Grid.Row="1"
+                Grid.Column="0"
+                HorizontalAlignment="Left">
+
+                <!--#region Информация по чекам -->
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    Text="Информация по чекам"
+                    FontWeight="Bold"
+                    FontSize="24"
+                    Padding="0 0 0 10">
+                </TextBlock>
+                
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Средняя стоимость чека:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding AverageCostTransaction, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="руб."/>
+                </TextBlock>
+                
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Среднее кол-во бонусов при оплате:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding AverageBonusesTransaction, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="шт."/>
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Среднее кол-во услуг на чек:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding AverageCountPricesTransaction, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                </TextBlock>
+                <!--#endregion-->
+
+                <!--#region Информация по клиентам -->
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    Text="Информация по клиентам"
+                    FontWeight="Bold"
+                    FontSize="24"
+                    Padding="0 20 0 10">
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Среднее кол-во повторных заказов:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding AverageCountRepeatTransactionClients, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Среднее кол-во недвижимостей на клиента:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding AverageCountEstatesClients, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Среднее кол-во бонусов на клиента:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding AverageCountBonusesClients, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="шт."/>
+                </TextBlock>
+                <!--#endregion-->
+
+                <!--#region Общая информация -->
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    Text="Общая информация"
+                    FontWeight="Bold"
+                    FontSize="24"
+                    Padding="0 40 0 10">
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Всего клиентов обслужено:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding AmountClients, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Всего недвижимостей обслужено:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding AmountEstates, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Всего услуг оплачено:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding AmountPrices, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Всего транзакций произведено:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding AmountTransactions, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Всего заработано:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding AmountEarned, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="руб."/>
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Всего оплачено бонусами:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding AmountBonuses, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="шт."/>
+                </TextBlock>
+                <!--#endregion-->
+            </StackPanel>
+
+            <!-- Вывод 2 колонка (%) -->
+            <StackPanel 
+                Grid.Row="1"
+                Grid.Column="1"
+                HorizontalAlignment="Left">
+                <!--#region Оплата услуг (% соотношение) -->
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    Text="Оплата услуг (% соотношение)"
+                    FontWeight="Bold"
+                    FontSize="24"
+                    Padding="0 0 0 10">
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Оплата услуг валютой:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding CurrencyPayment, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Оплата услуг бонусами:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding CurrencyBonuses, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
+                </TextBlock>
+                <!--#endregion-->
+
+                <!--#region Клиенты (% соотношение) -->
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    Text="Клиенты (% соотношение)"
+                    FontWeight="Bold"
+                    FontSize="24"
+                    Padding="0 20 0 10">
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Зарегистрированных:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding CountRegisteredClients, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Незарегистрированных (гости):"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding CountGuestClients, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
+                </TextBlock>
+                <!--#endregion-->
+
+                <!--#region Статусы заявок (% соотношение) -->
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    Text="Статусы заявок (% соотношение)"
+                    FontWeight="Bold"
+                    FontSize="24"
+                    Padding="0 20 0 10">
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="В процессе:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding CountInProcessing, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Завершено:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding CountFinish, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Отменено:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding CountCancelled, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="На ожидании:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding CountOnHold, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
+                </TextBlock>
+                <!--#endregion-->
+            </StackPanel>
+            
+            <!-- Вывод 3 колонка (недвижка %)-->
+            <StackPanel 
+                Grid.Row="1"
+                Grid.Column="2"
+                HorizontalAlignment="Left">
+                <!--#region Информация по недвижимостям -->
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    Text="Информация по недвижимостям"
+                    FontWeight="Bold"
+                    FontSize="24"
+                    Padding="0 0 0 10">
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Оплата услуг валютой:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding CurrencyPayment, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Оплата услуг бонусами:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding CurrencyBonuses, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
+                </TextBlock>
+
+                <TextBlock 
+                    TextWrapping="Wrap"
+                    Style="{x:Null}">
+                    <Run FontWeight="Regular" FontSize="18" Text="Оплата услуг валютой:"/>
+                    <Run FontWeight="Bold" FontSize="20" Text="{Binding CurrencyPayment, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
+                </TextBlock>
+                <!--#endregion-->
+
+                <!--#region Недвижимости (% соотношение) -->
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    Text="Недвижимости (% соотношение)"
+                    FontWeight="Bold"
+                    FontSize="24"
+                    Padding="0 20 0 10">
+                </TextBlock>
+
+                <ListView
+                    IsHitTestVisible="False"
+                    x:Name="selectedPricesListView"
+                    BorderThickness="0">
+                </ListView>
+                <!--#endregion-->
+            </StackPanel>
+
+            <Button
+                Grid.Row="1"
+                Grid.Column="2"
+                Width="100"
+                Content="Ок"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"
+                Style="{StaticResource ActionButtonGradient}"
+                Name="CloseButton"
+                Click="Close_Click">
+            </Button>
+        </Grid>
+    </Border>
+</Window>

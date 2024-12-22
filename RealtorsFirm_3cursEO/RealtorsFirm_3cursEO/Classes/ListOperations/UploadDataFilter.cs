@@ -121,5 +121,35 @@ namespace RealtorsFirm_3cursEO.Classes
             return sorterList;
         }
         #endregion
+
+        #region Транзакции
+
+        public static List<object> FilterTransactions()
+        {
+            var filterList = new List<object>(_filterList);
+            foreach (var status in dbContext.StatusTransactions)
+            {
+                filterList.Add(status.Name);
+            }
+            return filterList;
+        }
+
+        public static List<object> SorterTransactions()
+        {
+            var sorterList = new List<object>(_sorterList);
+            var strings = new List<object>
+            {
+                "По ФИО сотрудника",
+                "По ФИО клиента",
+                "По адресу недвижимости",
+                "По статусу",
+                "По общей стоимости",
+                "По общей стоимости со скидкой"
+            };
+            sorterList.AddRange(strings);
+            return sorterList;
+        }
+
+        #endregion
     }
 }

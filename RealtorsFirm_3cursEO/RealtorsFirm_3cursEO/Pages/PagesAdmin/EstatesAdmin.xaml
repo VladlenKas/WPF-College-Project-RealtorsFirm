@@ -34,7 +34,7 @@
                             Style="{StaticResource SearchTextBox}"
                             x:Name="SearchTextBox"
                             TextChanged="SearchTextBox_TextChanged"
-                            Tag="Поиск по ФИО клиента"/>
+                            Tag="Поиск по ФИО клиента и адресу недвижимости"/>
                         <materialDesign:PackIcon Kind="Search" 
                             Style="{StaticResource IconButton}"/>
                     </Grid>

@@ -242,7 +242,8 @@ public class DataFilterEstates
         string search = _searchTextBox.Text.ToLower();
         if (!string.IsNullOrWhiteSpace(search))
         {
-            estates = estates.Where(r => r.IdClientNavigation.FullName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+            estates = estates.Where(r => r.IdClientNavigation.FullName.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+            r.Address.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
         }
         return estates;
     }
@@ -366,3 +367,98 @@ public class DataFilterPrices
     }
 }
 
+
+/// <summary>
+/// Фильтрация данных для транзакцией
+/// </summary>
+public class DataFilterTransactions
+{
+    private ComboBox _filterComboBox;
+    private TextBox _searchTextBox;
+    private ComboBox _sorterComboBox;
+    private bool _ascending;
+
+    public DataFilterTransactions(TextBox searchTextBox, ComboBox sorterComboBox, CheckBox ascendingCheckBox, ComboBox filterComboBox)
+    {
+        _searchTextBox = searchTextBox;
+        _sorterComboBox = sorterComboBox;
+        _filterComboBox = filterComboBox;
+
+        if (ascendingCheckBox != null)
+            _ascending = (bool)ascendingCheckBox.IsChecked;
+        else
+            _ascending = false;
+    }
+
+    // Фильтрафия
+    public List<Transaction> ApplyFilter(List<Transaction> transactions)
+    {
+        if (_filterComboBox.SelectedIndex != 0 && _filterComboBox.SelectedValue != null)
+        {
+            var type = _filterComboBox.SelectedValue.ToString();
+            transactions = transactions.Where(u => u.IdStatusNavigation.Name == type).ToList();
+        }
+        return transactions;
+    }
+
+    // Поиск 
+    public List<Transaction> ApplySearch(List<Transaction> transactions)
+    {
+        string search = _searchTextBox.Text.ToLower();
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            transactions = transactions.Where(r => 
+            r.IdEmployeeNavigation.FullName.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+            r.IdEstateNavigation.IdClientNavigation.FullName.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+            r.IdEstateNavigation.Address.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        return transactions;
+    }
+
+    // Сортировка
+    public List<Transaction> ApplySorter(List<Transaction> transactions)
+    {
+        int sortIndex = _sorterComboBox.SelectedIndex;
+
+        if (!_ascending)
+        {
+            switch (sortIndex)
+            {
+                case 2:
+                    return transactions.OrderBy(e => e.IdEmployeeNavigation.FullName).ToList();
+                case 3:
+                    return transactions.OrderBy(e => e.IdEstateNavigation.IdClientNavigation.FullName).ToList();
+                case 4:
+                    return transactions.OrderBy(e => e.IdEstateNavigation.Address).ToList();
+                case 5:
+                    return transactions.OrderBy(e => e.IdStatusNavigation.Name).ToList();
+                case 6:
+                    return transactions.OrderBy(e => e.AmountTotal).ToList();
+                case 7:
+                    return transactions.OrderBy(e => e.AmountDiscount).ToList();
+                default:
+                    return transactions.OrderBy(e => e.IdTransaction).ToList();
+            }
+        }
+        else
+        {
+            switch (sortIndex)
+            {
+                case 2:
+                    return transactions.OrderByDescending(e => e.IdEmployeeNavigation.FullName).ToList();
+                case 3:
+                    return transactions.OrderByDescending(e => e.IdEstateNavigation.IdClientNavigation.FullName).ToList();
+                case 4:
+                    return transactions.OrderByDescending(e => e.IdEstateNavigation.Address).ToList();
+                case 5:
+                    return transactions.OrderByDescending(e => e.IdStatusNavigation.Name).ToList();
+                case 6:
+                    return transactions.OrderByDescending(e => e.AmountTotal).ToList();
+                case 7:
+                    return transactions.OrderByDescending(e => e.AmountDiscount).ToList();
+                default:
+                    return transactions.OrderByDescending(e => e.IdTransaction).ToList();
+            }
+        }
+    }
+}
