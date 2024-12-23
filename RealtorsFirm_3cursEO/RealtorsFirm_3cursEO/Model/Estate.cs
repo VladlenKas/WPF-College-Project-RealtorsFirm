@@ -25,6 +25,8 @@ public partial class Estate
 
     public sbyte? IsArchive { get; set; }
 
+    public string IdWithAddress => $"ID: {IdEstate}. {Address}";
+
     public virtual Client IdClientNavigation { get; set; } = null!;
 
     public virtual TypeEstate IdTypeNavigation { get; set; } = null!;

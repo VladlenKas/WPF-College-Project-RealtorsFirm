@@ -149,7 +149,6 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             get { return _selectedClient; }
             set
             {
-                dbContext = new();
                 _selectedClient = value;
 
                 if (_selectedClient is Client client)
@@ -178,6 +177,27 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
                 OnPropertyChanged(nameof(SelectedClient));
                 WriteOffButton.IsChecked = true;
 
+            }
+        }
+
+        /// <summary>
+        /// Приватное поле для хранения значения с выбранным клиентом
+        /// </summary>
+        private Employee? _selectedRieltor;
+        /// <summary>
+        /// Свойство для доступа к полю с выбранным клиентом. 
+        /// Также управляет видимостью элементов и коллекцией EstateComboBox
+        /// </summary>
+        public Employee? SelectedRieltor
+        {
+            get { return _selectedRieltor; }
+            set
+            {
+                if (_selectedRieltor != value)
+                {
+                    _selectedRieltor = value;
+                    OnPropertyChanged(nameof(SelectedRieltor));
+                }
             }
         }
 
@@ -232,9 +252,12 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             // Устанавливаем контекст привязки, чтобы
             // все элементы обновлялись автоматически
             DataContext = this;
-            EmployeeTextBox.DataContext = employee;
 
             dbContext = new();
+            dbContext.Transactions
+                .Include(r => r.IdEmployeeNavigation)
+                .Load();
+
             Employee = employee;
             UserFio.Text = $"{employee.FullName}";
         }
@@ -271,15 +294,17 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             if (WriteOffButton.IsChecked == true)
             {
                 allFieldsFilled = SelectedClient != null &&
-                                           SelectedEstate != null &&
-                                           SelectedPrices.Count != 0; 
+                    SelectedEstate != null &&
+                    SelectedRieltor != null &&
+                    SelectedPrices.Count != 0; 
             }
             else if (ChargeBonusesButton.IsChecked == true)
             {
                 allFieldsFilled = SelectedClient != null &&
-                                           SelectedEstate != null &&
-                                           SelectedPrices.Count != 0 &&
-                                           amountBonusesMinusTextBox.Text != string.Empty;
+                    SelectedEstate != null &&
+                    SelectedRieltor != null &&
+                    SelectedPrices.Count != 0 &&
+                    amountBonusesMinusTextBox.Text != string.Empty;
             }
 
             return allFieldsFilled;
@@ -298,7 +323,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             if (result == MessageBoxResult.Yes)
             {
                 bool IsAccrualBonuses = WriteOffButton.IsChecked == true;
-                ModelActions.CreateTransaction(Employee.IdEmployee, SelectedClient.IdClient, SelectedEstate.IdEstate,
+                ModelActions.CreateTransaction(SelectedRieltor.IdEmployee, SelectedClient.IdClient, SelectedEstate.IdEstate,
                     AmountDiscard, AmountTotal, SelectedPrices, CountBonuses,
                     BonusesDiscardSelectedClient, IsAccrualBonuses);
                 MessageBox.Show($"Транзакция на клиента {SelectedClient.FullName} успешно создана!",
@@ -318,6 +343,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
         {
             SelectedClient = null;
             SelectedEstate = null;
+            SelectedRieltor = null;
             EstateComboBox.SelectedIndex = 0;
             AmountDiscard = 0;
             AmountTotal = 0;
@@ -326,7 +352,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             BonusesDiscardSelectedClient = 0;
             selectedPricesListView.Items.Clear();
             CLientSearch.Text = string.Empty;
-
+            EmployeesSearch.Text = string.Empty;
             WriteOffButton.IsChecked = true;
         }
 
@@ -337,13 +363,27 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
         {
             PricesSearch.ItemSelected -= OnPriceSelected;
             CLientSearch.ItemSelected -= OnClientSelected;
+            EmployeesSearch.ItemSelected -= OnEmployeeSelected;
 
-            dbContext = new();
             PricesSearch.ItemSelected += OnPriceSelected;
             PricesSearch.ItemsSource = dbContext.Prices.Where(r => r.IsArchive != 1).ToList();
 
             CLientSearch.ItemSelected += OnClientSelected;
             CLientSearch.ItemsSource = dbContext.Clients.Where(r => r.IsArchive != 1).ToList();
+
+            EmployeesSearch.ItemSelected += OnEmployeeSelected;
+            var emloyeesList = dbContext.Employees.Where(r =>
+                r.IsArchive != 1 &&
+                r.IdRole == 2 &&
+                !dbContext.Transactions.Any(t => t.IdEmployeeNavigation.IdEmployee == r.IdEmployee && (t.IdStatus == 1 || t.IdStatus == 4)))
+                .ToList();
+            EmployeesSearch.ItemsSource = emloyeesList;
+
+            if (emloyeesList.Count == 0)
+            {
+                var noDataItem = new[] { new { FIPassport = "Нет свободных риелторов" } };
+                EmployeesSearch.ItemsSource = noDataItem;
+            }
 
             SelectedClient = null;
         }
@@ -386,6 +426,22 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             else if (selectedItem is null)
             {
                 SelectedClient = null;
+            }
+        }
+
+        /// <summary>
+        /// Событие для выбора клиента
+        /// </summary>
+        /// <param name="selectedItem"></param>
+        private void OnEmployeeSelected(object selectedItem)
+        {
+            if (selectedItem is Employee employee)
+            {
+                SelectedRieltor = employee;
+            }
+            else if (selectedItem is null)
+            {
+                SelectedRieltor = null;
             }
         }
 

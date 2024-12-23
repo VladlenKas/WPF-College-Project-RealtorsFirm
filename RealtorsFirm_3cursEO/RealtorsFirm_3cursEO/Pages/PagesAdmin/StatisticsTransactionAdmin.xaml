@@ -192,35 +192,38 @@
                                 <DataTemplate>
                                     <TextBlock 
                                         Text="{Binding IdEmployeeNavigation.FullName}" 
-                                        TextWrapping="Wrap">
+                                        TextWrapping="Wrap"
+                                        MaxWidth="170">
                                     </TextBlock>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="ФИО клиента" MaxWidth="200">
+                        <DataGridTemplateColumn Header="ФИО клиента">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock 
                                         Text="{Binding IdEstateNavigation.IdClientNavigation.FullName}" 
+                                        TextWrapping="Wrap"
+                                        MaxWidth="170">
+                                    </TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Адрес и ID недвижимости" MaxWidth="200">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock 
+                                        Text="{Binding IdEstateNavigation.IdWithAddress}" 
                                         TextWrapping="Wrap" 
+                                        Padding="0 5"
                                         MaxWidth="200">
                                     </TextBlock>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Адрес и ID недвижимости" MaxWidth="300">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock 
-                                        Text="{Binding IdEstateNavigation.Address}" 
-                                        TextWrapping="Wrap" 
-                                        MaxWidth="300">
-                                    </TextBlock>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
                         <DataGridTextColumn Header="Статус" Binding="{Binding IdStatusNavigation.Name}"/>
-                        <DataGridTextColumn Header="Дата и время" Binding="{Binding Date, StringFormat=dd.MM.yyyy hh:mm:ss}"/>
+                        <DataGridTextColumn Header="Дата формирования транзакции" Binding="{Binding DateStart, StringFormat=dd.MM.yyyy hh:mm:ss}"/>
+                        <DataGridTextColumn Header="Дата завершения транзакции" Binding="{Binding DateFinish, StringFormat=dd.MM.yyyy hh:mm:ss}"/>
                         <DataGridTextColumn Header="Общая стоимость" Binding="{Binding AmountTotal, StringFormat={}{0:N0} руб.}"/>
                         <DataGridTextColumn Header="Общая стоимость со скидкой" Binding="{Binding AmountDiscount, StringFormat={}{0:N0} руб.}"/>
                         <DataGridTemplateColumn Header="Действия" CellTemplate="{StaticResource ActionsTemplate}"/>

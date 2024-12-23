@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using RealtorsFirm_3cursEO.Windows.Messages;
 
 namespace RealtorsFirm_3cursEO.Windows.WindowsActions.Estates
 {
@@ -171,5 +172,14 @@ namespace RealtorsFirm_3cursEO.Windows.WindowsActions.Estates
             DataValidations.ValidatePasteDescriptionForAddress(e);
         }
         #endregion
+
+        private void AddTyPeEstate_Click(object sender, RoutedEventArgs e)
+        {
+            CreateTypeEstate window = new();
+            window.ShowDialog();
+
+            dbContext = new();
+            TypeEstateComboBox.ItemsSource = dbContext.TypeEstates.ToList(); // Заполняем лист типами недвижимости
+        }
     }
 }

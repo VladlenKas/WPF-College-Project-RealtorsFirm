@@ -21,6 +21,8 @@ public partial class Employee
 
     public string Passport { get; set; } = null!;
 
+    public string FIPassport => $"{Firstname} {Name}, {Passport.Insert(4, " ")}";
+
     public string Phone { get; set; } = null!;
 
     public string Email { get; set; } = null!;
@@ -41,7 +43,7 @@ public partial class Employee
         get
         {
             // Логика определения необходимости переноса текста
-            return FullName.Length > 40 ||
+            return FullName.Length > 35 ||
                 Email.Length > 20 ||
                 Password.Length > 20; // Пример: перенос, если длина больше 40 символов
         }

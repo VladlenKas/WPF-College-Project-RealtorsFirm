@@ -4,6 +4,7 @@ using RealtorsFirm_3cursEO.Edits;
 using RealtorsFirm_3cursEO.Model;
 using RealtorsFirm_3cursEO.Windows;
 using RealtorsFirm_3cursEO.Windows.Messages;
+using RealtorsFirm_3cursEO.Windows.WindowsActions.Transactions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,10 +88,10 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
         private void ButtonEdit_Click(object sender, RoutedEventArgs e)
         {
-            /*EditEmployee window = new EditEmployee(_selectedEmployee, _employeeAuth);
+            EditTransaction window = new EditTransaction(_selectedTransaction);
             window.ShowDialog();
 
-            _selectedEmployee = null;
+            _selectedTransaction = null;
 
             dbContext = new RealtorsFirmContext();
             dbContext.Transactions
@@ -99,7 +100,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
                 .Include(r => r.IdEstateNavigation)
                 .ThenInclude(e => e.IdClientNavigation)
                 .Load();
-            UpdateDataEmployees();*/
+            UpdateDataTransactions();
         }
 
         private void GetAllStatistics_Click(object sender, RoutedEventArgs e)

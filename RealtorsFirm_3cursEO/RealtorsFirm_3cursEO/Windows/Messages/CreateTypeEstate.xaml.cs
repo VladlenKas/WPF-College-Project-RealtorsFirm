@@ -1,5 +1,5 @@
-﻿using RealtorsFirm_3cursEO.Classes.DataOperations;
-using RealtorsFirm_3cursEO.Classes;
+﻿using RealtorsFirm_3cursEO.Classes;
+using RealtorsFirm_3cursEO.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,49 +13,44 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using RealtorsFirm_3cursEO.Model;
+using Microsoft.EntityFrameworkCore;
 
-namespace RealtorsFirm_3cursEO.WindowsActions.Price
+namespace RealtorsFirm_3cursEO.Windows.Messages
 {
     /// <summary>
-    /// Логика взаимодействия для AddPrice.xaml
+    /// Логика взаимодействия для CreateTypeEstate.xaml
     /// </summary>
-    public partial class AddPrice : Window
+    public partial class CreateTypeEstate : Window
     {
         #region Свойства для хранения значений из текстбоксов
         private string Name => NameTextBox.Text; // Не должен быть пустой
-
-        private int Cost // Не должен быть пустой + не должен повторяться + правильный формат
-        {
-            get
-            {
-                if (CostTextBox.Text == "")
-                {
-                    return 0;
-                }
-
-                return int.Parse(CostTextBox.Text);
-            }
-        } 
-
         #endregion
 
-        public AddPrice()   
+        private RealtorsFirmContext dbContext;
+        public CreateTypeEstate()
         {
             InitializeComponent();
+            dbContext = new();
         }
 
         private void CreateNewEmployee()
         {
-            var result = MessageBox.Show("Вы уверены, что заполнили все поля верно и хотите добавить новую услугу?",
+            var result = MessageBox.Show("Вы уверены, что заполнили поле с наименованием верно и хотите" +
+                " добавить новый тип недвижимости?",
                 "Подтверждение",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
-                ModelActions.AddPrice(Name, Cost);
-                MessageBox.Show($"Новая услуга {Name} успешно добавлена!",
+                TypeEstate typeEstate = new TypeEstate()
+                {
+                    Name = this.Name
+                };
+                dbContext.TypeEstates.Add(typeEstate);
+                dbContext.SaveChanges();
+
+                MessageBox.Show($"Новая тип недвижимости \"{Name}\" успешно добавлен!",
                     "Успешно",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -66,9 +61,21 @@ namespace RealtorsFirm_3cursEO.WindowsActions.Price
         #region Обработчики событий
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            bool fieldsIsValid = DataLimitators.LimitatorPrice(null, Name, Cost);
-
-            if (fieldsIsValid)
+            if (string.IsNullOrWhiteSpace(Name))
+            {
+                MessageBox.Show("Заполните поле с наименованием",
+                "Ошибка.",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+            }
+            else if (dbContext.TypeEstates.Any(r => r.Name == Name))
+            {
+                MessageBox.Show("Введенное наименование для типа недвижимости уже существует",
+                "Ошибка.",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+            }
+            else
             {
                 CreateNewEmployee();
             }
@@ -76,11 +83,7 @@ namespace RealtorsFirm_3cursEO.WindowsActions.Price
 
         private void ButtonExit_Click(object sender, RoutedEventArgs e)
         {
-            bool closing = WindowHelper.WindowClose();
-            if (closing)
-            {
-                this.Close();
-            }
+            this.Close();
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -96,16 +99,6 @@ namespace RealtorsFirm_3cursEO.WindowsActions.Price
         private void TextBox_Pasting(object sender, DataObjectPastingEventArgs e)
         {
             DataValidations.ValidatePasteCyrillic(e);
-        }
-
-        private void TextBoxNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            DataValidations.ValidateInputNumbers(e);
-        }
-
-        private void TextBoxNumber_Pasting(object sender, DataObjectPastingEventArgs e)
-        {
-            DataValidations.ValidatePasteNumbers(e);
         }
         #endregion
     }

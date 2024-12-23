@@ -293,39 +293,6 @@
                 Grid.Row="1"
                 Grid.Column="2"
                 HorizontalAlignment="Left">
-                <!--#region Информация по недвижимостям -->
-                <TextBlock
-                    HorizontalAlignment="Left"
-                    Text="Информация по недвижимостям"
-                    FontWeight="Bold"
-                    FontSize="24"
-                    Padding="0 0 0 10">
-                </TextBlock>
-
-                <TextBlock 
-                    TextWrapping="Wrap"
-                    Style="{x:Null}">
-                    <Run FontWeight="Regular" FontSize="18" Text="Оплата услуг валютой:"/>
-                    <Run FontWeight="Bold" FontSize="20" Text="{Binding CurrencyPayment, Mode=OneWay, StringFormat={}{0:N0}}"/>
-                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
-                </TextBlock>
-
-                <TextBlock 
-                    TextWrapping="Wrap"
-                    Style="{x:Null}">
-                    <Run FontWeight="Regular" FontSize="18" Text="Оплата услуг бонусами:"/>
-                    <Run FontWeight="Bold" FontSize="20" Text="{Binding CurrencyBonuses, Mode=OneWay, StringFormat={}{0:N0}}"/>
-                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
-                </TextBlock>
-
-                <TextBlock 
-                    TextWrapping="Wrap"
-                    Style="{x:Null}">
-                    <Run FontWeight="Regular" FontSize="18" Text="Оплата услуг валютой:"/>
-                    <Run FontWeight="Bold" FontSize="20" Text="{Binding CurrencyPayment, Mode=OneWay, StringFormat={}{0:N0}}"/>
-                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
-                </TextBlock>
-                <!--#endregion-->
 
                 <!--#region Недвижимости (% соотношение) -->
                 <TextBlock
@@ -333,7 +300,7 @@
                     Text="Недвижимости (% соотношение)"
                     FontWeight="Bold"
                     FontSize="24"
-                    Padding="0 20 0 10">
+                    Padding="0 0 0 10">
                 </TextBlock>
 
                 <ListView

@@ -19,12 +19,12 @@ namespace RealtorsFirm_3cursEO.Windows.Messages
         public int AverageCountBonusesClients => CalculateAverageCountBonusesClients(); // Проверить
         public double CurrencyPayment => CalculateCurrencyPayment();
         public double CurrencyBonuses => CalculateCurrencyBonuses();
-        public int CountRegisteredClients => CalculateCountRegisteredClients();
-        public int CountGuestClients => CalculateCountGuestClients();
-        public int CountInProcessing => CalculateCountInProcessing();
-        public int CountFinish => CalculateCountFinish();
-        public int CountCancelled => CalculateCountCancelled();
-        public int CountOnHold => CalculateCountOnHold();
+        public double CountRegisteredClients => CalculateCountRegisteredClients();
+        public double CountGuestClients => CalculateCountGuestClients();
+        public double CountInProcessing => CalculateCountInProcessing();
+        public double CountFinish => CalculateCountFinish();
+        public double CountCancelled => CalculateCountCancelled();
+        public double CountOnHold => CalculateCountOnHold();
         public int AmountClients => Transactions.Select(t => t.IdClient).Distinct().Count();
         public int AmountEstates => Transactions.Select(t => t.IdEstate).Distinct().Count();
         public int AmountPrices => Transactions.Sum(t => t.TransactionPriceRelations.Count);
@@ -108,62 +108,62 @@ namespace RealtorsFirm_3cursEO.Windows.Messages
             return (double)(totalPayments > 0 ? (bonusesPayments / amountPayment) * 100 : 0); // Процент
         }
 
-        private int CalculateCountRegisteredClients()
+        private double CalculateCountRegisteredClients()
         {
             // Группируем транзакции по IdClient и находим зарегистрированных клиентов
-            var registeredClients = Transactions
+            double registeredClients = Transactions
                 .GroupBy(t => t.IdClient) // Группируем по IdClient
                 .Where(g => g.FirstOrDefault()?.IdEstateNavigation.IdClientNavigation.IsRegistered == 1) // Фильтруем группы по статусу регистрации клиента
                 .Count();
 
-            var totalClients = Transactions
+            double totalClients = Transactions
                 .GroupBy(t => t.IdClient)
                 .Count();
 
             return totalClients > 0 ? (registeredClients / totalClients) * 100 : 0;
         }
 
-        private int CalculateCountGuestClients()
+        private double CalculateCountGuestClients()
         {
             // Группируем транзакции по IdClient и находим незарегистрированных клиентов
-            var notRegisteredClients = Transactions
+            double notRegisteredClients = Transactions
                 .GroupBy(t => t.IdClient) // Группируем по IdClient
                 .Where(g => g.FirstOrDefault()?.IdEstateNavigation.IdClientNavigation.IsRegistered == 0) // Фильтруем группы по статусу регистрации клиента
                 .Count();
 
-            var totalClients = Transactions
+            double totalClients = Transactions
                 .GroupBy(t => t.IdClient)
                 .Count();
 
             return totalClients > 0 ? (notRegisteredClients / totalClients) * 100 : 0;
         }
 
-        private int CalculateCountInProcessing()
+        private double CalculateCountInProcessing()
         {
-            int statuses = Transactions.Count(t => t.IdStatus == 1);
-            int totalStatuses = Transactions.Count();
+            double statuses = Transactions.Count(t => t.IdStatus == 1);
+            double totalStatuses = Transactions.Count();
             return statuses > 0 ? (statuses / totalStatuses) * 100 : 0;
         }
 
-        private int CalculateCountFinish()
+        private double CalculateCountFinish()
         {
-            int statuses = Transactions.Count(t => t.IdStatus == 2);
-            int totalStatuses = Transactions.Count();
+            double statuses = Transactions.Count(t => t.IdStatus == 2);
+            double totalStatuses = Transactions.Count();
             return statuses > 0 ? (statuses / totalStatuses) * 100 : 0;
         }
 
 
-        private int CalculateCountCancelled()
+        private double CalculateCountCancelled()
         {
-            int statuses = Transactions.Count(t => t.IdStatus == 3);
-            int totalStatuses = Transactions.Count();
+            double statuses = Transactions.Count(t => t.IdStatus == 3);
+            double totalStatuses = Transactions.Count();
             return statuses > 0 ? (statuses / totalStatuses) * 100 : 0;
         }
 
-        private int CalculateCountOnHold()
+        private double CalculateCountOnHold()
         {
-            int statuses = Transactions.Count(t => t.IdStatus == 4);
-            int totalStatuses = Transactions.Count();
+            double statuses = Transactions.Count(t => t.IdStatus == 4);
+            double totalStatuses = Transactions.Count();
             return statuses > 0 ? (statuses / totalStatuses) * 100 : 0;
         }
 

@@ -230,17 +230,15 @@
                                     TextWrapping="WrapWithOverflow"/>
 
                                 <Grid DockPanel.Dock="Top">
-                                    <StackPanel
-                                        Margin="0 0 0 0"
-                                        Panel.ZIndex="-1"
+                                    <StackPanel 
+                                        Margin="0 00 0 0"
+                                        Panel.ZIndex="1"
                                         DockPanel.Dock="Top">
-                                        <TextBlock Text="ФИО сотрудника  *"/>
-                                        <Grid 
-                                            IsEnabled="False"
-                                            Opacity="0.5">
-                                            <TextBox 
-                                                Name="EmployeeTextBox"
-                                                Text="{Binding FullName, Mode=OneWay}"/>
+                                        <TextBlock Text="ФИ, паспорт риелтора *"/>
+                                        <Grid>
+                                            <control:AutoCompleteControl
+                                                x:Name="EmployeesSearch"
+                                                DisplayMemberPath="FIPassport"/>
                                             <materialDesign:PackIcon
                                                 Style="{StaticResource icon}"
                                                 Kind="User"/>
@@ -251,7 +249,7 @@
                                         Margin="0 80 0 0"
                                         Panel.ZIndex="0"
                                         DockPanel.Dock="Top">
-                                        <TextBlock Text="ФИ, номер клиента *"/>
+                                        <TextBlock Text="ФИ, номер телефона клиента *"/>
                                         <Grid>
                                             <control:AutoCompleteControl
                                                 x:Name="CLientSearch"
