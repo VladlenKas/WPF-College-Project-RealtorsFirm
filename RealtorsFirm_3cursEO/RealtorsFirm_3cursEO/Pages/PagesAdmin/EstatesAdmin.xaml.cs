@@ -60,13 +60,13 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             foreach (var estate in estates)
             {
                 var estateCard = new EstateUCEdit(estate); // Инициализируем карточку с недвижимостью
-                estateCard.RemoveEstateRequested += EstateAdmin_RemoveEstateRequested; // Добавляем событие для удаления
+                estateCard.RemoveEstateRequested += Estate_RemoveEstateRequested; // Добавляем событие для удаления
                 ItemsControlItems.Items.Add(estateCard); // добавляем в ItemsControl
             }
         }
 
         // Обработчик события для удаления/архивирования недвижимости
-        private void EstateAdmin_RemoveEstateRequested(object sender, EstateEventArgs e)
+        private void Estate_RemoveEstateRequested(object sender, EstateEventArgs e)
         {
             UpdateDataEstates(); // Обновляем список 
         }

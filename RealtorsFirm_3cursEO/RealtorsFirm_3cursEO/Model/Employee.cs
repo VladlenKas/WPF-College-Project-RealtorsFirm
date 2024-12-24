@@ -23,6 +23,15 @@ public partial class Employee
 
     public string FIPassport => $"{Firstname} {Name}, {Passport.Insert(4, " ")}";
 
+    public string FIPhone // Свойство, чтобы передавать клиента для лучшего поиска
+    {
+        get
+        {
+            string phone = Phone.Insert(1, "-").Insert(5, "-").Insert(9, "-").Insert(12, "-");
+            return $"{Firstname} {Name}, {phone}";
+        }
+    }
+
     public string Phone { get; set; } = null!;
 
     public string Email { get; set; } = null!;

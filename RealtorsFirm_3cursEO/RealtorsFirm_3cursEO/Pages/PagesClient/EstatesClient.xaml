@@ -59,7 +59,7 @@
                                 Margin="10 0">
                                 <Border.Background>
                                     <ImageBrush 
-                                        ImageSource="/Images/RealtorIconImage.png"
+                                        ImageSource="/Images/ClientIconImage.png"
                                         Stretch="UniformToFill"/>
                                 </Border.Background>
                             </Border>
@@ -119,6 +119,25 @@
                             Style="{StaticResource IconButton}"/>
                     </Grid>
 
+
+                    <!-- Button add -->
+                    <Grid DockPanel.Dock="Right">
+                        <Button 
+                            Width="260"
+                            Style="{StaticResource BGradient}"
+                            Click="AddButton_Click">
+
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Style="{StaticResource UCIcon}"
+                                    Kind="Add">
+                                </materialDesign:PackIcon>
+
+                                <TextBlock Text="Добавить недвижимость" Style="{StaticResource MenuTextBlock}"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                    
                     <!--Button sort -->
                     <Grid 
                         Margin="20 0 0 0"
@@ -148,7 +167,8 @@
                 <Grid>
                     <TextBlock 
                         Name="textFound"
-                        FontSize="42"
+                        FontSize="36"
+                        FontWeight="Bold"
                         Text="Ничего не найдено"
                         Margin="0 30">
                         <TextBlock.Style>

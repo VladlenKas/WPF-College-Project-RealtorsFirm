@@ -143,11 +143,38 @@
                     пожаловать!
                 </TextBlock>
 
-                <TextBlock Text="Электронная почта" 
-                           Width="Auto"
-                           Style="{StaticResource TextBlockBase}"/>
+                <TextBlock 
+                    Text="Электронная почта" 
+                    FontWeight="Bold">
+                    <TextBlock.Style>
+                        <Style BasedOn="{StaticResource TextBlockBase}" TargetType="TextBlock">
+                            <Setter Property="Opacity" Value="0.5"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsFocused, ElementName=TextBoxEmail}" Value="True">
+                                    <Setter Property="Opacity" Value="1"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
                 <TextBox x:Name="TextBoxEmail"/>
-                <TextBlock Text="Пароль" Style="{StaticResource TextBlockBase}"/>
+                <TextBlock 
+                    FontWeight="Bold"
+                    Text="Пароль">
+                    <TextBlock.Style>
+                        <Style BasedOn="{StaticResource TextBlockBase}" TargetType="TextBlock">
+                            <Setter Property="Opacity" Value="0.5"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsFocused, ElementName=TextBoxPassVisibility}" Value="True">
+                                    <Setter Property="Opacity" Value="1"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsFocused, ElementName=TextBoxPassHidden}" Value="True">
+                                    <Setter Property="Opacity" Value="1"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
                 <Grid>
                     <TextBox 
                         x:Name="TextBoxPassVisibility"
@@ -168,10 +195,12 @@
                       VerticalAlignment="Bottom"
                       Height="100">
 
-                    <Button x:Name="ButtonLogin"
-                            Content="Войти"
-                            VerticalAlignment="Bottom"
-                            Click="ButtonLogin_Click"/>
+                    <Button 
+                        x:Name="ButtonLogin"
+                        FontFamily="Arial Rounded MT Bold"
+                        Content="Войти"
+                        VerticalAlignment="Bottom"
+                        Click="ButtonLogin_Click"/>
                 </Grid>
             </StackPanel>
         </Grid>

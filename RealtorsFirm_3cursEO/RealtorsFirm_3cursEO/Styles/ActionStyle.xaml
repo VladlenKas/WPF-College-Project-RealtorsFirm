@@ -323,10 +323,9 @@
                             <Setter TargetName="textblock" Property="Visibility" Value="Visible"/>
                             <Setter TargetName="textblock" Property="Text" Value="Выберите элемент"/>
                         </Trigger>
-                        <!--<Trigger SourceName="textblock" Property="Text" Value="Сначала выберите клиента">
-                            <Setter TargetName="textblock" Property="Visibility" Value="Visible"/>
-                            <Setter TargetName="textblock" Property="Text" Value="Сначала выберите клиента"/>
-                        </Trigger>-->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Popup" Property="IsOpen" Value="True"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

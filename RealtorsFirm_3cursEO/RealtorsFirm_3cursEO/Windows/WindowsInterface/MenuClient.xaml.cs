@@ -1,4 +1,5 @@
-﻿using RealtorsFirm_3cursEO.Classes;
+﻿using Microsoft.EntityFrameworkCore;
+using RealtorsFirm_3cursEO.Classes;
 using RealtorsFirm_3cursEO.Model;
 using RealtorsFirm_3cursEO.Pages.PagesAdmin;
 using RealtorsFirm_3cursEO.Pages.PagesClient;
@@ -47,10 +48,10 @@ namespace RealtorsFirm_3cursEO.Windows.WindowsInterface
                     ContentFrame.Navigate(new EstatesClient(_client)); // Готово
                     break;
                 case 4:
-                    //ContentFrame.Navigate(new TransactionRealtor(_client));
+                    ContentFrame.Navigate(new TransactionClient(_client));
                     break;
                 case 5:
-                    //ContentFrame.Navigate(new StatiscticsTransactionsRealtor(_client));
+                    ContentFrame.Navigate(new StatisticsTransactionsClient(_client));
                     break;
                 case 6:
                     break;
@@ -96,10 +97,12 @@ namespace RealtorsFirm_3cursEO.Windows.WindowsInterface
         private void ButtonTransaction_Click(object sender, RoutedEventArgs e)
         {
             RealtorsFirmContext dbContext = new RealtorsFirmContext();
-            bool hasTransction = dbContext.Transactions.Any(t => t.IdClient == _client.IdClient && (t.IdStatus == 1 || t.IdStatus == 4));
-            if (hasTransction)
+            bool hasTransction = dbContext.Estates
+                .Any(t => t.IdClient == _client.IdClient && t.IsArchive != 1);
+            if (!hasTransction)
             {
-                MessageBox.Show("У вас есть незавершенная транзакция. Дождитесь ее завершения, чтобы создать новую.",
+                MessageBox.Show("У вас нет активных недвижимостей. " +
+                    "Добавьте недвижимость, чтобы записаться на услуги.",
                     "Доступ ограничен.",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -112,7 +115,21 @@ namespace RealtorsFirm_3cursEO.Windows.WindowsInterface
 
         private void ButtonStatistics_Click(object sender, RoutedEventArgs e)
         {
-            ChoosePage(5);
+            RealtorsFirmContext dbContext = new RealtorsFirmContext();
+            bool hasTransction = dbContext.Transactions.Any(t => t.IdClient == _client.IdClient);
+            if (!hasTransction)
+            {
+                MessageBox.Show("У вас нет записей на оказание услуг. " +
+                    "На странице \"Оформить чек\" выберите услуги и запишитесь на желаемую дату, " +
+                    "чтобы получить доступ к своим транзакциям.",
+                    "Доступ ограничен.",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+            else
+            {
+                ChoosePage(5);
+            }
         }
     }
 }

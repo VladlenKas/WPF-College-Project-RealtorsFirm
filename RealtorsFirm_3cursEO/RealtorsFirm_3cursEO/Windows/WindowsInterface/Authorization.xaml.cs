@@ -40,6 +40,13 @@ namespace RealtorsFirm_3cursEO
         {
             dbContext = new();
 
+            if (Email == string.Empty || Password == string.Empty)
+            {
+                MessageBox.Show($"Заполните все поля.", "Предупреждение.",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             // Находим пользователя
             var employee = dbContext.Employees
                 .Include(e => e.IdRoleNavigation)
@@ -79,8 +86,7 @@ namespace RealtorsFirm_3cursEO
                     this.Close();
                 }
             }
-
-            if (client != null)
+            else if (client != null)
             {
                 if (client.IsArchive == 1)
                 {

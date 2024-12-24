@@ -164,7 +164,9 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
                     }
                     else
                     {
-                        EstateComboBox.ItemsSource = dbContext.Estates.Where(r => r.IdClient == client.IdClient).ToList();
+                        EstateComboBox.ItemsSource = dbContext.Estates
+                            .Where(r => r.IdClient == client.IdClient && r.IsArchive != 1)
+                            .ToList();
                         EstateComboBox.FontWeight = System.Windows.FontWeight.FromOpenTypeWeight(400);
                     }
                 }
@@ -386,25 +388,8 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
                 r.IdRole == 2)
                 .ToList();
 
-            if (emloyeesList.Count == 0)
-            {
-                var noDataItem = new[] { new { FIPassport = "Нет свободных риелторов" } };
-                EmployeesSearch.ItemsSource = noDataItem;
-            }
-            else
-            {
-                EmployeesSearch.ItemsSource = emloyeesList;
-            }
-
-            if (clientsList.Count == 0)
-            {
-                var noDataItem = new[] { new { PassportFI = "Нет свободных клиентов" } };
-                CLientSearch.ItemsSource = noDataItem;
-            }
-            else
-            {
-                CLientSearch.ItemsSource = clientsList;
-            }
+            CLientSearch.ItemsSource = clientsList;
+            EmployeesSearch.ItemsSource = emloyeesList;
 
             SelectedClient = null;
         }

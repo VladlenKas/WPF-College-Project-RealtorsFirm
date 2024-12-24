@@ -222,9 +222,10 @@
                     VerticalAlignment="Top"
                     HorizontalAlignment="Left"
                     Name="textFound"
-                    FontSize="32"
+                    FontSize="36"
+                    FontWeight="Bold"
                     Text="Ничего не найдено"
-                    Margin="20 65">
+                    Margin="20 85">
                     <TextBlock.Style>
                         <Style BasedOn="{StaticResource MenuTextBlockHeader}" TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Collapsed"/>

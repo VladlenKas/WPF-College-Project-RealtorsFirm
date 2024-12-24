@@ -53,7 +53,7 @@ namespace RealtorsFirm_3cursEO.Windows.WindowsInterface
                     ContentFrame.Navigate(new TransactionRealtor(_employee));
                     break;
                 case 5:
-                    ContentFrame.Navigate(new StatiscticsTransactionsRealtor(_employee));
+                    ContentFrame.Navigate(new StatisticsTransactionsRealtor(_employee));
                     break;
                 case 6:
                     break;
@@ -103,7 +103,21 @@ namespace RealtorsFirm_3cursEO.Windows.WindowsInterface
 
         private void ButtonStatistics_Click(object sender, RoutedEventArgs e)
         {
-            ChoosePage(5);
+            RealtorsFirmContext dbContext = new RealtorsFirmContext();
+            bool hasTransction = dbContext.Transactions.Any(t => t.IdEmployee == _employee.IdEmployee);
+            if (!hasTransction)
+            {
+                MessageBox.Show("У вас нет транзакций. " +
+                    "На странице \"Оформить чек\" заполните данные и оформите сделку," +
+                    " чтобы получить доступ к своим транзакциям.",
+                    "Доступ ограничен.",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+            else
+            {
+                ChoosePage(5);
+            }
         }
     }
 }

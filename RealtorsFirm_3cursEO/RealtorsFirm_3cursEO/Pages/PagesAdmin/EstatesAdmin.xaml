@@ -166,7 +166,8 @@
                 <Grid>
                     <TextBlock 
                         Name="textFound"
-                        FontSize="42"
+                        FontSize="36"
+                        FontWeight="Bold"
                         Text="Ничего не найдено"
                         Margin="0 30">
                         <TextBlock.Style>

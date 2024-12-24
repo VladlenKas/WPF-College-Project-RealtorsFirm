@@ -11,6 +11,8 @@ public partial class Price
 
     public int Cost { get; set; }
 
+    public string NameCost => $"{Name}. Цена: {Cost} руб.";
+
     public sbyte? IsDeleted { get; set; }
 
     public sbyte? IsArchive { get; set; }

@@ -63,7 +63,7 @@
                                DockPanel.Dock="Top"/>
 
                     <Button Style="{StaticResource Navigation}"
-                            Content="Недвижмости"
+                            Content="Мои недвижмости"
                             DockPanel.Dock="Top"
                             Click="ButtonEstates_Click"/>
 
@@ -71,18 +71,7 @@
                             Content="Услуги"
                             DockPanel.Dock="Top"
                             Click="ButtonPrices_Click"/>
-
-                    <TextBlock Text="Пользователи"
-                               Style="{StaticResource TextBlock}"
-                               Margin="0 30 0 10"
-                               DockPanel.Dock="Top"/>
-
-                    <Button Style="{StaticResource Navigation}"
-                            x:Name="ButtonsClients"
-                            Click="ButtonClients_Click"
-                            Content="Клиенты"
-                            DockPanel.Dock="Top"/>
-
+                    
                     <TextBlock Text="Действия"
                                Style="{StaticResource TextBlock}"
                                Margin="0 30 0 10"
@@ -95,7 +84,7 @@
                     </Button>
 
                     <Button Style="{StaticResource Navigation}"
-                            Content="Статистика транзакций"
+                            Content="Мои транзакции"
                             DockPanel.Dock="Top"
                             Width="250"
                             Click="ButtonStatistics_Click">

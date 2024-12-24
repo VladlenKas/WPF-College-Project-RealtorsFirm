@@ -1,4 +1,4 @@
-﻿<Page x:Class="RealtorsFirm_3cursEO.Windows.WindowsInterface.StatiscticsTransactionsRealtor"
+﻿<Page x:Class="RealtorsFirm_3cursEO.Windows.WindowsInterface.StatisticsTransactionsRealtor"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -180,7 +180,7 @@
             <Grid>
                 <DataGrid 
                     Name="TransactionsDataGrid"
-                    SelectionChanged="EmployeesDataGrid_SelectionChanged"
+                    SelectionChanged="TransactionsDataGrid_SelectionChanged"
                     Style="{StaticResource MenuDataGrid}"
                     ColumnHeaderStyle="{StaticResource MenuDataGridColumnHeader}"
                     RowStyle="{StaticResource MenuDataGridRow}"
@@ -222,7 +222,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Дата формирования транзакции" Binding="{Binding DateStart, StringFormat=dd.MM.yyyy hh:mm:ss}"/>
+                        <DataGridTextColumn Header="Запланированая дата оказания услуг" Binding="{Binding DateStart, StringFormat=dd.MM.yyyy hh:mm:ss}"/>
                         <DataGridTextColumn Header="Общая стоимость" Binding="{Binding AmountTotal, StringFormat={}{0:N0} руб.}"/>
                         <DataGridTextColumn Header="Общая стоимость со скидкой" Binding="{Binding AmountDiscount, StringFormat={}{0:N0} руб.}"/>
                         <DataGridTemplateColumn Header="Действия" CellTemplate="{StaticResource ActionsTemplate}"/>
@@ -233,9 +233,10 @@
                     VerticalAlignment="Top"
                     HorizontalAlignment="Left"
                     Name="textFound"
-                    FontSize="32"
+                    FontSize="36"
+                    FontWeight="Bold"
                     Text="Ничего не найдено"
-                    Margin="20 65">
+                    Margin="20 85">
                     <TextBlock.Style>
                         <Style BasedOn="{StaticResource MenuTextBlockHeader}" TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Collapsed"/>

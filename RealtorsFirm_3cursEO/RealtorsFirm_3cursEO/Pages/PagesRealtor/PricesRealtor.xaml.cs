@@ -33,8 +33,8 @@ namespace RealtorsFirm_3cursEO.Pages.PagesRealtor
         // выбранный пользователь
         private Price _selectedPrice;
 
-        private string _fileRealtor = "pack://application:,,,/RealtorsFirm_3cursEO;component/Images/RealtorIconImage.png";
-        private string _fileClient = "pack://application:,,,/RealtorsFirm_3cursEO;component/Images/ClientIconImage.png";
+        private readonly string _fileRealtor = "pack://application:,,,/RealtorsFirm_3cursEO;component/Images/RealtorIconImage.png";
+        private readonly string _fileClient = "pack://application:,,,/RealtorsFirm_3cursEO;component/Images/ClientIconImage.png";
         #endregion
 
         public PricesRealtor(Employee employee)

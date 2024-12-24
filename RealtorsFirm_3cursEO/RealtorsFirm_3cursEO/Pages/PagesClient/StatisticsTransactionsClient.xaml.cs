@@ -1,14 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RealtorsFirm_3cursEO.Classes;
-using RealtorsFirm_3cursEO.Edits;
 using RealtorsFirm_3cursEO.Model;
-using RealtorsFirm_3cursEO.Windows;
 using RealtorsFirm_3cursEO.Windows.Messages;
+using RealtorsFirm_3cursEO.Windows;
 using RealtorsFirm_3cursEO.Windows.WindowsActions.Transactions;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,12 +19,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
+namespace RealtorsFirm_3cursEO.Pages.PagesClient
 {
     /// <summary>
-    /// Логика взаимодействия для StatisticsTransactionAdmin.xaml
+    /// Логика взаимодействия для SelectionsTransactionsClient.xaml
     /// </summary>
-    public partial class StatisticsTransactionAdmin : Page
+    public partial class StatisticsTransactionsClient : Page
     {
         #region Свойства_и_поля
         // Класс для фильтрации и сортировки
@@ -35,16 +32,16 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
         // Работа с бд
         private RealtorsFirmContext dbContext;
-        private Employee _employeeAuth;
+        private Client _clientAuth;
 
         // выбранная транзакция
         private Transaction _selectedTransaction;
         #endregion
 
-        public StatisticsTransactionAdmin(Employee employee)
+        public StatisticsTransactionsClient(Client client)
         {
             InitializeComponent();
-            this._employeeAuth = employee;
+            this._clientAuth = client;
 
             dbContext = new RealtorsFirmContext();
             dbContext.Transactions
@@ -57,9 +54,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            // Передаем ФИО в текстблок с инфо
-            UserFio.Text = _employeeAuth.FullName;
-
+            UserFio.Text = _clientAuth.FullName;
             // Загрузка комбобоксов
             var filterList = UploadDataFilter.FilterTransactions();
             var sorterList = UploadDataFilter.SorterTransactions();
@@ -76,7 +71,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
         private void UpdateDataTransactions()
         {
-            var transactionsList = dbContext.Transactions.ToList();
+            var transactionsList = dbContext.Transactions.Where(r => r.IdClient == _clientAuth.IdClient).ToList();
             // Инициализация класса для фильтрации данных
             DataFilterTransactions = new DataFilterTransactions(SearchTextBox, ComboBoxSort, SortCheckBox, ComboBoxFilter);
 
@@ -88,38 +83,6 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
         }
 
         #region Обработчики_событий
-
-        private void ButtonEdit_Click(object sender, RoutedEventArgs e)
-        {
-            EditTransaction window = new EditTransaction(_selectedTransaction);
-            window.ShowDialog();
-
-            _selectedTransaction = null;
-
-            dbContext = new RealtorsFirmContext();
-            dbContext.Transactions
-                .Include(r => r.IdEmployeeNavigation)
-                .Include(r => r.IdStatusNavigation)
-                .Include(r => r.IdEstateNavigation)
-                .ThenInclude(e => e.IdClientNavigation)
-                .Load();
-            UpdateDataTransactions();
-        }
-
-        private void GetAllStatistics_Click(object sender, RoutedEventArgs e)
-        {
-            // Затемняем окно
-            App.MenuWindow.Opacity = 0.5;
-            this.Opacity = 0.5;
-
-            GetAllStatisticsMessage window = new GetAllStatisticsMessage();
-            window.ShowDialog();
-
-            // Снова проявляем окно
-            App.MenuWindow.Opacity = 1;
-            this.Opacity = 1;
-        }
-
         private void TransactionsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (TransactionsDataGrid.SelectedItem != null)
@@ -171,7 +134,20 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
                 UpdateDataTransactions();
             }
         }
-        #endregion
+
+        private void GetAllStatistics_Click(object sender, RoutedEventArgs e)
+        {
+            // Затемняем окно
+            App.MenuWindow.Opacity = 0.5;
+            this.Opacity = 0.5;
+
+            GetAllStatisticsMessageClient window = new GetAllStatisticsMessageClient(_clientAuth);
+            window.ShowDialog();
+
+            // Снова проявляем окно
+            App.MenuWindow.Opacity = 1;
+            this.Opacity = 1;
+        }
 
         private void GetStatistic_Click(object sender, RoutedEventArgs e)
         {
@@ -186,5 +162,6 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             App.MenuWindow.Opacity = 1;
             this.Opacity = 1;
         }
+        #endregion
     }
 }

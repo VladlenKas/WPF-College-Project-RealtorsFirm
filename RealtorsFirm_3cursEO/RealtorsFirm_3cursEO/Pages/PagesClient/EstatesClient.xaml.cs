@@ -30,11 +30,14 @@ namespace RealtorsFirm_3cursEO.Pages.PagesClient
 
         // Работа с бд
         private RealtorsFirmContext dbContext;
+        private Client _client;
 
         public EstatesClient(Client client)
 
         {
             InitializeComponent();
+            _client = client;
+
             UserFio.Text = client.FullName;
         }
 
@@ -46,7 +49,13 @@ namespace RealtorsFirm_3cursEO.Pages.PagesClient
             var estates = dbContext.Estates
                 .Include(r => r.IdClientNavigation)
                 .Include(r => r.IdTypeNavigation)
+                .Where(r => r.IdClient == _client.IdClient)
                 .ToList();
+
+            if (estates.Count == 0)
+            {
+                textFound.Text = $"У вас нет недвижимостей";
+            }
 
             estates = DataFilterEstates.ApplyFilter(estates);
             estates = DataFilterEstates.ApplySorter(estates);
@@ -55,9 +64,16 @@ namespace RealtorsFirm_3cursEO.Pages.PagesClient
             ItemsControlItems.Items.Clear();
             foreach (var estate in estates)
             {
-                var estateCard = new EstateUCView(estate); // Инициализируем карточку с недвижимостью
+                var estateCard = new EstateUCEdit(estate); // Инициализируем карточку с недвижимостью
+                estateCard.RemoveEstateRequested += Estate_RemoveEstateRequested; // Добавляем событие для удаления
                 ItemsControlItems.Items.Add(estateCard); // добавляем в ItemsControl
             }
+        }
+
+        // Обработчик события для удаления/архивирования недвижимости
+        private void Estate_RemoveEstateRequested(object sender, EstateEventArgs e)
+        {
+            UpdateDataEstates(); // Обновляем список 
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -112,6 +128,26 @@ namespace RealtorsFirm_3cursEO.Pages.PagesClient
             if (ItemsControlItems != null)
             {
                 UpdateDataEstates();
+            }
+        }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            var estates = dbContext.Estates.Where(r => r.IdClient == _client.IdClient);
+            if (estates.Count() < 5)
+            {
+                AddEstateClient addEstate = new AddEstateClient(_client);
+                addEstate.ShowDialog();
+
+                UpdateDataEstates();
+            }
+            else
+            {
+                MessageBox.Show("Вы имеете более чем 5 недвижимостей. Удалите или" +
+                    "архивируйте одну или несколько из них, чтобы добавить новый объект.",
+                    "Доступ ограничен.",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
     }

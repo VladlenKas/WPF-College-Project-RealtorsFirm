@@ -23,7 +23,7 @@ namespace RealtorsFirm_3cursEO.Windows.WindowsInterface
     /// <summary>
     /// Логика взаимодействия для StatiscticsTransactionsRealtor.xaml
     /// </summary>
-    public partial class StatiscticsTransactionsRealtor : Page
+    public partial class StatisticsTransactionsRealtor : Page
     {
         #region Свойства_и_поля
         // Класс для фильтрации и сортировки
@@ -37,7 +37,7 @@ namespace RealtorsFirm_3cursEO.Windows.WindowsInterface
         private Transaction _selectedTransaction;
         #endregion
 
-        public StatiscticsTransactionsRealtor(Employee employee)
+        public StatisticsTransactionsRealtor(Employee employee)
         {
             InitializeComponent();
             this._employeeAuth = employee;
@@ -62,6 +62,7 @@ namespace RealtorsFirm_3cursEO.Windows.WindowsInterface
             ComboBoxFilter.ItemsSource = filterList;
             ComboBoxSort.ItemsSource = sorterList;
 
+            SortCheckBox.IsChecked = true;
             ComboBoxFilter.SelectedIndex = 0;
             ComboBoxSort.SelectedIndex = 0;
 
@@ -115,7 +116,7 @@ namespace RealtorsFirm_3cursEO.Windows.WindowsInterface
             this.Opacity = 1;
         }
 
-        private void EmployeesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void TransactionsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (TransactionsDataGrid.SelectedItem != null)
             {
@@ -159,7 +160,7 @@ namespace RealtorsFirm_3cursEO.Windows.WindowsInterface
         {
             if (TransactionsDataGrid.ItemsSource != null)
             {
-                SortCheckBox.IsChecked = false;
+                SortCheckBox.IsChecked = true;
                 ComboBoxFilter.SelectedIndex = 0;
                 ComboBoxSort.SelectedIndex = 0;
                 SearchTextBox.Text = "";

@@ -71,7 +71,9 @@
                     </Grid>
 
                     <Grid DockPanel.Dock="Right">
-                        <DockPanel LastChildFill="False">
+                        <DockPanel
+                            VerticalAlignment="Top"
+                            LastChildFill="False">
                             <Border 
                                 Width="50" 
                                 Height="50" 
@@ -91,10 +93,12 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock 
+                                    Style="{x:Null}"
                                     x:Name="UserFio" 
                                     Grid.Row="0"
                                     FontFamily="Arial Rounded MT Bold"/>
                                 <TextBlock 
+                                    Style="{x:Null}"
                                     Text="Администратор" 
                                     Grid.Row="1"
                                     FontFamily="Arial Rounded MT Bold">
@@ -153,7 +157,7 @@
                                         <Grid>
                                             <Control:AutoCompleteControl
                                                 x:Name="PricesSearch"
-                                                DisplayMemberPath="Name"/>
+                                                DisplayMemberPath="NameCost"/>
 
                                             <materialDesign:PackIcon 
                                                 Kind="Search"
@@ -181,7 +185,8 @@
 
                                             <TextBlock
                                                 Text="Выберите услуги"
-                                                FontSize="26"
+                                                FontSize="36"
+                                                FontWeight="Bold"
                                                 Margin="20">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">
@@ -234,11 +239,11 @@
                                         Margin="0 00 0 0"
                                         Panel.ZIndex="1"
                                         DockPanel.Dock="Top">
-                                        <TextBlock Text="ФИ, паспорт риелтора *"/>
+                                        <TextBlock Text="ФИ, номер телефона риелтора *"/>
                                         <Grid>
                                             <Control:AutoCompleteControl
                                                 x:Name="EmployeesSearch"
-                                                DisplayMemberPath="FIPassport"/>
+                                                DisplayMemberPath="FIPhone"/>
                                             <materialDesign:PackIcon
                                                 Style="{StaticResource icon}"
                                                 Kind="User"/>

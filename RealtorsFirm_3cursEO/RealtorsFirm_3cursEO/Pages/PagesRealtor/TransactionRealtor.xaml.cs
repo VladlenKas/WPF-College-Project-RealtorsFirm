@@ -163,7 +163,9 @@ namespace RealtorsFirm_3cursEO.Pages.PagesRealtor
                     }
                     else
                     {
-                        EstateComboBox.ItemsSource = dbContext.Estates.Where(r => r.IdClient == client.IdClient).ToList();
+                        EstateComboBox.ItemsSource = dbContext.Estates
+                            .Where(r => r.IdClient == client.IdClient && r.IsArchive != 1)
+                            .ToList();
                         EstateComboBox.FontWeight = System.Windows.FontWeight.FromOpenTypeWeight(400);
                     }
                 }

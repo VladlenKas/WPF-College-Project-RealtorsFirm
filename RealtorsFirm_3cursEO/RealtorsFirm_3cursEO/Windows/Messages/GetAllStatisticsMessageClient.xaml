@@ -1,11 +1,11 @@
-﻿<Window x:Class="RealtorsFirm_3cursEO.Windows.Messages.GetAllStatisticsMessage"
+﻿<Window x:Class="RealtorsFirm_3cursEO.Windows.Messages.GetAllStatisticsMessageClient"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RealtorsFirm_3cursEO.Windows.Messages"
-         
-        Height="700" Width="1250"
+        
+        Height="700" Width="900"
         WindowStyle="None" 
         AllowsTransparency="True"
         Background="Transparent"
@@ -48,7 +48,6 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <!-- Заголовок -->
@@ -76,7 +75,7 @@
                     FontSize="24"
                     Padding="0 0 0 10">
                 </TextBlock>
-                
+
                 <TextBlock 
                     TextWrapping="Wrap"
                     Style="{x:Null}">
@@ -84,7 +83,7 @@
                     <Run FontWeight="Bold" FontSize="20" Text="{Binding AverageCostTransaction, Mode=OneWay, StringFormat={}{0:N0}}"/>
                     <Run FontWeight="Regular" FontSize="18" Text="руб."/>
                 </TextBlock>
-                
+
                 <TextBlock 
                     TextWrapping="Wrap"
                     Style="{x:Null}">
@@ -101,38 +100,6 @@
                 </TextBlock>
                 <!--#endregion-->
 
-                <!--#region Информация по клиентам -->
-                <TextBlock
-                    HorizontalAlignment="Left"
-                    Text="Информация по клиентам"
-                    FontWeight="Bold"
-                    FontSize="24"
-                    Padding="0 20 0 10">
-                </TextBlock>
-
-                <TextBlock 
-                    TextWrapping="Wrap"
-                    Style="{x:Null}">
-                    <Run FontWeight="Regular" FontSize="18" Text="Среднее кол-во повторных заказов:"/>
-                    <Run FontWeight="Bold" FontSize="20" Text="{Binding AverageCountRepeatTransactionClients, Mode=OneWay, StringFormat={}{0:N0}}"/>
-                </TextBlock>
-
-                <TextBlock 
-                    TextWrapping="Wrap"
-                    Style="{x:Null}">
-                    <Run FontWeight="Regular" FontSize="18" Text="Среднее кол-во недвижимостей на клиента:"/>
-                    <Run FontWeight="Bold" FontSize="20" Text="{Binding AverageCountEstatesClients, Mode=OneWay, StringFormat={}{0:N0}}"/>
-                </TextBlock>
-
-                <TextBlock 
-                    TextWrapping="Wrap"
-                    Style="{x:Null}">
-                    <Run FontWeight="Regular" FontSize="18" Text="Среднее кол-во бонусов на клиента:"/>
-                    <Run FontWeight="Bold" FontSize="20" Text="{Binding AverageCountBonusesClients, Mode=OneWay, StringFormat={}{0:N0}}"/>
-                    <Run FontWeight="Regular" FontSize="18" Text="шт."/>
-                </TextBlock>
-                <!--#endregion-->
-
                 <!--#region Общая информация -->
                 <TextBlock
                     HorizontalAlignment="Left"
@@ -140,13 +107,6 @@
                     FontWeight="Bold"
                     FontSize="24"
                     Padding="0 40 0 10">
-                </TextBlock>
-
-                <TextBlock 
-                    TextWrapping="Wrap"
-                    Style="{x:Null}">
-                    <Run FontWeight="Regular" FontSize="18" Text="Всего клиентов обслужено:"/>
-                    <Run FontWeight="Bold" FontSize="20" Text="{Binding AmountClients, Mode=OneWay, StringFormat={}{0:N0}}"/>
                 </TextBlock>
 
                 <TextBlock 
@@ -173,7 +133,7 @@
                 <TextBlock 
                     TextWrapping="Wrap"
                     Style="{x:Null}">
-                    <Run FontWeight="Regular" FontSize="18" Text="Всего заработано:"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="Всего потрачено:"/>
                     <Run FontWeight="Bold" FontSize="20" Text="{Binding AmountEarned, Mode=OneWay, StringFormat={}{0:N0}}"/>
                     <Run FontWeight="Regular" FontSize="18" Text="руб."/>
                 </TextBlock>
@@ -181,17 +141,18 @@
                 <TextBlock 
                     TextWrapping="Wrap"
                     Style="{x:Null}">
-                    <Run FontWeight="Regular" FontSize="18" Text="Всего оплачено бонусами:"/>
+                    <Run FontWeight="Regular" FontSize="18" Text="Всего сэкономлено бонусами:"/>
                     <Run FontWeight="Bold" FontSize="20" Text="{Binding AmountBonuses, Mode=OneWay, StringFormat={}{0:N0}}"/>
-                    <Run FontWeight="Regular" FontSize="18" Text="шт."/>
+                    <Run FontWeight="Regular" FontSize="18" Text="руб."/>
                 </TextBlock>
                 <!--#endregion-->
             </StackPanel>
 
             <!-- Вывод 2 колонка (%) -->
             <StackPanel 
+                Grid.ColumnSpan="1"
                 Grid.Row="1"
-                Grid.Column="1"
+                Grid.Column="2"
                 HorizontalAlignment="Left">
                 <!--#region Оплата услуг (% соотношение) -->
                 <TextBlock
@@ -215,32 +176,6 @@
                     Style="{x:Null}">
                     <Run FontWeight="Regular" FontSize="18" Text="Оплата услуг бонусами:"/>
                     <Run FontWeight="Bold" FontSize="20" Text="{Binding CurrencyBonuses, Mode=OneWay, StringFormat={}{0:N0}}"/>
-                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
-                </TextBlock>
-                <!--#endregion-->
-
-                <!--#region Клиенты (% соотношение) -->
-                <TextBlock
-                    HorizontalAlignment="Left"
-                    Text="Клиенты (% соотношение)"
-                    FontWeight="Bold"
-                    FontSize="24"
-                    Padding="0 20 0 10">
-                </TextBlock>
-
-                <TextBlock 
-                    TextWrapping="Wrap"
-                    Style="{x:Null}">
-                    <Run FontWeight="Regular" FontSize="18" Text="Зарегистрированных:"/>
-                    <Run FontWeight="Bold" FontSize="20" Text="{Binding CountRegisteredClients, Mode=OneWay, StringFormat={}{0:N0}}"/>
-                    <Run FontWeight="Regular" FontSize="18" Text="%"/>
-                </TextBlock>
-
-                <TextBlock 
-                    TextWrapping="Wrap"
-                    Style="{x:Null}">
-                    <Run FontWeight="Regular" FontSize="18" Text="Незарегистрированных (гости):"/>
-                    <Run FontWeight="Bold" FontSize="20" Text="{Binding CountGuestClients, Mode=OneWay, StringFormat={}{0:N0}}"/>
                     <Run FontWeight="Regular" FontSize="18" Text="%"/>
                 </TextBlock>
                 <!--#endregion-->
@@ -286,13 +221,6 @@
                     <Run FontWeight="Regular" FontSize="18" Text="%"/>
                 </TextBlock>
                 <!--#endregion-->
-            </StackPanel>
-            
-            <!-- Вывод 3 колонка (недвижка %)-->
-            <StackPanel 
-                Grid.Row="1"
-                Grid.Column="2"
-                HorizontalAlignment="Left">
 
                 <!--#region Недвижимости (% соотношение) -->
                 <TextBlock
@@ -300,7 +228,7 @@
                     Text="Недвижимости (% соотношение)"
                     FontWeight="Bold"
                     FontSize="24"
-                    Padding="0 0 0 10">
+                    Padding="0 20 0 10">
                 </TextBlock>
 
                 <ListView
