@@ -1,13 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Storage.Internal;
 using RealtorsFirm_3cursEO.Classes;
 using RealtorsFirm_3cursEO.Classes.DataOperations;
 using RealtorsFirm_3cursEO.Model;
+using RealtorsFirm_3cursEO.Windows;
+using RealtorsFirm_3cursEO.Windows.WindowsInterface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.IO.Pipes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,12 +20,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
+namespace RealtorsFirm_3cursEO.Pages.PagesRealtor
 {
     /// <summary>
-    /// Логика взаимодействия для TransactionAdmin.xaml
+    /// Логика взаимодействия для TransactionRealtor.xaml
     /// </summary>
-    public partial class TransactionAdmin : Page, INotifyPropertyChanged
+    public partial class TransactionRealtor : Page, INotifyPropertyChanged
     {
         protected virtual void OnPropertyChanged(string propertyName)
         {
@@ -182,27 +181,6 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
         }
 
         /// <summary>
-        /// Приватное поле для хранения значения с выбранным клиентом
-        /// </summary>
-        private Employee? _selectedRieltor;
-        /// <summary>
-        /// Свойство для доступа к полю с выбранным клиентом. 
-        /// Также управляет видимостью элементов и коллекцией EstateComboBox
-        /// </summary>
-        public Employee? SelectedRieltor
-        {
-            get { return _selectedRieltor; }
-            set
-            {
-                if (_selectedRieltor != value)
-                {
-                    _selectedRieltor = value;
-                    OnPropertyChanged(nameof(SelectedRieltor));
-                }
-            }
-        }
-
-        /// <summary>
         /// Свойсвто для хранения и доступа к значению с выбранной датой
         /// </summary>
         public DateTime DateTransaction => dateTimeControl.Text;
@@ -247,11 +225,11 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             }
         }
 
-        private Employee Employee;
+        private Employee SelectedRieltor;
         private RealtorsFirmContext dbContext;
         #endregion
 
-        public TransactionAdmin(Employee employee)
+        public TransactionRealtor(Employee employee)
         {
             InitializeComponent();
 
@@ -264,8 +242,10 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
                 .Include(r => r.IdEmployeeNavigation)
                 .Load();
 
-            Employee = employee;
+            SelectedRieltor = employee;
             UserFio.Text = $"{employee.FullName}";
+
+            EmployeesSearch.Text = SelectedRieltor.FIPassport;
         }
 
         /// <summary>
@@ -302,7 +282,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
                 allFieldsFilled = SelectedClient != null &&
                     SelectedEstate != null &&
                     SelectedRieltor != null &&
-                    SelectedPrices.Count != 0; 
+                    SelectedPrices.Count != 0;
             }
             else if (ChargeBonusesButton.IsChecked == true)
             {
@@ -349,7 +329,6 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
         {
             SelectedClient = null;
             SelectedEstate = null;
-            SelectedRieltor = null;
             EstateComboBox.SelectedIndex = 0;
             AmountDiscard = 0;
             AmountTotal = 0;
@@ -370,31 +349,14 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
         {
             PricesSearch.ItemSelected -= OnPriceSelected;
             CLientSearch.ItemSelected -= OnClientSelected;
-            EmployeesSearch.ItemSelected -= OnEmployeeSelected;
 
             PricesSearch.ItemSelected += OnPriceSelected;
             PricesSearch.ItemsSource = dbContext.Prices.Where(r => r.IsArchive != 1).ToList();
 
             CLientSearch.ItemSelected += OnClientSelected;
-            var clientsList = dbContext.Clients.Where(r => 
+            var clientsList = dbContext.Clients.Where(r =>
                 r.IsArchive != 1)
                 .ToList();
-
-            EmployeesSearch.ItemSelected += OnEmployeeSelected;
-            var emloyeesList = dbContext.Employees.Where(r =>
-                r.IsArchive != 1 &&
-                r.IdRole == 2)
-                .ToList();
-
-            if (emloyeesList.Count == 0)
-            {
-                var noDataItem = new[] { new { FIPassport = "Нет свободных риелторов" } };
-                EmployeesSearch.ItemsSource = noDataItem;
-            }
-            else
-            {
-                EmployeesSearch.ItemsSource = emloyeesList;
-            }
 
             if (clientsList.Count == 0)
             {
@@ -447,22 +409,6 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             else if (selectedItem is null)
             {
                 SelectedClient = null;
-            }
-        }
-
-        /// <summary>
-        /// Событие для выбора сотрудника
-        /// </summary>
-        /// <param name="selectedItem"></param>
-        private void OnEmployeeSelected(object selectedItem)
-        {
-            if (selectedItem is Employee employee)
-            {
-                SelectedRieltor = employee;
-            }
-            else if (selectedItem is null)
-            {
-                SelectedRieltor = null;
             }
         }
 
@@ -589,7 +535,6 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
                 CreateNewTransaction();
             }
         }
-
         private void EstateComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox comboBox = sender as ComboBox;

@@ -48,6 +48,8 @@ namespace RealtorsFirm_3cursEO.Windows
 
             // Указываем ItemsSource для ListView
             PricesListView.ItemsSource = dataList;
+
+            TotalCostTB.Text = dataList.Sum(r => r.Cost).ToString();
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)

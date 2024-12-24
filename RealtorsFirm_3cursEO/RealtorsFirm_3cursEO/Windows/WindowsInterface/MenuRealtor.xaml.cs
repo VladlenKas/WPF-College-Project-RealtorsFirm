@@ -1,9 +1,8 @@
-﻿using MaterialDesignColors;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RealtorsFirm_3cursEO.Classes;
-using RealtorsFirm_3cursEO.Edits;
 using RealtorsFirm_3cursEO.Model;
 using RealtorsFirm_3cursEO.Pages.PagesAdmin;
+using RealtorsFirm_3cursEO.Pages.PagesRealtor;
 using RealtorsFirm_3cursEO.PagesAdmin;
 using System;
 using System.Collections.Generic;
@@ -16,57 +15,49 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace RealtorsFirm_3cursEO
+namespace RealtorsFirm_3cursEO.Windows.WindowsInterface
 {
     /// <summary>
-    /// Логика взаимодействия для MenuForAdmin.xaml
+    /// Логика взаимодействия для MenuRealtor.xaml
     /// </summary>
-    public partial class MenuAdmin : Window
+    public partial class MenuRealtor : Window
     {
         private Employee _employee;
 
-        public MenuAdmin(Employee employee)
+        public MenuRealtor(Employee employee)
         {
             InitializeComponent();
             _employee = employee;
 
             App.MenuWindow = this;
-            ChoosePage(0);
+            ChoosePage(1);
         }
 
-        private void ChoosePage(int numberPage)
+        public void ChoosePage(int numberPage)
         {
             switch (numberPage)
             {
-                case 0:
-                    ContentFrame.Navigate(new EmployeesAdmin(_employee));
-                    break;
                 case 1:
-                    ContentFrame.Navigate(new ClientsAdmin(_employee));
+                    ContentFrame.Navigate(new ClientsAdmin(_employee)); // Готово
                     break;
                 case 2:
-                    ContentFrame.Navigate(new PricesAdmin(_employee));
+                    ContentFrame.Navigate(new PricesRealtor(_employee));
                     break;
                 case 3:
-                    ContentFrame.Navigate(new EstatesAdmin(_employee));
+                    ContentFrame.Navigate(new EstatesAdmin(_employee)); // Готово
                     break;
                 case 4:
-                    ContentFrame.Navigate(new TransactionAdmin(_employee));
+                    ContentFrame.Navigate(new TransactionRealtor(_employee));
                     break;
                 case 5:
-                    ContentFrame.Navigate(new StatisticsTransactionAdmin(_employee));
+                    ContentFrame.Navigate(new StatiscticsTransactionsRealtor(_employee));
                     break;
                 case 6:
                     break;
             }
-        }
-        private void ButtonEmployees_Click(object sender, RoutedEventArgs e)
-        {
-            ChoosePage(0);
         }
 
         private void ButtonClients_Click(object sender, RoutedEventArgs e)
@@ -76,7 +67,7 @@ namespace RealtorsFirm_3cursEO
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Title = $"Меню для администратора. Сотрудник: {_employee.FullName}";
+            this.Title = $"Меню для риелтора. Сотрудник: {_employee.FullName}";
         }
 
         private void Window_Closed(object sender, EventArgs e)

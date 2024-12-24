@@ -1,7 +1,9 @@
-﻿using RealtorsFirm_3cursEO.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using RealtorsFirm_3cursEO.Model;
 using System.Configuration;
 using System.Data;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace RealtorsFirm_3cursEO
 {

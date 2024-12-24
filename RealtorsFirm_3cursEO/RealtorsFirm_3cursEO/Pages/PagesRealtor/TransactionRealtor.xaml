@@ -1,10 +1,10 @@
-﻿<Page x:Class="RealtorsFirm_3cursEO.Pages.PagesAdmin.TransactionAdmin"
+﻿<Page x:Class="RealtorsFirm_3cursEO.Pages.PagesRealtor.TransactionRealtor"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:RealtorsFirm_3cursEO.Pages.PagesAdmin"
-      
+      xmlns:local="clr-namespace:RealtorsFirm_3cursEO.Pages.PagesRealtor"
+     
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:Control="clr-namespace:RealtorsFirm_3cursEO.UserControls.TextBoxes"
       
@@ -44,7 +44,7 @@
             </Setter>
         </Style>
     </Page.Resources>
-    
+
     <Grid>
         <DockPanel Margin="20">
             <Grid>
@@ -80,7 +80,7 @@
                                 <Border.Background>
                                     <ImageBrush 
                                         Stretch="UniformToFill"
-                                        ImageSource="/Images/AdminIconImage.png"/>
+                                        ImageSource="/Images/RealtorIconImage.png"/>
                                 </Border.Background>
                             </Border>
 
@@ -95,7 +95,7 @@
                                     Grid.Row="0"
                                     FontFamily="Arial Rounded MT Bold"/>
                                 <TextBlock 
-                                    Text="Администратор" 
+                                    Text="Риелтор" 
                                     Grid.Row="1"
                                     FontFamily="Arial Rounded MT Bold">
                                     <TextBlock.Foreground>
@@ -160,7 +160,7 @@
                                                 Style="{StaticResource ActionIcon}"/>
                                         </Grid>
                                     </StackPanel>
-                                    
+
                                     <Border
                                         Panel.ZIndex="-1"
                                         Margin="0 80 0 0"
@@ -194,7 +194,7 @@
                                                     </Style>
                                                 </TextBlock.Style>
                                             </TextBlock>
-                                            
+
                                             <Grid 
                                                 VerticalAlignment="Top"
                                                 HorizontalAlignment="Right"
@@ -235,16 +235,17 @@
                                         Panel.ZIndex="1"
                                         DockPanel.Dock="Top">
                                         <TextBlock Text="ФИ, паспорт риелтора *"/>
-                                        <Grid>
-                                            <Control:AutoCompleteControl
-                                                x:Name="EmployeesSearch"
-                                                DisplayMemberPath="FIPassport"/>
+                                        <Grid
+                                            IsEnabled="False"
+                                            Opacity="0.5">
+                                            <TextBox
+                                                x:Name="EmployeesSearch"/>
                                             <materialDesign:PackIcon
                                                 Style="{StaticResource icon}"
                                                 Kind="User"/>
                                         </Grid>
                                     </StackPanel>
-                                    
+
                                     <StackPanel 
                                         Margin="0 80 0 0"
                                         Panel.ZIndex="0"
@@ -415,7 +416,7 @@
                                                                 Style="{StaticResource icon}"
                                                                 Kind="Star"/>
                                                         </Grid>
-                                                        
+
                                                         <Button 
                                                             Click="AllBonusesSelect_Click"
                                                             Grid.Column="2"

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -255,7 +256,7 @@ namespace RealtorsFirm_3cursEO.Model
         #region Транзакция
 
         // Добавление
-        public static void CreateTransaction(int IdEmployee, int IdClient, int IdEstate,
+        public static void CreateTransaction(int IdEmployee, int IdClient, int IdEstate, DateTime dateTime,
             int AmountTotal, int AmountDiscount, List<Price> prices, int AccrualBonuses, int DiscardBonuses, bool IsAccrualBonuses)
         {
             RealtorsFirmContext dbContext = new RealtorsFirmContext();
@@ -266,7 +267,7 @@ namespace RealtorsFirm_3cursEO.Model
                 IdEmployee = IdEmployee,
                 IdClient = IdClient,
                 IdEstate = IdEstate,
-                DateStart = DateTime.Now,
+                DateStart = dateTime,
                 AmountTotal = AmountTotal,
                 AmountDiscount = AmountDiscount
             };
@@ -313,6 +314,17 @@ namespace RealtorsFirm_3cursEO.Model
             dbContext.SaveChanges();
         }
 
+        public static void EditTransacton(Transaction transaction, StatusTransaction statusTransaction)
+        {
+            using (var dbContext = new RealtorsFirmContext())
+            {
+                var trans = dbContext.Transactions.Single(r => r.IdTransaction == transaction.IdTransaction);
+                trans.IdStatus = statusTransaction.IdStatus;
+
+                dbContext.Update(trans);
+                dbContext.SaveChanges();
+            }
+        }
         #endregion
 
         #region Недвижимость

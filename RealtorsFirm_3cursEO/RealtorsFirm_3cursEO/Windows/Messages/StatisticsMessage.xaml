@@ -122,11 +122,28 @@
                 <!-- Услуги -->
                 <ListView
                     Name="PricesListView"
-                    Margin="0 30 0 0"
+                    Margin="0 30 0 15"
                     FontWeight="Bold"
                     BorderThickness="0"
                     IsHitTestVisible="False">
                 </ListView>
+
+                <TextBlock TextWrapping="Wrap">
+                    <Run 
+                        Text="Всего:"
+                        FontSize="30">
+                    </Run>
+                    <Run 
+                        Name="TotalCostTB"
+                        Foreground="ForestGreen"
+                        FontSize="32"
+                        FontWeight="Bold">
+                    </Run>
+                    <Run
+                        FontSize="30"
+                        Text="руб.">
+                    </Run>
+                </TextBlock>
             </StackPanel>
             
             <!-- Кнопочка выхода -->

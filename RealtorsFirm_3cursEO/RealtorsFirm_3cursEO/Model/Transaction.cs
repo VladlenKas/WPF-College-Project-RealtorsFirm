@@ -17,8 +17,6 @@ public partial class Transaction
 
     public DateTime DateStart { get; set; }
 
-    public DateTime? DateFinish { get; set; }
-
     public int AmountTotal { get; set; }
 
     public int AmountDiscount { get; set; }

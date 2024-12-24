@@ -85,8 +85,8 @@
                                 Margin="10 0">
                                 <Border.Background>
                                     <ImageBrush 
-                                        Stretch="UniformToFill"
-                                        ImageSource="/Images/AdminIconImage.png"/>
+                                        x:Name="UserIcon"
+                                        Stretch="UniformToFill"/>
                                 </Border.Background>
                             </Border>
 
@@ -101,7 +101,7 @@
                                     Grid.Row="0"
                                     FontFamily="Arial Rounded MT Bold"/>
                                 <TextBlock 
-                                    Text="Администратор" 
+                                    Name="UserRole"
                                     Grid.Row="1"
                                     FontFamily="Arial Rounded MT Bold">
                                     <TextBlock.Foreground>

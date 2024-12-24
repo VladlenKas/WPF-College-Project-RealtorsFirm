@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace RealtorsFirm_3cursEO.Windows.Messages
 {
-    public class GetAllStatisticsViewModel(RealtorsFirmContext dbContext)
+    public class GetAllStatisticsViewModel(List<Transaction> transactions)
     {
-        public List<Transaction> Transactions = new List<Transaction>(dbContext.Transactions);
+        public List<Transaction> Transactions = new List<Transaction>(transactions);
 
         public double AverageCostTransaction => CalculateAverageCostTransaction(); // Работает
         public int AverageBonusesTransaction => CalculateAverageBonusesTransaction(); // Работает
@@ -25,12 +25,12 @@ namespace RealtorsFirm_3cursEO.Windows.Messages
         public double CountFinish => CalculateCountFinish();
         public double CountCancelled => CalculateCountCancelled();
         public double CountOnHold => CalculateCountOnHold();
-        public int AmountClients => Transactions.Select(t => t.IdClient).Distinct().Count();
-        public int AmountEstates => Transactions.Select(t => t.IdEstate).Distinct().Count();
-        public int AmountPrices => Transactions.Sum(t => t.TransactionPriceRelations.Count);
+        public int AmountClients => Transactions.Where(r => r.IdStatus != 3).Select(t => t.IdClient).Distinct().Count();
+        public int AmountEstates => Transactions.Where(r => r.IdStatus != 3).Select(t => t.IdEstate).Distinct().Count();
+        public int AmountPrices => Transactions.Where(r => r.IdStatus != 3).Sum(t => t.TransactionPriceRelations.Count);
         public int AmountTransactions => Transactions.Count;
-        public decimal AmountEarned => Transactions.Sum(t => t.AmountDiscount);
-        public int AmountBonuses => Transactions.Sum(t => t.AmountTotal - t.AmountDiscount);
+        public decimal AmountEarned => Transactions.Where(r => r.IdStatus == 2).Sum(t => t.AmountDiscount);
+        public int AmountBonuses => Transactions.Where(r => r.IdStatus != 3).Sum(t => t.AmountTotal - t.AmountDiscount);
 
         // Метод для расчета средней стоимости транзакции
         private double CalculateAverageCostTransaction() // Работает

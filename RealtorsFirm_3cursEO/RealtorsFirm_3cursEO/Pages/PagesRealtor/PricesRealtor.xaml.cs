@@ -1,5 +1,4 @@
 ﻿using RealtorsFirm_3cursEO.Classes;
-using RealtorsFirm_3cursEO.Edits;
 using RealtorsFirm_3cursEO.Model;
 using RealtorsFirm_3cursEO.WindowsActions.Price;
 using System;
@@ -14,16 +13,15 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
+namespace RealtorsFirm_3cursEO.Pages.PagesRealtor
 {
     /// <summary>
-    /// Логика взаимодействия для PricesAdmin.xaml
+    /// Логика взаимодействия для PricesRealtor.xaml
     /// </summary>
-    public partial class PricesAdmin : Page
+    public partial class PricesRealtor : Page
     {
         #region Свойства_и_поля
         // Класс для фильтрации и сортировки
@@ -31,22 +29,32 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
         // Работа с бд
         private RealtorsFirmContext dbContext;
-        private Employee _employeeAuth;
 
         // выбранный пользователь
         private Price _selectedPrice;
+
+        private string _fileRealtor = "pack://application:,,,/RealtorsFirm_3cursEO;component/Images/RealtorIconImage.png";
+        private string _fileClient = "pack://application:,,,/RealtorsFirm_3cursEO;component/Images/ClientIconImage.png";
         #endregion
 
-        public PricesAdmin(Employee employee)
+        public PricesRealtor(Employee employee)
         {
             InitializeComponent();
-            this._employeeAuth = employee;
+            UserFio.Text = employee.FullName;
+            UserRole.Text = "Риелтор";
+            UserIcon.ImageSource = new BitmapImage(new Uri(_fileRealtor, UriKind.Absolute));
+        }
+
+        public PricesRealtor(Client client)
+        {
+            InitializeComponent();
+            UserFio.Text = client.FullName;
+            UserRole.Text = "Клиент";
+            UserIcon.ImageSource = new BitmapImage(new Uri(_fileClient, UriKind.Absolute));
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            // Передаем ФИО в текстблок с инфо
-            UserFio.Text = _employeeAuth.FullName;
 
             // Загрузка комбобоксов
             var sorterList = UploadDataFilter.SorterPrices();
@@ -74,66 +82,6 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
         }
 
         #region Обработчики_событий
-
-        private void ButtonDelete_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult result = MessageBox.Show("Вы точно хотите удалить данную услугу?",
-                "Подтверждение",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                ModelActions.DeletePrice(_selectedPrice);
-                _selectedPrice = null;
-
-                MessageBox.Show("Услуга удалена.",
-                "Успех",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-
-                UpdateDataEmployees();
-            }
-        }
-
-        private void ButtonEdit_Click(object sender, RoutedEventArgs e)
-        {
-            EditPrice window = new EditPrice(_selectedPrice);
-            window.ShowDialog();
-
-            _selectedPrice = null;
-            UpdateDataEmployees();
-        }
-
-        private void AddButtonPrice_Click(object sender, RoutedEventArgs e)
-        {
-            AddPrice window = new AddPrice();
-            window.ShowDialog();
-
-            UpdateDataEmployees();
-        }
-
-        private void ButtonArchive_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult result = MessageBox.Show("Вы точно хотите архивировать данного сотрудника?",
-                "Подтверждение",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                ModelActions.ArchivePrice(_selectedPrice);
-                _selectedPrice = null;
-
-                MessageBox.Show("Услуга архивирована.",
-                "Успех",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-
-                UpdateDataEmployees();
-            }
-        }
-
         private void EmployeesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (PricesDataGrid.SelectedItem != null)
@@ -176,7 +124,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
         private void ClearDataButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender != null)
+            if (PricesDataGrid != null)
             {
                 SortCheckBox.IsChecked = false;
                 ComboBoxSort.SelectedIndex = 0;

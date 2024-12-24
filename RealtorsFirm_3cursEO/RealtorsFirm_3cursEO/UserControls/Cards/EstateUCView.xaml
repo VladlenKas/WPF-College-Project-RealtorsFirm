@@ -1,0 +1,193 @@
+﻿<UserControl x:Class="RealtorsFirm_3cursEO.UserControls.Cards.EstateUCView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RealtorsFirm_3cursEO.UserControls.Cards"
+             
+             xmlns:ArchiveConverter="clr-namespace:RealtorsFirm_3cursEO.Classes.Converters"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Height="735" Width="460">
+
+    <UserControl.Resources>
+        <!-- Конвертер для обозначения архивированных записей -->
+        <ArchiveConverter:ArchiveStatusConverter x:Key="ArchiveStatusConverter"/>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontFamily" Value="Calibri"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0 3"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Border
+        BorderThickness="2"
+        BorderBrush="#30000000"
+        Margin="15"
+        CornerRadius="30">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsArchive}" Value="1">
+                        <Setter Property="Opacity" Value="0.5"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="300"/>
+            </Grid.RowDefinitions>
+
+            <!-- Image of item -->
+            <Border 
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                CornerRadius="30 30 0 0"
+                Height="420"
+                VerticalAlignment="Top">
+
+                <Border.Background>
+                    <ImageBrush
+                        x:Name="ImageBorder"
+                        ImageSource="{Binding Photo}"
+                        Stretch="UniformToFill">
+                    </ImageBrush>
+                </Border.Background>
+            </Border>
+
+            <!-- Description present -->
+            <Border
+                Grid.Row="1"
+                Background="White"
+                CornerRadius="20 20 30 30">
+
+                <Grid Margin="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid VerticalAlignment="Top" Margin="0 0 20 0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0">
+                            <Run 
+                                Text="ID недвижимости: "
+                                FontSize="16"
+                                Foreground="Gray">
+                            </Run>
+                            <Run 
+                                Text="{Binding IdEstate}" 
+                                FontWeight="Bold"
+                                FontSize="18">
+                            </Run>
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="1" TextWrapping="Wrap">
+                            <Run
+                                Text="Клиент: "
+                                FontSize="16"
+                                Foreground="Gray">
+                            </Run>
+                            <Run 
+                                Text="{Binding IdClientNavigation.FullName, Mode=OneWay}" 
+                                FontWeight="Bold"
+                                FontSize="18">
+                            </Run>
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="2">
+                            <Run
+                                Text="Тип недвижимости: "
+                                FontSize="16"
+                                Foreground="Gray">
+                            </Run>
+                            <Run 
+                                Text="{Binding IdTypeNavigation.Name}" 
+                                FontWeight="Bold"
+                                FontSize="18">
+                            </Run>
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="3" TextWrapping="Wrap">
+                            <Run
+                                Text="Адрес: "
+                                FontSize="16"
+                                Foreground="Gray">
+                            </Run>
+                            <Run 
+                                Text="{Binding Address}" 
+                                FontWeight="Bold"
+                                FontSize="18">
+                            </Run>
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="4">
+                            <Run
+                                Text="Площадь: "
+                                FontSize="16"
+                                Foreground="Gray">
+                            </Run>
+                            <Run 
+                                Text="{Binding Area, StringFormat={}{0} кв. м.}" 
+                                FontWeight="Bold"
+                                FontSize="18">
+                            </Run>
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="5">
+                            <Run
+                                Text="Количество комнат: "
+                                FontSize="16"
+                                Foreground="Gray">
+                            </Run>
+                            <Run 
+                                Text="{Binding NumberRooms}" 
+                                FontWeight="Bold"
+                                FontSize="18">
+                            </Run>
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="6">
+                            <Run
+                                Text="Цена: "
+                                FontSize="16"
+                                Foreground="Gray">
+                            </Run>
+                            <Run 
+                                Text="{Binding Cost, StringFormat={}{0} руб.}" 
+                                FontWeight="Bold"
+                                FontSize="18">
+                            </Run>
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="7">
+                            <Run
+                                Text="Статус доступа: "
+                                FontSize="16"
+                                Foreground="Gray">
+                            </Run>
+                            <Run 
+                                Text="{Binding IsArchive, Converter={StaticResource ArchiveStatusConverter}}" 
+                                FontWeight="Bold"
+                                FontSize="18">
+                            </Run>
+                        </TextBlock>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

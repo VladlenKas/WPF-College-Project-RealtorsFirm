@@ -376,18 +376,14 @@ public class DataFilterTransactions
     private ComboBox _filterComboBox;
     private TextBox _searchTextBox;
     private ComboBox _sorterComboBox;
-    private bool _ascending;
+    private CheckBox _ascendingCheckBox;
 
     public DataFilterTransactions(TextBox searchTextBox, ComboBox sorterComboBox, CheckBox ascendingCheckBox, ComboBox filterComboBox)
     {
         _searchTextBox = searchTextBox;
         _sorterComboBox = sorterComboBox;
         _filterComboBox = filterComboBox;
-
-        if (ascendingCheckBox != null)
-            _ascending = (bool)ascendingCheckBox.IsChecked;
-        else
-            _ascending = false;
+        _ascendingCheckBox = ascendingCheckBox;
     }
 
     // Фильтрафия
@@ -419,8 +415,9 @@ public class DataFilterTransactions
     public List<Transaction> ApplySorter(List<Transaction> transactions)
     {
         int sortIndex = _sorterComboBox.SelectedIndex;
+        bool cheching = (bool)_ascendingCheckBox.IsChecked;
 
-        if (!_ascending)
+        if (!cheching)
         {
             switch (sortIndex)
             {

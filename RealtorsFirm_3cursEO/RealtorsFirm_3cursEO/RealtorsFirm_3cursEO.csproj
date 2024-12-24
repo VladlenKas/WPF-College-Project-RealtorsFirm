@@ -12,6 +12,7 @@
     <None Remove="Images\AdminIconImage.png" />
     <None Remove="Images\Logo.png" />
     <None Remove="Images\NotImage.jpg" />
+    <None Remove="Images\RealtorIconImage.png" />
     <None Remove="Images\Woman1.png" />
   </ItemGroup>
 
@@ -30,6 +31,7 @@
     <Resource Include="Images\AdminIconImage.png" />
     <Resource Include="Images\Logo.png" />
     <Resource Include="Images\NotImage.jpg" />
+    <Resource Include="Images\RealtorIconImage.png" />
     <Resource Include="Images\Woman1.png" />
   </ItemGroup>
 

@@ -357,6 +357,78 @@ namespace RealtorsFirm_3cursEO.Classes.DataOperations
         }
         #endregion
 
+        #region Транзакции
+        public static bool LimitatorTransaction(DateTime dateTime, Client client, Employee employee)
+        {
+            using (var context = new RealtorsFirmContext())
+            {
+                // Создаем лист для исключений
+                List<string> errorsList = new List<string>();
+
+                // Проверка на имя
+                if (dateTime.Equals(DateTime.MinValue))
+                {
+                    errorsList.Add("Укажите корректный формат для даты.");
+                }
+                // Проверка на возраст (на валидную дату)
+                else if (dateTime.Day < DateTime.Now.Day)
+                {
+                    errorsList.Add("Невозможно записаться на оказание услуг на дату раньше текущей. Выберите день позже текущего.");
+                }
+                // Проверка на возраст (на валидную дату)
+                else if (dateTime > DateTime.Now.AddYears(1))
+                {
+                    errorsList.Add("Невозможно записаться на оказание услуг на год позже текущего. Выберите день раньше выбранного.");
+                }
+                // Проверка на сущ транзакцию клиент
+                else if (context.Transactions.Any(r => r.IdClient == client.IdClient && r.IdEmployee == employee.IdEmployee && 
+                r.DateStart.Year == dateTime.Year &&
+                r.DateStart.Month == dateTime.Month &&
+                r.DateStart.Day == dateTime.Day &&
+                (r.IdStatus == 4 ||
+                r.IdStatus == 1)))
+                {
+                    errorsList.Add($"На выбранный день с риелтором {employee.FullName} и клиентом {client.FullName}" +
+                        $" уже существует транзакция Выберите другой день или измените выбор данных.");
+                }
+                // Проверка на сущ транзакцию клиент
+                else if (context.Transactions.Any(r => r.IdEmployee == employee.IdEmployee &&
+                r.DateStart.Year == dateTime.Year &&
+                r.DateStart.Month == dateTime.Month &&
+                r.DateStart.Day == dateTime.Day &&
+                (r.IdStatus == 4 ||
+                r.IdStatus == 1)))
+                {
+                    errorsList.Add($"На выбранный день с риелтором {employee.FullName}" +
+                        $" уже существует транзакция Выберите другой день или измените выбор данных.");
+                }
+                // Проверка на сущ транзакцию сотрудник
+                else if (context.Transactions.Any(r => r.IdClient == client.IdClient &&
+                r.DateStart.Year == dateTime.Year &&
+                r.DateStart.Month == dateTime.Month &&
+                r.DateStart.Day == dateTime.Day &&
+                (r.IdStatus == 4 ||
+                r.IdStatus == 1)))
+                {
+                    errorsList.Add($"На выбранный день с клиентом {client.FullName}" +
+                        $" уже существует транзакция Выберите другой день или измените выбор данных.");
+                }
+
+                if (errorsList.Count != 0)
+                {
+                    string error = errorsList[0];
+
+                    MessageBox.Show($"{error}", "Ошибка.", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        } 
+        #endregion
+
         #region Вспомогательные методы
         private static short CalculateAge(DateOnly birthDate)
         {
@@ -380,17 +452,6 @@ namespace RealtorsFirm_3cursEO.Classes.DataOperations
             short age = CalculateAge(date);
 
             if (age < 18 || age > 80)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        // Ограничение по году 
-        public static bool LimitatorYear(short year)
-        {
-            int currentYear = DateTime.Now.Year;
-            if (year < 1990 || year > currentYear)
             {
                 return false;
             }

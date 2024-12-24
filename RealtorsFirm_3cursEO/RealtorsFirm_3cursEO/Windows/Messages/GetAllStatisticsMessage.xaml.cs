@@ -27,7 +27,7 @@ namespace RealtorsFirm_3cursEO.Windows.Messages
             CloseButton.Focus();
 
             RealtorsFirmContext dbContext = new RealtorsFirmContext();
-            dbContext.Transactions
+            List<Transaction> transactions = dbContext.Transactions
                 .Include(r => r.TransactionPriceRelations)
                 .Include(r => r.IdEmployeeNavigation)
                 .Include(r => r.IdStatusNavigation)
@@ -35,9 +35,31 @@ namespace RealtorsFirm_3cursEO.Windows.Messages
                 .ThenInclude(e => e.IdClientNavigation)
                 .Include(r => r.IdEstateNavigation)
                 .ThenInclude(r => r.IdTypeNavigation)
-                .Load();
+                .ToList();
 
-            var viewModel = new GetAllStatisticsViewModel(dbContext);
+            var viewModel = new GetAllStatisticsViewModel(transactions);
+            DataContext = viewModel;
+            selectedPricesListView.ItemsSource = viewModel.CalculateEstateTypeStatistics();
+        }
+
+        public GetAllStatisticsMessage(Employee realtor)
+        {
+            InitializeComponent();
+            CloseButton.Focus();
+
+            RealtorsFirmContext dbContext = new RealtorsFirmContext();
+            List<Transaction> transactions = dbContext.Transactions
+                .Include(r => r.TransactionPriceRelations)
+                .Include(r => r.IdEmployeeNavigation)
+                .Include(r => r.IdStatusNavigation)
+                .Include(r => r.IdEstateNavigation)
+                .ThenInclude(e => e.IdClientNavigation)
+                .Include(r => r.IdEstateNavigation)
+                .ThenInclude(r => r.IdTypeNavigation)
+                .Where(r => r.IdEmployee == realtor.IdEmployee)
+                .ToList();
+
+            var viewModel = new GetAllStatisticsViewModel(transactions);
             DataContext = viewModel;
             selectedPricesListView.ItemsSource = viewModel.CalculateEstateTypeStatistics();
         }

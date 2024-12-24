@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RealtorsFirm_3cursEO.Classes;
 using RealtorsFirm_3cursEO.Model;
+using RealtorsFirm_3cursEO.Windows.WindowsInterface;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -45,6 +46,11 @@ namespace RealtorsFirm_3cursEO
                 .ToList()
                 .SingleOrDefault(r => r.Email == Email && r.Password == Password);
 
+            var client = dbContext.Clients
+                .Where(r => r.IsRegistered == 1)
+                .ToList()
+                .SingleOrDefault(r => r.Email == Email && r.Password == Password);
+
             // Проверка на найденного пользователя
             if (employee != null)
             {
@@ -62,16 +68,35 @@ namespace RealtorsFirm_3cursEO
 
                 if (employee.IdRoleNavigation.Name == "Администратор")
                 {
-                    MenuAdmin page = new MenuAdmin(employee);
-                    page.Show();
+                    MenuAdmin menuAdmin = new MenuAdmin(employee);
+                    menuAdmin.Show();
                     this.Close();
                 }
                 else if (employee.IdRoleNavigation.Name == "Риелтор")
                 {
-                    /*MenuPhotograph menuPhotograph = new MenuPhotograph();
-                    menuPhotograph.Show();*/
+                    MenuRealtor menuRealtor = new MenuRealtor(employee);
+                    menuRealtor.Show();
                     this.Close();
                 }
+            }
+
+            if (client != null)
+            {
+                if (client.IsArchive == 1)
+                {
+                    MessageBox.Show($"Пользователь {client.Name} {client.Firstname} архивирован. " +
+                        $"Вы не можете продолжить авторизацию за этого клиента.", "Предупреждение.",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                MessageBox.Show($"Добро пожаловать в систему, {client.Name} {client.Firstname}!" +
+                    $"\nВы вошли как клиент.", "Авторизация прошла успешно.",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+
+                MenuClient menuClient = new MenuClient(client);
+                menuClient.Show();
+                this.Close();
             }
             else
             {

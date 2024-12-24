@@ -1,14 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RealtorsFirm_3cursEO.Classes;
-using RealtorsFirm_3cursEO.Edits;
 using RealtorsFirm_3cursEO.Model;
-using RealtorsFirm_3cursEO.Windows;
 using RealtorsFirm_3cursEO.Windows.Messages;
 using RealtorsFirm_3cursEO.Windows.WindowsActions.Transactions;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,12 +18,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
+namespace RealtorsFirm_3cursEO.Windows.WindowsInterface
 {
     /// <summary>
-    /// Логика взаимодействия для StatisticsTransactionAdmin.xaml
+    /// Логика взаимодействия для StatiscticsTransactionsRealtor.xaml
     /// </summary>
-    public partial class StatisticsTransactionAdmin : Page
+    public partial class StatiscticsTransactionsRealtor : Page
     {
         #region Свойства_и_поля
         // Класс для фильтрации и сортировки
@@ -41,7 +37,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
         private Transaction _selectedTransaction;
         #endregion
 
-        public StatisticsTransactionAdmin(Employee employee)
+        public StatiscticsTransactionsRealtor(Employee employee)
         {
             InitializeComponent();
             this._employeeAuth = employee;
@@ -75,7 +71,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
 
         private void UpdateDataTransactions()
         {
-            var transactionsList = dbContext.Transactions.ToList();
+            var transactionsList = dbContext.Transactions.Where(r => r.IdEmployee == _employeeAuth.IdEmployee).ToList();
             // Инициализация класса для фильтрации данных
             DataFilterTransactions = new DataFilterTransactions(SearchTextBox, ComboBoxSort, SortCheckBox, ComboBoxFilter);
 
@@ -111,7 +107,7 @@ namespace RealtorsFirm_3cursEO.Pages.PagesAdmin
             App.MenuWindow.Opacity = 0.5;
             this.Opacity = 0.5;
 
-            GetAllStatisticsMessage window = new GetAllStatisticsMessage();
+            GetAllStatisticsMessage window = new GetAllStatisticsMessage(_employeeAuth);
             window.ShowDialog();
 
             // Снова проявляем окно

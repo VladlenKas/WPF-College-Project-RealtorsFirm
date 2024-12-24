@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Threading;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace RealtorsFirm_3cursEO.Model;
 
@@ -9,6 +10,7 @@ public partial class RealtorsFirmContext : DbContext
 {
     public RealtorsFirmContext()
     {
+        TransactionStatusUpdater transaction = new(this);
     }
 
     public RealtorsFirmContext(DbContextOptions<RealtorsFirmContext> options)
@@ -243,9 +245,6 @@ public partial class RealtorsFirmContext : DbContext
             entity.Property(e => e.DateStart)
                 .HasColumnType("datetime")
                 .HasColumnName("date_start");
-            entity.Property(e => e.DateFinish)
-                .HasColumnType("datetime")
-                .HasColumnName("date_finish");
             entity.Property(e => e.IdClient).HasColumnName("id_client");
             entity.Property(e => e.IdEmployee).HasColumnName("id_employee");
             entity.Property(e => e.IdEstate).HasColumnName("id_estate");
@@ -309,4 +308,26 @@ public partial class RealtorsFirmContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+}
+
+/// <summary>
+/// Проверяет на наличие изменений и обновляет бд при необходимости
+/// </summary>
+public class TransactionStatusUpdater
+{
+    public TransactionStatusUpdater(RealtorsFirmContext dbContext)
+    {
+        var transactionsToUpdate = dbContext.Transactions
+            .Where(t => t.DateStart < DateTime.Now && t.IdStatus == 1) // Проверка на прошедшую дату по Уфе
+            .ToList();
+
+        if (transactionsToUpdate.Count > 0)
+        {
+            foreach (var transaction in transactionsToUpdate)
+            {
+                transaction.IdStatus = 4; // Устанавливаем статус на 4
+            }
+            dbContext.SaveChanges();
+        }
+    }
 }

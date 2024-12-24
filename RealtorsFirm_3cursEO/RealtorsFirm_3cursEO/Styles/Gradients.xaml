@@ -64,6 +64,11 @@
         <GradientStop Color="#071B4C" Offset="1"/>
     </LinearGradientBrush>
 
+    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" x:Key="YellowNone">
+        <GradientStop Color="#FFEB3B" Offset="0"/>
+        <GradientStop Color="#FBC02D" Offset="1"/>
+    </LinearGradientBrush>
+
     <!-- For button when not hovered or pressed -->
     <LinearGradientBrush EndPoint="0.0 0" StartPoint="1.1 1" x:Key="None">
         <GradientStop Color="#FF989595" Offset="0"/>

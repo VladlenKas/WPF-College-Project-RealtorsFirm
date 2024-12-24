@@ -33,15 +33,30 @@ namespace RealtorsFirm_3cursEO.Windows.WindowsActions.Transactions
             DataContext = transaction;
 
             dbContext = new RealtorsFirmContext();
-            StatusComboBox.ItemsSource = new List<string>(dbContext.StatusTransactions.Select(r => r.Name).ToList());
+            if (transaction.DateStart < DateTime.Now)
+            {
+                StatusComboBox.ItemsSource = new List<string>
+                    (dbContext.StatusTransactions
+                    .Select(r => r.Name)
+                    .Where(r => r != "В обработке")
+                    .ToList());
+            }
+            else
+            {
+                StatusComboBox.ItemsSource = new List<string>
+                    (dbContext.StatusTransactions
+                    .Select(r => r.Name)
+                    .ToList());
+            }
         }
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
             string statusName = StatusComboBox.SelectedValue.ToString();
-            if (_transaction.IdStatusNavigation.Name != statusName)
-            {
+            var status = dbContext.StatusTransactions.Single(r => r.Name == statusName);
 
+            if (_transaction.IdStatusNavigation.Name != status.Name)
+            {
                 var result = MessageBox.Show("Вы уверены, что хотите изменить статус транзакции?",
                     "Подтверждение",
                     MessageBoxButton.YesNo,
@@ -49,20 +64,13 @@ namespace RealtorsFirm_3cursEO.Windows.WindowsActions.Transactions
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    StatusTransaction status = dbContext.StatusTransactions.Single(r => r.Name == statusName);
-                    Transaction transaction = dbContext.Transactions.Single(r => r.IdTransaction == _transaction.IdTransaction);
+                    ModelActions.EditTransacton(_transaction, status);
 
                     MessageBox.Show($"Транзакция с недвижимостью по адресу \"{_transaction.IdEstateNavigation.Address}\" " +
                         $"клиента {_transaction.IdEstateNavigation.IdClientNavigation.FullName} успешна отредактирована!",
                         "Успешно",
                         MessageBoxButton.OK,
                         MessageBoxImage.Information);
-
-                    transaction.IdStatus = status.IdStatus;
-                    if (status.Name == "Завершено" || status.Name == "Отменено")
-                    {
-                        transaction.DateFinish = DateTime.Now;
-                    }
                     dbContext.SaveChanges();
                     this.Close();
                 }

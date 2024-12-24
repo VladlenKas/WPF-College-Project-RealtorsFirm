@@ -37,6 +37,8 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
         private Client _selectedClient;
         #endregion
 
+        private string _fileAdmin = "pack://application:,,,/RealtorsFirm_3cursEO;component/Images/AdminIconImage.png";
+        private string _fileRealtor = "pack://application:,,,/RealtorsFirm_3cursEO;component/Images/RealtorIconImage.png";
         public ClientsAdmin(Employee employee)
         {
             InitializeComponent();
@@ -62,7 +64,17 @@ namespace RealtorsFirm_3cursEO.PagesAdmin
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             // Передаем ФИО в текстблок с инфо
+            UserRole.Text = _employeeAuth.IdRoleNavigation.Name;
             UserFio.Text = _employeeAuth.FullName;
+
+            if (_employeeAuth.IdRoleNavigation.Name == "Администратор")
+            {
+                UserIcon.ImageSource = new BitmapImage(new Uri(_fileAdmin, UriKind.Absolute));
+            }
+            else if (_employeeAuth.IdRoleNavigation.Name == "Риелтор")
+            {
+                UserIcon.ImageSource = new BitmapImage(new Uri(_fileRealtor, UriKind.Absolute));
+            }
 
             // Загрузка комбобоксов
             var sorterList = UploadDataFilter.SorterClients();
